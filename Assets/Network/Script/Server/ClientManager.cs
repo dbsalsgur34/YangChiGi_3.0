@@ -3,14 +3,12 @@ using System.Collections.Generic;
 using System.Net.Sockets;
 using System;
 
+
 namespace ServerSide{
 	public static class ClientManager {		
-		private const int maxClientCount = 10;
-
+		private const int maxClientCount = 2;
+        private static Random random = new Random();
 		private static TcpConnection[] arrayClient;
-		public static TcpConnection getClient(int idx){
-			return arrayClient[idx];
-		}
 		private static Queue<int> freeQueue;
 		public static Int32 ClientCount{
 			get{
@@ -18,13 +16,22 @@ namespace ServerSide{
 			}
 		}
 
+
+
+        private static List<Match> matches = new List<Match>();
+        private static int matchCount = 0;
+
+
+
 		public static void Init(){
 			freeQueue = new Queue<int>();
+
 			for(int loop = 0; loop < maxClientCount; loop++){
 				freeQueue.Enqueue(loop);
 			}
 
 			arrayClient = new TcpConnection[maxClientCount];
+            matches.Add(new Match());
 		}
 
 		public static bool AddClient(Socket welcomeSocket_){
@@ -35,7 +42,15 @@ namespace ServerSide{
 				return false;
 			}else{
 				arrayClient[freeId] = new TcpConnection(welcomeSocket_, freeId);
-                arrayClient[freeId].Send("FreeID/" + freeId.ToString());
+                if (matches[matches.Count - 1].playerCount == 1)
+                {
+                    matches[matches.Count - 1].addPlayer(freeId);
+                    MatchSucces(matches[matches.Count - 1]);
+                }
+                else
+                    matches.Add(new Match(freeId));
+
+                
                 return true;
 			}
 		}
@@ -57,6 +72,14 @@ namespace ServerSide{
 			}
 		}
 
+        static void MatchSucces(Match match)
+        {
+            int seed = random.Next();
+            arrayClient[match.getFreeId(0)].Send("Seed/" + seed.ToString());
+            arrayClient[match.getFreeId(0)].Send("PlayerNum/1");
+            arrayClient[match.getFreeId(1)].Send("Seed/" + seed.ToString());
+            arrayClient[match.getFreeId(1)].Send("PlayerNum/2");
+        }
 		/*
 		public static void BroadCast(NetworkMessage nm_, int exclude_){
 			if(arrayClient == null)return;
@@ -107,6 +130,10 @@ namespace ServerSide{
 				freeId = freeQueue.Dequeue();
 			}
 			return freeId;
+		}
+
+        public static TcpConnection getClient(int idx){
+			return arrayClient[idx];
 		}
 	}
 }
