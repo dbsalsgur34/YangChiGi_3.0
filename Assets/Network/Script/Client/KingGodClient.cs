@@ -7,10 +7,12 @@ namespace ClientSide
     public class KingGodClient : MonoBehaviour {
 
         public static KingGodClient Instance;
-
+        public string serverIP;
         private NetworkTranslator networkTranslator;
         private int freeId = -1;
 	    public static KingGodClient instance;
+        public int Seed;
+        public int Playernum;
 
 	    void Awake(){
             if (Instance == null)           //Static 변수를 지정하고 이것이 없을경우 - PlayManage 스크립트를 저장하고 이것이 전 범위적인 싱글톤 오브젝트가 된다.
@@ -27,9 +29,9 @@ namespace ClientSide
 	    }
 
 	    void Start () {
-		    networkTranslator.SetMsgHandler(gameObject.AddComponent<DemoMsgHandler>());
+		    networkTranslator.SetMsgHandler(gameObject.AddComponent<ClientMsgHandler>());
 
-		    Network_Client.Begin ();
+		    Network_Client.Begin (serverIP);
 	    }		
 
 	    void OnApplicationQuit(){
@@ -45,6 +47,7 @@ namespace ClientSide
         {
             this.freeId = freeId;
         }
+
     }
 
 }

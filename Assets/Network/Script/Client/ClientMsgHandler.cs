@@ -12,9 +12,14 @@ namespace ClientSide
             string[] splitMsg = networkMessage.Split('/');
             switch (splitMsg[0])
             {
-                case "FreeId":
-                    //KingGodClient(int.Parse(splitMsg[0]), "Matched");
+                case "PlayerNum":
+                    KingGodClient.Instance.Playernum = (int.Parse(splitMsg[1]));
                     break;
+                case "Seed":
+                    KingGodClient.Instance.Seed = (int.Parse(splitMsg[1]));
+                    StartCoroutine(PlayManage.Instance.LoadScene("YangChigi3.0"));
+                    break;
+
                 default:
                     break;
             }

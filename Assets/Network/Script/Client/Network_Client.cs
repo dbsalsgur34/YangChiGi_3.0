@@ -7,7 +7,7 @@ using System.Text;
 using System.IO;
 
 public class Network_Client {
-	public static string serverAddress = "172.30.1.21";
+    public static string serverAddress;
 	public static int PORT = 11900;
 
 	private static TcpClient tcpClient;
@@ -32,10 +32,10 @@ public class Network_Client {
 		get{return isConnected;}
 	}
 
-	public static void Begin(){
-		//ShutDown();
-
-		tcpClient = new TcpClient();
+	public static void Begin(string ip){
+        //ShutDown();
+        serverAddress = ip;
+        tcpClient = new TcpClient();
 		NetworkId = -1;
 
 		thread_connect = new Thread(BeginConnection);

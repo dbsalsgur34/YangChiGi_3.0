@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using ClientSide;
 
 public class LobbyManager : ManagerBase {
 
@@ -19,8 +20,11 @@ public class LobbyManager : ManagerBase {
     float maxEXP;
     float Iconrotation;
 
-    private void Start()
+    public GameObject NetworkObject;
+
+    public override void Start()
     {
+        base.Start();
         LobbyInit();
         CalEXP();
     }
@@ -97,6 +101,11 @@ public class LobbyManager : ManagerBase {
             LobbyInit();
 
         }
+    }
+
+    public void CreateNetworkObject()
+    {
+        GameObject NO = Instantiate(NetworkObject);
     }
 
     private void Update()

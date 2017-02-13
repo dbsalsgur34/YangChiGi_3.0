@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using ClientSide;
+
 
 public class ButtonEvent : MonoBehaviour {
 
     public string targetScene;
-    public GameObject clientObject;
     public LobbyManager LM;
     public bool IsSave;
     public bool IsPlay;
@@ -26,11 +25,11 @@ public class ButtonEvent : MonoBehaviour {
         else
         {
             B.onClick.AddListener(Matching);
+            B.onClick.AddListener(SendLMToCreateNetworkObject);
         }
     }
     void Matching()
     {
-        clientObject.GetComponent<KingGodClient>().Matching();
         LM.LoadingScene.SetActive(true);
     }
 
@@ -46,5 +45,10 @@ public class ButtonEvent : MonoBehaviour {
             PlayManage.Instance.SaveData();
             PlayerPrefs.Save();
         }
+    }
+
+    void SendLMToCreateNetworkObject()
+    {
+        LM.CreateNetworkObject();
     }
 }

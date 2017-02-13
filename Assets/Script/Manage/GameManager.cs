@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using ClientSide;
 
 public class GameManager : ManagerBase {
 
@@ -50,8 +51,6 @@ public class GameManager : ManagerBase {
     public SpriteRenderer hitMarker;
     GameObject hitMarkerParent;
 
-    public int seed;
-
     public override void Awake()
     {
         base.Awake();
@@ -59,6 +58,7 @@ public class GameManager : ManagerBase {
         Sheephorde = GameObject.Find("Sheephorde");
         BackGround = GameObject.Find("BackGround");
         SM = GameObject.Find("SkillManager").GetComponent<SkillManager>();
+        this.PlayerNumber = KingGodClient.Instance.Playernum;
         if (PlayerNumber == 1)
         {
             Player = GameObject.Find("PlayerOne");
@@ -84,15 +84,16 @@ public class GameManager : ManagerBase {
         TimerStart = false;
 
         //오브젝트 생성.
-        SheepSpawn(bronzesheepprefab, PlanetScale, initialSheep, seed);
+        SheepSpawn(bronzesheepprefab, PlanetScale, initialSheep, KingGodClient.Instance.Seed);
         GrassSpawn(grassprefab, 24.5f, 150);
 
         hitMarkerInit();
-
+        
     }
 
-    private void Start()
+    public override void Start()
     {
+        base.Start();
         HQ = Player.GetComponent<PlayerControlThree>().HQ.GetComponent<HQControl>();
     }
 
