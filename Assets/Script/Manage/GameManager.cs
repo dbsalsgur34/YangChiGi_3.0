@@ -43,11 +43,12 @@ public class GameManager : ManagerBase {
     public int initialSheep;
     
     float Timer;
-    float skillcooltimer = 10f;
-    bool TimerStart;
+    public bool TimerStart;
     bool IsSkillonthePlanet;
 
     public Vector3 hitVector;
+    public SpriteRenderer hitMarker;
+    GameObject hitMarkerParent;
 
     public int seed;
 
@@ -85,6 +86,8 @@ public class GameManager : ManagerBase {
         //오브젝트 생성.
         SheepSpawn(bronzesheepprefab, PlanetScale, initialSheep, seed);
         GrassSpawn(grassprefab, 24.5f, 150);
+
+        hitMarkerInit();
 
     }
 
@@ -242,7 +245,7 @@ public class GameManager : ManagerBase {
         SheepList.RemoveAt(index);
     }
 
-    public void SkillButtonAction(Button targetbutton)
+    /*public void SkillButtonAction(Button targetbutton)
     {
         if (SelectedButton == null)
         {
@@ -263,12 +266,8 @@ public class GameManager : ManagerBase {
                 SelectedButton.gameObject.GetComponent<GameButtonEvent>().SkillButtonActive();
             }
         }
-
-        
     }
 
-
-    /*
     void CheckCameraFix()
     {
         if (SelectedButton != null && SelectedButton.gameObject.GetComponent<GameButtonEvent>().SkillIndex != 0 && SkillDB.SkillPrefab[SelectedButton.gameObject.GetComponent<GameButtonEvent>().SkillIndex].GetComponentInChildren<SkillBase>().FindSkillNeedCameraFix())
@@ -380,7 +379,9 @@ public class GameManager : ManagerBase {
         {
             RC.DrawCircle(this.Planet.transform.position, this.HQ.transform.position, hitVector);
             CenterRC.DrawCenterCircle(this.Planet.transform.position, 25.5f);
+            ShowhitMarker(hitVector);
         }
+        
     }
 
     public void SendMessageToSkillUse(int num)
@@ -398,6 +399,29 @@ public class GameManager : ManagerBase {
     public bool IsSkillCanUse()
     {
         return (IsGameStart() && IsSkillonthePlanet) ? true : false;
+    }
+
+    void hitMarkerInit()
+    {
+        Transform originalParent = transform.parent;            //check if this camera already has a parent
+        hitMarkerParent = new GameObject("hitMarkerParent");                //create a new gameObject
+        hitMarker.gameObject.transform.parent = hitMarkerParent.transform;                    //make this camera a child of the new gameObject
+        hitMarkerParent.transform.parent = originalParent;            //make the new gameobject a child of the original camera parent if it had one
+        hitMarkerParent.SetActive(false);
+    }
+
+    void ShowhitMarker(Vector3 target)
+    {
+        if (IsSkillCanUse())
+        {
+            hitMarkerParent.SetActive(true);
+            Quaternion targetRotation = Quaternion.FromToRotation(hitMarkerParent.transform.up, target) * hitMarkerParent.transform.rotation;
+            hitMarkerParent.transform.rotation = targetRotation;
+        }
+        else
+        {
+            hitMarkerParent.SetActive(false);
+        }
     }
 
     public void SetIsSkillOnthePlanaet(bool TF)

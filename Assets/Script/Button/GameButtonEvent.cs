@@ -8,7 +8,7 @@ public enum GameButtonType
 {
     PHASESHIFTBUTTON,
     CAMERAPHASESHIFTBUTTON,
-    SKILLBUTTON,
+    OPTIONBUTTON
 }
 
 public class GameButtonEvent : MonoBehaviour {
@@ -20,11 +20,8 @@ public class GameButtonEvent : MonoBehaviour {
 
     public bool IsthisButtonActive;
     public bool IsSkillCanActive;
-    public Image targeticon;
 
-    float Iconrotation;
     public Text ButtonText;
-    public int SkillIndex;
     // Use this for initialization
     private void Start()
     {
@@ -32,8 +29,6 @@ public class GameButtonEvent : MonoBehaviour {
         ButtonText = gameObject.GetComponentInChildren<Text>();
         GM = GameObject.FindGameObjectWithTag("Manager").GetComponent<GameManager>();
         PCT = GM.Player.GetComponent<PlayerControlThree>();
-
-        Iconrotation = 0;
 
         if (GBT == GameButtonType.PHASESHIFTBUTTON)
         {
@@ -43,14 +38,10 @@ public class GameButtonEvent : MonoBehaviour {
         {
             B.onClick.AddListener(SwitchCameraPhase);
         }
-        else if (GBT == GameButtonType.SKILLBUTTON)
+        else if (GBT == GameButtonType.OPTIONBUTTON)
         {
-            targeticon = GetComponentsInChildren<Image>()[1];
-            targeticon.gameObject.SetActive(false);
-            IsthisButtonActive = false;
-            IsSkillCanActive = false;
-            SkillIndex = 0;
-            B.onClick.AddListener(SkillButtonControl);
+
+            B.onClick.AddListener(OptionButtonEvent);
         }
     }
 
@@ -98,30 +89,8 @@ public class GameButtonEvent : MonoBehaviour {
         }
     }
 
-    void SkillButtonControl()
+    void OptionButtonEvent()
     {
-        GM.SkillButtonAction(this.gameObject.GetComponent<Button>());
-    }
 
-    public void SkillButtonActive()
-    {
-        Iconrotation = 0;
-        IsthisButtonActive = !IsthisButtonActive;
-
-        targeticon.gameObject.SetActive(IsthisButtonActive);
-    }
-
-    void TargetIconRotate()
-    {
-        Iconrotation += 50f * Time.deltaTime;
-        targeticon.rectTransform.rotation = Quaternion.AngleAxis(Iconrotation, targeticon.rectTransform.forward);
-    }
-
-    private void Update()
-    {
-        if (IsthisButtonActive)
-        {
-            TargetIconRotate();
-        }
     }
 }

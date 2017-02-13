@@ -29,12 +29,7 @@ public class SkillDataBase : MonoBehaviour {
         }
     }
 
-    public void ButtonIconInRandomList(Button targetButton, int index)
-    {
-        targetButton.image.sprite = SkillIcon[SkillIndexList[index]];
-    }
-
-    private void Start()
+    private void Awake()
     {
         if (SkillPrefab.Count == SkillIcon.Count)
         {

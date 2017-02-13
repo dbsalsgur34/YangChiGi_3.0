@@ -14,11 +14,10 @@ public class SkillBase : MonoBehaviour {
     public GameObject Owner;
     protected GameObject TG;       //Skill의 Target.
     public GameObject SkillParent;
-
+    public float PreCoolTime;
     public SkillState SS;
+    public bool IsSkillNeedGuideLine;
 
-    public bool IsSkillNeedCameraFix;
-    
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject != this.Owner)
@@ -51,8 +50,13 @@ public class SkillBase : MonoBehaviour {
         this.SkillParent.transform.rotation = rot;
     }
 
-    public virtual bool FindSkillNeedCameraFix()
+    public virtual float ShowPreCooltime()
     {
-        return IsSkillNeedCameraFix;
+        return PreCoolTime;
+    }
+
+    public virtual bool ShowIsSkillNeedGuideLine()
+    {
+        return this.IsSkillNeedGuideLine;
     }
 }

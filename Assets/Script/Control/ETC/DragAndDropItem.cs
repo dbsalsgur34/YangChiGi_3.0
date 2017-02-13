@@ -12,47 +12,62 @@ public class DragAndDropItem : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     public delegate void DragEvent(DragAndDropItem item);
     static public event DragEvent OnItemDragStartEvent;                             // Drag start event
     static public event DragEvent OnItemDragEndEvent;                               // Drag end event
-
+    public bool IsItemCanDrag;
     public GameManager GM;
     public LayerMask LM;
-    public int num;
-    
+
+    public int num { get; set; }
+    public float time;
+    public Text timetext;
+
+    private void Start()
+    {
+        GM.SM.SetSkillPanelQueue(this.gameObject.GetComponent<DragAndDropItem>());
+        timetext = GetComponentInChildren<Text>();
+        timetext.gameObject.SetActive(false);
+    }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        sourceCell = GetComponentInParent<DragAndDropCell>();                       // Remember source cell
-        draggedItem = this;                                                         // Set as dragged item
-        icon = new GameObject("Icon");                                              // Create object for item's icon
-        Image image = icon.AddComponent<Image>();
-        image.sprite = GetComponent<Image>().sprite;
-        image.raycastTarget = false;                                                // Disable icon's raycast for correct drop handling
-        RectTransform iconRect = icon.GetComponent<RectTransform>();
-        // Set icon's dimensions
-        iconRect.sizeDelta = new Vector2(   GetComponent<RectTransform>().sizeDelta.x,
-                                            GetComponent<RectTransform>().sizeDelta.y);
-        Canvas canvas = GetComponentInParent<Canvas>();                             // Get parent canvas
-        if (canvas != null)
+        if (IsItemCanDrag)
         {
-            // Display on top of all GUI (in parent canvas)
-            icon.transform.SetParent(canvas.transform, true);                       // Set canvas as parent
-            icon.transform.SetAsLastSibling();                                      // Set as last child in canvas transform
-        }
+            sourceCell = GetComponentInParent<DragAndDropCell>();                       // Remember source cell
+            draggedItem = this;                                                         // Set as dragged item
+            icon = new GameObject("Icon");                                              // Create object for item's icon
+            Image image = icon.AddComponent<Image>();
+            image.sprite = GetComponent<Image>().sprite;
+            image.raycastTarget = false;                                                // Disable icon's raycast for correct drop handling
+            RectTransform iconRect = icon.GetComponent<RectTransform>();
+            // Set icon's dimensions
+            iconRect.sizeDelta = new Vector2(GetComponent<RectTransform>().sizeDelta.x,
+                                                GetComponent<RectTransform>().sizeDelta.y);
+            Canvas canvas = GetComponentInParent<Canvas>();                             // Get parent canvas
+            if (canvas != null)
+            {
+                // Display on top of all GUI (in parent canvas)
+                icon.transform.SetParent(canvas.transform, true);                       // Set canvas as parent
+                icon.transform.SetAsLastSibling();                                      // Set as last child in canvas transform
+            }
 
-        GM.mainCamera.IsSkillCutScene = true;
+            GM.mainCamera.IsSkillCutScene = true;
 
-        if (OnItemDragStartEvent != null)
-        {
-            OnItemDragStartEvent(this);                                             // Notify all about item drag start
+            if (OnItemDragStartEvent != null)
+            {
+                OnItemDragStartEvent(this);                                             // Notify all about item drag start
+            }
         }
     }
 
     public void OnDrag(PointerEventData data)
     {
-        if (icon != null)
+        if (IsItemCanDrag)
         {
-            icon.transform.position = Input.mousePosition;                          // Item's icon follows to cursor
+            if (icon != null)
+            {
+                icon.transform.position = Input.mousePosition;                          // Item's icon follows to cursor
+            }
+            CheckIsIcononthePlanet();
         }
-        CheckIsIcononthePlanet();
     }
 
     void CheckIsIcononthePlanet()
@@ -99,6 +114,9 @@ public class DragAndDropItem : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         if (GM.IsSkillCanUse())
         {
             GM.SendMessageToSkillUse(this.num);
+            GM.SetIsSkillOnthePlanaet(false);
+            IsItemCanDrag = false;
+            GM.SM.SetSkillPanelQueue(this.gameObject.GetComponent<DragAndDropItem>());
         }
         else { return; }
     }
@@ -115,5 +133,25 @@ public class DragAndDropItem : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     public void MakeVisible(bool condition)
     {
         GetComponent<Image>().enabled = condition;
+    }
+
+    public IEnumerator SkillDelay(float delay, Sprite WaitIcon, Sprite SkillIcon)
+    {
+        time = delay;
+        this.gameObject.GetComponent<Image>().sprite = WaitIcon;
+        timetext.gameObject.SetActive(true);
+        yield return new WaitUntil(() => (time < 0));
+        IsItemCanDrag = true;
+        this.gameObject.GetComponent<Image>().sprite = SkillIcon;
+        timetext.gameObject.SetActive(false);
+    }
+
+    private void Update()
+    {
+        if (time > 0)
+        {
+            time -= Time.deltaTime;
+            timetext.text = time.ToString("N0");
+        }
     }
 }

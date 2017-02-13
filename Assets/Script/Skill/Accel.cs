@@ -8,17 +8,31 @@ public class Accel : SkillBase {
     public override void Awake()
     {
         base.Awake();
-        StartCoroutine(AccelAction());
 	}
+
+    private void Start()
+    {
+        StartCoroutine(AccelAction());
+    }
 
     public override bool SetInstance(GameObject IO, GameObject ITG)
     {
         return base.SetInstance(IO, ITG);
     }
 
-    public override bool FindSkillNeedCameraFix()
+    public override void SetPivot(Transform pivot, Quaternion rot)
     {
-        return base.FindSkillNeedCameraFix();
+        base.SetPivot(pivot, rot);
+    }
+
+    public override float ShowPreCooltime()
+    {
+        return base.ShowPreCooltime();
+    }
+
+    public override bool ShowIsSkillNeedGuideLine()
+    {
+        return base.ShowIsSkillNeedGuideLine();
     }
 
     IEnumerator AccelAction()

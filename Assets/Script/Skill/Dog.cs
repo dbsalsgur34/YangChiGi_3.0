@@ -130,14 +130,21 @@ public class Dog : SkillBase {
         return base.SetInstance(IO, ITG);
     }
 
-    public override bool FindSkillNeedCameraFix()
-    {
-        return base.FindSkillNeedCameraFix();
-    }
+
 
     public override void SetPivot(Transform pivot, Quaternion rot)
     {
         base.SetPivot(pivot, rot);
+    }
+
+    public override float ShowPreCooltime()
+    {
+        return base.ShowPreCooltime();
+    }
+
+    public override bool ShowIsSkillNeedGuideLine()
+    {
+        return base.ShowIsSkillNeedGuideLine();
     }
 
     private void Update()
@@ -148,5 +155,6 @@ public class Dog : SkillBase {
         }
         LeaderSheep();
     }
+
 
 }
