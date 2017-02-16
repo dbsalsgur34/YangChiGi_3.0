@@ -20,8 +20,9 @@ public class LobbyManager : ManagerBase {
     float maxEXP;
     float Iconrotation;
 
+    public GameObject NetworkObjectPrefab;
     public GameObject NetworkObject;
-
+    public bool IsGameMatching;
     public override void Start()
     {
         base.Start();
@@ -55,6 +56,7 @@ public class LobbyManager : ManagerBase {
         MatchingCancleButton.onClick.AddListener(CancleMatching);
         LoadingScene.SetActive(false);
         StartCoroutine(TextBlink());
+        IsGameMatching = false;
     }
 
     void TargetIconRotate()
@@ -87,7 +89,9 @@ public class LobbyManager : ManagerBase {
 
     void CancleMatching()
     {
+        IsGameMatching = false;
         LoadingScene.SetActive(false);
+        Network_Client.Send("Cancle");
     }
 
     void CalEXP()
@@ -105,7 +109,15 @@ public class LobbyManager : ManagerBase {
 
     public void CreateNetworkObject()
     {
-        GameObject NO = Instantiate(NetworkObject);
+        IsGameMatching = true;
+        if (KingGodClient.Instance == null)
+        {
+            Instantiate(NetworkObjectPrefab);
+        }
+        else
+        {
+            Network_Client.Begin(KingGodClient.Instance.serverIP);
+        }
     }
 
     private void Update()

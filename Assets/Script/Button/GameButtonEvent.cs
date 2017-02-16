@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using ClientSide;
 
 public enum GameButtonType
 {
@@ -17,7 +18,7 @@ public class GameButtonEvent : MonoBehaviour {
     public GameManager GM;
     public PlayerControlThree PCT;
     public GameButtonType GBT;
-
+    public GameObject TempMenu;
     public bool IsthisButtonActive;
     public bool IsSkillCanActive;
 
@@ -40,57 +41,67 @@ public class GameButtonEvent : MonoBehaviour {
         }
         else if (GBT == GameButtonType.OPTIONBUTTON)
         {
-
+            TempMenu = GameObject.Find("TempMenu");
             B.onClick.AddListener(OptionButtonEvent);
+            TempMenu.SetActive(false);
         }
     }
 
     void SwitchPhase()
     {
-        string searchtext = "Search";
-        string backtohome = "Back";
-        string enemytext = "Enemy";
+        if (GM.IsGameStart())
+        {
+            string searchtext = "Search";
+            string backtohome = "Back";
+            string enemytext = "Enemy";
 
-        PCT.SearchPhaseShift();
-        if (PCT.PS == PlayerState.BACKTOHOME)
-        {
-            ButtonText.text = backtohome;
-        }
-        else if (PCT.PS == PlayerState.SHEEPSEARCH)
-        {
-            ButtonText.text = searchtext;
-        }
-        else if (PCT.PS == PlayerState.ENEMYSEARCH)
-        {
-            ButtonText.text = enemytext;
+            Network_Client.Send("Shepherd_C/" + KingGodClient.Instance.Playernum);
+            if (PCT.PS == PlayerState.BACKTOHOME)
+            {
+                ButtonText.text = backtohome;
+            }
+            else if (PCT.PS == PlayerState.SHEEPSEARCH)
+            {
+                ButtonText.text = searchtext;
+            }
+            else if (PCT.PS == PlayerState.ENEMYSEARCH)
+            {
+                ButtonText.text = enemytext;
+            }
         }
     }
 
     void SwitchCameraPhase()
     {
-        string freetext = "Free";
-        string HQtext = "HQ";
-        string Playertext = "Player";
+        if (GM.IsGameStart())
+        {
+            string freetext = "Free";
+            string HQtext = "HQ";
+            string Playertext = "Player";
 
-        if (GM.mainCamera.CS == CameraState.FREE)
-        {
-            ButtonText.text = HQtext;
-            GM.mainCamera.CS = CameraState.LOCKONHQ;
-        }
-        else if (GM.mainCamera.CS == CameraState.LOCKONHQ)
-        {
-            ButtonText.text = Playertext;
-            GM.mainCamera.CS = CameraState.LOCKONPLAYER;
-        }
-        else if (GM.mainCamera.CS == CameraState.LOCKONPLAYER)
-        {
-            GM.mainCamera.CS = CameraState.FREE;
-            ButtonText.text = freetext;
+            if (GM.mainCamera.CS == CameraState.FREE)
+            {
+                ButtonText.text = HQtext;
+                GM.mainCamera.CS = CameraState.LOCKONHQ;
+            }
+            else if (GM.mainCamera.CS == CameraState.LOCKONHQ)
+            {
+                ButtonText.text = Playertext;
+                GM.mainCamera.CS = CameraState.LOCKONPLAYER;
+            }
+            else if (GM.mainCamera.CS == CameraState.LOCKONPLAYER)
+            {
+                GM.mainCamera.CS = CameraState.FREE;
+                ButtonText.text = freetext;
+            }
         }
     }
 
     void OptionButtonEvent()
     {
-
+        if (GM.IsGameStart())
+        {
+            TempMenu.SetActive(true);
+        }
     }
 }

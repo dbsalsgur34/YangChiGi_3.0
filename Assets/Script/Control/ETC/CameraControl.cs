@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using ClientSide;
 
 public enum CameraState
 {
@@ -21,7 +22,7 @@ public class CameraControl : MonoBehaviour
     public Transform pivotPoint;                //this should be the location the camera tumbles around
     public bool naturalMotion = true;            //this determines whether a left swipe will make the camera tumble clockwise or anticlockwise around the object
     public bool IsSkillCutScene;
-    public int CameraNumber;
+
     public CameraState CS;
 
     private GameObject camParent;                //this will be the rotating parent to which the camera is attached. Rotating this object will have the effect of making the camera a specified location.
@@ -35,14 +36,15 @@ public class CameraControl : MonoBehaviour
         camParent.transform.position = pivotPoint.position;        //place the new gameObject at pivotPoint location
         transform.parent = camParent.transform;                    //make this camera a child of the new gameObject
         camParent.transform.parent = originalParent;            //make the new gameobject a child of the original camera parent if it had one
-        if (CameraNumber == 1)
+        if (KingGodClient.Instance.Playernum == 1)
         {
             Player = GameObject.Find("PlayerOne");
         }
-        else if (CameraNumber == 2)
+        else if (KingGodClient.Instance.Playernum == 2)
         {
             Player = GameObject.Find("PlayerTwo");
         }
+        camParent.transform.rotation = Player.transform.rotation;
         IsSkillCutScene = false;
         CS = CameraState.FREE;
     }
@@ -105,7 +107,7 @@ public class CameraControl : MonoBehaviour
 
     void CameraLockOnHQ()
     {
-        camParent.transform.rotation = Quaternion.Slerp(camParent.transform.rotation,Quaternion.Euler(0,0,0),Time.deltaTime * LockOnSensitivity);
+        camParent.transform.rotation = Quaternion.Slerp(camParent.transform.rotation,Player.GetComponent<PlayerControlThree>().HQ.transform.rotation,Time.deltaTime * LockOnSensitivity);
     }
 
     void CameraLockOnPlayer()

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class RazorControl : MonoBehaviour {
 
-    public void DrawCircle(Vector3 center, Vector3 HQ, Vector3 target)
+    public void DrawCircle(Vector3 center, Vector3 HQ, Vector3 target, int RazorPoint)
     {
         float theta = 0;
         float radius = 26;
@@ -32,7 +32,7 @@ public class RazorControl : MonoBehaviour {
         for (int i = 0; i < (vertexCount); i++)
         {
             float x = radius * Mathf.Sin(theta) * Mathf.Cos(xzTheta);
-            float y = radius * Mathf.Cos(theta) + (center.y + transform.position.y);
+            float y = RazorPoint * radius * Mathf.Cos(theta) + (center.y + transform.position.y);
             float z = radius * Mathf.Sin(theta) * Mathf.Sin(xzTheta);
             Vector3 pos = new Vector3(x, y, z);
 

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using ClientSide;
 
 public enum SkillState
 {
@@ -17,7 +18,6 @@ public class SkillBase : MonoBehaviour {
     public float PreCoolTime;
     public SkillState SS;
     public bool IsSkillNeedGuideLine;
-
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject != this.Owner)
@@ -44,10 +44,13 @@ public class SkillBase : MonoBehaviour {
         return ((Owner != null && TG != null) ? true : false);
     }
 
-    public virtual void SetPivot(Transform pivot, Quaternion rot)
+    public virtual void SetPivot(Transform pivot, Transform pivotRotation, float angle)
     {
         this.SkillParent.transform.position = pivot.position;
-        this.SkillParent.transform.rotation = rot;
+
+        Quaternion temprotationone = Quaternion.AngleAxis(angle,pivot.up);
+        Quaternion temprotationtwo = Quaternion.Euler(pivotRotation.eulerAngles.z, pivotRotation.eulerAngles.z + temprotationone.eulerAngles.y,0);
+        this.SkillParent.transform.rotation = temprotationtwo;
     }
 
     public virtual float ShowPreCooltime()

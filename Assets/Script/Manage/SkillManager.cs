@@ -21,12 +21,12 @@ public class SkillManager : MonoBehaviour
         index = 0;
     }
 
-    public void UsingSkill(int SkillNumber, GameObject Owner, GameObject Target, Transform Pivot, Quaternion Way)
+    public void UsingSkill(int SkillNumber, GameObject Owner, GameObject Target, Transform Pivot, Transform Pivotrotation,float angle)
     {
         GameObject ActivatedSkill = Instantiate(SkillDB.SkillPrefab[SkillNumber]);
         SkillBase ActivatedSkillInit = ActivatedSkill.GetComponent<SkillBase>();
         ActivatedSkillInit.SetInstance(Owner, Target);
-        ActivatedSkillInit.SetPivot(Pivot,Way);
+        ActivatedSkillInit.SetPivot(Pivot,Pivotrotation,angle);
     }
 
     public void SetSkillPanelQueue(DragAndDropItem item)

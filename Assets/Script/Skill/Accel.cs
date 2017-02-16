@@ -20,9 +20,9 @@ public class Accel : SkillBase {
         return base.SetInstance(IO, ITG);
     }
 
-    public override void SetPivot(Transform pivot, Quaternion rot)
+    public override void SetPivot(Transform pivot, Transform pivotRotation, float angle)
     {
-        base.SetPivot(pivot, rot);
+        base.SetPivot(pivot, pivotRotation, angle);
     }
 
     public override float ShowPreCooltime()

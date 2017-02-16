@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using ClientSide;
 
 public enum PlayerState
 {
@@ -47,9 +48,9 @@ public class PlayerControlThree : MonoBehaviour {
         this.InitialScore = PlayManage.Instance.score;
         this.mindistance = PlayManage.Instance.distance;
         IsgameOver = false;
-        string HQname = "HQ" + PlayerNumber.ToString();
+        
         turnspeed = 10f;
-        HQ = GameObject.Find(HQname);
+        
         PS = PlayerState.BACKTOHOME;
         SheepArea = new GameObject("SheepArea");
         SheepArea.transform.position = this.transform.position;

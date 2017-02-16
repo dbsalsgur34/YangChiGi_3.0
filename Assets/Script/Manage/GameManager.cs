@@ -46,10 +46,11 @@ public class GameManager : ManagerBase {
     float Timer;
     public bool TimerStart;
     bool IsSkillonthePlanet;
+    int RazorPoint;
 
     public Vector3 hitVector;
     public SpriteRenderer hitMarker;
-    GameObject hitMarkerParent;
+    public GameObject hitMarkerParent;
 
     public override void Awake()
     {
@@ -63,11 +64,13 @@ public class GameManager : ManagerBase {
         {
             Player = GameObject.Find("PlayerOne");
             Enemy = GameObject.Find("PlayerTwo");
+            RazorPoint = 1;
         }
         else if (PlayerNumber == 2)
         {
             Player = GameObject.Find("PlayerTwo");
             Enemy = GameObject.Find("PlayerOne");
+            RazorPoint = -1;
         }
 
         //UI관련 초기화.
@@ -86,15 +89,15 @@ public class GameManager : ManagerBase {
         //오브젝트 생성.
         SheepSpawn(bronzesheepprefab, PlanetScale, initialSheep, KingGodClient.Instance.Seed);
         GrassSpawn(grassprefab, 24.5f, 150);
-
+        //스킬 이펙트 관련 초기화
         hitMarkerInit();
-        
     }
 
     public override void Start()
     {
         base.Start();
         HQ = Player.GetComponent<PlayerControlThree>().HQ.GetComponent<HQControl>();
+        Network_Client.Send("Ready/" + KingGodClient.Instance.Playernum);
     }
 
     void Showremainingtime()
@@ -374,11 +377,12 @@ public class GameManager : ManagerBase {
     // Update is called once per frame
     void FixedUpdate()
     {
+        Application.runInBackground = true;
         ShowUIText();
         TimerSet();
         if (IsSkillCanUse())
         {
-            RC.DrawCircle(this.Planet.transform.position, this.HQ.transform.position, hitVector);
+            RC.DrawCircle(this.Planet.transform.position, this.HQ.transform.position, hitVector,RazorPoint);
             CenterRC.DrawCenterCircle(this.Planet.transform.position, 25.5f);
             ShowhitMarker(hitVector);
         }
@@ -389,7 +393,7 @@ public class GameManager : ManagerBase {
     {
         Vector3 targetVector = this.HQ.transform.position - hitVector;
         float angle = Mathf.Atan2(targetVector.x, targetVector.z) * Mathf.Rad2Deg;
-        SM.UsingSkill(num,this.Player,this.Enemy,this.Planet.transform, Quaternion.AngleAxis(angle, this.HQ.transform.up));
+        SM.UsingSkill(num,this.Player,this.Enemy,this.Planet.transform, this.HQ.gameObject.transform,angle);
     }
 
     public bool IsGameStart()
@@ -428,5 +432,26 @@ public class GameManager : ManagerBase {
     public void SetIsSkillOnthePlanaet(bool TF)
     {
         IsSkillonthePlanet = TF;
+    }
+
+    public void GetMessage(string MessageType, string Message)
+    {
+        string[] MessageArray = Message.Split(',');
+        GameObject target;
+        if (int.Parse(MessageArray[0]) == KingGodClient.instance.Playernum)
+        {
+            target = Player;
+        }
+        else
+        {
+            target = Enemy;
+        }
+
+        switch (MessageType)
+        {
+            case "Shepherd" :
+                target.GetComponent<PlayerControlThree>().SearchPhaseShift();
+                break;
+        }
     }
 }

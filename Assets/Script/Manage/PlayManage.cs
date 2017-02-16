@@ -21,6 +21,7 @@ public class PlayManage : ManagerBase {
 
     public float PlayerScore;
     public float EnemyScore;
+    public bool IsSoundOn;
 
     public override void Awake()                //싱글톤 오브젝트를 만들자!
     {
@@ -36,6 +37,7 @@ public class PlayManage : ManagerBase {
         }
         SearchFadeImage();
         StartCoroutine(FadeIn(FadeImage));
+        IsSoundOn = true;
     }
 
     public IEnumerator LoadScene(string name)
@@ -43,6 +45,7 @@ public class PlayManage : ManagerBase {
         IEnumerator FO = FadeOut(FadeImage);
         StartCoroutine(FO);
         yield return new WaitUntil( () => FO.MoveNext() == false);
+        FadeImage = null;
         SceneManager.LoadScene(name);
     }
 

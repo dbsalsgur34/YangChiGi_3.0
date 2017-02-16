@@ -19,7 +19,12 @@ namespace ClientSide
                     KingGodClient.Instance.Seed = (int.Parse(splitMsg[1]));
                     StartCoroutine(PlayManage.Instance.LoadScene("YangChigi3.0"));
                     break;
-
+                case "Shepherd":
+                    GameObject.FindGameObjectWithTag("Manager").GetComponent<GameManager>().GetMessage(splitMsg[0],splitMsg[1]);
+                    break;
+                case "DequeComplete":
+                    Destroy(KingGodClient.Instance.gameObject);
+                    break;
                 default:
                     break;
             }
@@ -34,5 +39,6 @@ namespace ClientSide
      * 4) Disconnect : 게임 종료.
      * 5) Shepherd_S/(PlayerNum, state, frame) : 양치기의 상태
      * 6) Skill_S/(PlayerNum, skillindex, x,y,z, frame)
+     * 7) DequeComplete : Cancle 메세지를 날린 사람이 Get. 연결 대기를 취소한다.
      */
 }

@@ -111,6 +111,7 @@ public class DragAndDropItem : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         GM.mainCamera.IsSkillCutScene = false;
         GM.RC.gameObject.SetActive(false);
         GM.CenterRC.gameObject.SetActive(false);
+        GM.hitMarkerParent.gameObject.SetActive(false);
         if (GM.IsSkillCanUse())
         {
             GM.SendMessageToSkillUse(this.num);
