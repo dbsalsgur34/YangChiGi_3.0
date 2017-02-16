@@ -6,7 +6,7 @@ using System;
 
 namespace ServerSide{
 	public static class ClientManager {		
-		private const int maxClientCount = 2;
+		private const int maxClientCount = 100;
         private static Random random = new Random();
 		private static TcpConnection[] arrayClient;
 		private static Queue<int> freeQueue;
@@ -17,7 +17,7 @@ namespace ServerSide{
 		}
 
 
-
+        //private static List<TcpConnection> arrayClient;
         private static List<Match> matches = new List<Match>();
         private static int matchCount = 0;
 
@@ -56,7 +56,8 @@ namespace ServerSide{
 		}
         public static void Send(int freeId, string nm_)
         {
-            arrayClient[freeId].Send(nm_);
+            if (arrayClient[freeId] != null)
+                arrayClient[freeId].Send(nm_);
         }
 
         public static void BroadCast(string nm_){
@@ -135,5 +136,24 @@ namespace ServerSide{
         public static TcpConnection getClient(int idx){
 			return arrayClient[idx];
 		}
-	}
+
+        public static bool DeQueClient(int id)
+        {
+            for(int index = 0; index<matches.Count; index++)
+            {
+                if(matches[index].playerCount != 2 && matches[index].getFreeId(0) == id)
+                {
+                    matches.Remove(matches[index]);
+                    ClientManager.Send(id, "DequeComplete");
+                    arrayClient[id].ShutDown();
+                    arrayClient[id] = null;
+                    return true;
+                }
+                    
+            }
+
+            return false;
+        }
+
+    }
 }

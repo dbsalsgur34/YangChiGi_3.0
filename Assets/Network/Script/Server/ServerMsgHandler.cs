@@ -9,12 +9,15 @@ namespace ServerSide
 
         public override void HandleMsg(string networkMessage)
         {
-            string[] splitMsg = networkMessage.Split('/');
+            
+            string[] splitMsg = networkMessage.Split('@', '/');
             switch (splitMsg[1])
             {
-                case "Matching": ClientManager.Send(int.Parse(splitMsg[0]), "Matched");
-                    break;
+                case "Cancle":
+                    ClientManager.DeQueClient(int.Parse(splitMsg[0]));
+                        
                 default:
+                    ClientManager.BroadCast(networkMessage);
                     break;
             }
            
