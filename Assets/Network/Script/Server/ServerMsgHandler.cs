@@ -15,9 +15,12 @@ namespace ServerSide
             {
                 case "Cancle":
                     ClientManager.DeQueClient(int.Parse(splitMsg[0]));
-                        
+                    break;
+                case "Ready":
+                    ClientManager.ready(int.Parse(splitMsg[0]));
+                    break;
                 default:
-                    ClientManager.BroadCast(networkMessage);
+                    ClientManager.BroadCastToMatch(int.Parse(splitMsg[0]), "Shepherd_S/"+splitMsg[2]);
                     break;
             }
            

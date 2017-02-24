@@ -7,7 +7,8 @@ namespace ServerSide
     public class Match{
         int[] freeIds = new int[2];
         public int playerCount = 0;
-
+		bool ready1 = false;
+		bool ready2 = false;
         public Match()
         {
 
@@ -28,6 +29,18 @@ namespace ServerSide
             this.freeIds[playerCount] = freeId;
             playerCount++;
         }
+
+		public void setReady(int id) {
+			if(id == freeIds[0])
+				ready1 = true;
+			else if(id == freeIds[1])
+				ready2 = true;
+
+		}
+
+		public bool isAllReady() {
+			return ready1 && ready2;
+		}
     }
 
 }
