@@ -238,14 +238,24 @@ public class PlayerControlThree : MonoBehaviour {
         }
         else if (PS == PlayerState.ENEMYSEARCH)
         {
-            int tempcount = GM.Enemy.GetComponent<PlayerControlThree>().SheepList.Count;
-            if (tempcount == 0)
+            GameObject Target;
+            if (GM.Enemy == this.gameObject)
             {
-                TargetSheep = GM.Enemy;
+                Target = GM.Player;
             }
             else
             {
-                TargetSheep = GM.Enemy.GetComponent<PlayerControlThree>().SheepList[tempcount - 1];
+                Target = GM.Enemy;
+            }
+
+            int tempcount = Target.GetComponent<PlayerControlThree>().SheepList.Count;
+            if (tempcount == 0)
+            {
+                TargetSheep = Target;
+            }
+            else
+            {
+                TargetSheep = Target.GetComponent<PlayerControlThree>().SheepList[tempcount - 1];
             }
         }
     }

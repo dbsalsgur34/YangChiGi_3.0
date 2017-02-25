@@ -13,10 +13,10 @@ public class GameManager : ManagerBase {
     Text UIcurrentSheep;
     Text UIEnemyScore;
     GameObject EndScreen;
+    Text EndText;
 
     public GameObject Enemy;
     Button SelectedButton;
-
 
     float SheepCount;
     public float PlayerScore;
@@ -52,9 +52,12 @@ public class GameManager : ManagerBase {
     public SpriteRenderer hitMarker;
     public GameObject hitMarkerParent;
 
+    public static GameManager GMInstance;
+
     public override void Awake()
     {
         base.Awake();
+        GMInstance = this;
         Planet = GameObject.Find("Planet");
         Sheephorde = GameObject.Find("Sheephorde");
         BackGround = GameObject.Find("BackGround");
@@ -80,7 +83,9 @@ public class GameManager : ManagerBase {
         UIEnemyScore = GameObject.Find("EnemyScoreText").GetComponent<Text>();
 
         EndScreen = GameObject.Find("EndScreen");
-        StartCoroutine("ReadyScreen");
+        EndScreen.SetActive(true);
+        EndText = GameObject.Find("EndText").GetComponent<Text>();
+        EndText.gameObject.SetActive(false);
 
         SheepCount = 0;
         Timer = 0;
@@ -205,27 +210,25 @@ public class GameManager : ManagerBase {
         }    
     }
 
-    IEnumerator ReadyScreen()
+    public IEnumerator ReadyScreen()
     {
-        EndScreen.SetActive(true);
-        GameObject Readytext = GameObject.Find("ReadyText");
-        GameObject EndText = GameObject.Find("EndText");
-        EndText.SetActive(false);
         Player.GetComponent<PlayerControlThree>().IsgameOver = true;
         Enemy.GetComponent<PlayerControlThree>().IsgameOver = true;
-        yield return new WaitForSeconds(3);
-        Readytext.SetActive(false);
-        EndText.SetActive(true);
+        EndText.gameObject.SetActive(true);
+        EndText.text = "Ready...";
+        yield return new WaitForSeconds(3f);
         EndScreen.SetActive(false);
         Player.GetComponent<PlayerControlThree>().IsgameOver = false;
         Enemy.GetComponent<PlayerControlThree>().IsgameOver = false;
-        TimerStart = true;
+        this.TimerStart = true;
         yield return 0;
     }
 
     IEnumerator FinishRoutine()
     {
         EndScreen.SetActive(true);
+        Text EndText = GameObject.Find("EndText").GetComponent<Text>();
+        EndText.text = "Time Over!";
         Player.GetComponent<PlayerControlThree>().IsgameOver = true;
         Enemy.GetComponent<PlayerControlThree>().IsgameOver = true;
         PlayManage.Instance.PlayerScore = Player.GetComponent<PlayerControlThree>().SheepCount;
@@ -434,11 +437,11 @@ public class GameManager : ManagerBase {
         IsSkillonthePlanet = TF;
     }
 
-    public void GetMessage(string MessageType, string Message)
+    public void GetMessage(string MessageType , string Message)
     {
         string[] MessageArray = Message.Split(',');
         GameObject target;
-        if (int.Parse(MessageArray[0]) == KingGodClient.instance.Playernum)
+        if (int.Parse(MessageArray[0]) == this.PlayerNumber)
         {
             target = Player;
         }
@@ -449,7 +452,7 @@ public class GameManager : ManagerBase {
 
         switch (MessageType)
         {
-            case "Shepherd" :
+            case "Shepherd_S" :
                 target.GetComponent<PlayerControlThree>().SearchPhaseShift();
                 break;
         }

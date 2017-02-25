@@ -19,8 +19,11 @@ namespace ClientSide
                     KingGodClient.Instance.Seed = (int.Parse(splitMsg[1]));
                     StartCoroutine(PlayManage.Instance.LoadScene("YangChigi3.0"));
                     break;
-                case "Shepherd":
-                    GameObject.FindGameObjectWithTag("Manager").GetComponent<GameManager>().GetMessage(splitMsg[0],splitMsg[1]);
+                case "Start":
+                    StartCoroutine(GameManager.GMInstance.ReadyScreen());
+                    break;
+                case "Shepherd_S":
+                    GameManager.GMInstance.GetMessage(splitMsg[0],splitMsg[1]);
                     break;
                 case "DequeComplete":
                     Destroy(KingGodClient.Instance.gameObject);

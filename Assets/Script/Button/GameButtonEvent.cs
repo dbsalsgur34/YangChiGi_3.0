@@ -51,23 +51,27 @@ public class GameButtonEvent : MonoBehaviour {
     {
         if (GM.IsGameStart())
         {
-            string searchtext = "Search";
-            string backtohome = "Back";
-            string enemytext = "Enemy";
+            Network_Client.Send("Shepherd_C/" + KingGodClient.Instance.Playernum +","+ (int)GM.Player.GetComponent<PlayerControlThree>().PS + "," + Time.frameCount.ToString());
+            ChangeSearchButtonText();
+        }
+    }
 
-            Network_Client.Send("Shepherd_C/" + KingGodClient.Instance.Playernum);
-            if (PCT.PS == PlayerState.BACKTOHOME)
-            {
-                ButtonText.text = backtohome;
-            }
-            else if (PCT.PS == PlayerState.SHEEPSEARCH)
-            {
-                ButtonText.text = searchtext;
-            }
-            else if (PCT.PS == PlayerState.ENEMYSEARCH)
-            {
-                ButtonText.text = enemytext;
-            }
+    void ChangeSearchButtonText()
+    {
+        string searchtext = "Search";
+        string backtohome = "Back";
+        string enemytext = "Enemy";
+        if (PCT.PS == PlayerState.BACKTOHOME)
+        {
+            ButtonText.text = searchtext;
+        }
+        else if (PCT.PS == PlayerState.SHEEPSEARCH)
+        {
+            ButtonText.text = enemytext;
+        }
+        else if (PCT.PS == PlayerState.ENEMYSEARCH)
+        {
+            ButtonText.text = backtohome;
         }
     }
 
