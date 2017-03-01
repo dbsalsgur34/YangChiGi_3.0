@@ -10,7 +10,7 @@ namespace ServerSide
         public override void HandleMsg(string networkMessage)
         {
             
-            string[] splitMsg = networkMessage.Split('@', '/');
+            string[] splitMsg = networkMessage.Split('@','/');
             switch (splitMsg[1])
             {
                 case "Cancle":
@@ -19,8 +19,11 @@ namespace ServerSide
                 case "Ready":
                     ClientManager.ready(int.Parse(splitMsg[0]));
                     break;
+				case "GameOver":
+					ClientManager.MatchEnd(int.Parse(splitMsg[0]));
+					break;
                 default:
-                    ClientManager.BroadCastToMatch(int.Parse(splitMsg[0]), "Shepherd_S/"+splitMsg[2]);
+                    ClientManager.BroadCastToMatch(int.Parse(splitMsg[0]),splitMsg[1]+"/"+splitMsg[2]);
                     break;
             }
            

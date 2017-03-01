@@ -9,6 +9,9 @@ namespace ServerSide
         public int playerCount = 0;
 		bool ready1 = false;
 		bool ready2 = false;
+		bool end1 = false;
+		bool end2 = false;
+
         public Match()
         {
 
@@ -37,9 +40,17 @@ namespace ServerSide
 				ready2 = true;
 
 		}
-
+		public void setEnd(int id) {
+			if(id == freeIds[0])
+				end1 = true;
+			else if(id == freeIds[1])
+				end2 = true;
+		}
 		public bool isAllReady() {
 			return ready1 && ready2;
+		}
+		public bool isAllEnd() {
+			return end1 && end2;
 		}
     }
 

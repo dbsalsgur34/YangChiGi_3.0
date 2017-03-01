@@ -72,7 +72,7 @@ namespace ServerSide{
 			
 			for(int loop = 0; loop < maxClientCount; loop++) {
 				if(arrayClient[loop] != null){
-					if (arrayClient [loop].IsConnected) {						
+					if (arrayClient [loop] != null) {						
 						arrayClient [loop].Send (nm_);
 					}
 				}
@@ -82,8 +82,33 @@ namespace ServerSide{
 		public static void BroadCastToMatch(int id, string nm_) {
 			if(arrayClient == null) return;
 			int index = findMatchIndex(id);
-			arrayClient[matches[index].getFreeId(0)].Send(nm_);
-			arrayClient[matches[index].getFreeId(1)].Send(nm_);
+			if(arrayClient[matches[index].getFreeId(0)] != null) {
+				arrayClient[matches[index].getFreeId(0)].Send(nm_);
+			}
+			else {
+				arrayClient[matches[index].getFreeId(1)].Send("Out/1");
+			}
+			if(arrayClient[matches[index].getFreeId(1)] != null) {
+				arrayClient[matches[index].getFreeId(1)].Send(nm_);
+			}
+			else {
+				arrayClient[matches[index].getFreeId(0)].Send("Out/2");
+			}
+		}
+		public static void BroadCastToMatch(Match match, string nm_) {
+			
+			if(arrayClient[match.getFreeId(0)] != null) {
+				arrayClient[match.getFreeId(0)].Send(nm_);
+			}
+			else {
+				arrayClient[match.getFreeId(1)].Send("Out/1");
+			}
+			if(arrayClient[match.getFreeId(1)] != null) {
+				arrayClient[match.getFreeId(1)].Send(nm_);
+			}
+			else {
+				arrayClient[match.getFreeId(0)].Send("Out/2");
+			}
 		}
 
 		static void MatchSucces(Match match) {
@@ -94,14 +119,14 @@ namespace ServerSide{
             arrayClient[match.getFreeId(1)].Send("PlayerNum/2");
         }
 
-		public static void CloseClient(int idx_)  {
+		public static void CloseClient(int idx_) {
 			arrayClient[idx_] = null;
-			lock(freeQueue){
+			lock(freeQueue) {
 				freeQueue.Enqueue(idx_);
 			}
 
 		}
-
+		
 		public static void ShutDown() {
 			for(int loop = 0; loop < maxClientCount; loop++) {
 				if(arrayClient[loop] != null){
@@ -125,7 +150,12 @@ namespace ServerSide{
         public static TcpConnection getClient(int idx) {
 			return arrayClient[idx];
 		}
-
+		public static void MatchEnd(int id) {
+			Match match = matches[findMatchIndex(id)];
+			match.setEnd(id);
+			if(match.isAllEnd())
+				BroadCastToMatch(match, "GameEnd");
+		}
         public static bool DeQueClient(int id) {
             for(int index = 0; index<matches.Count; index++) {
                 if(matches[index].playerCount != 2 && matches[index].getFreeId(0) == id) {
