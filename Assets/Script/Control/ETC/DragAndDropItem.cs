@@ -2,6 +2,7 @@
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System.Collections;
+using ClientSide;
 
 public class DragAndDropItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
@@ -83,9 +84,11 @@ public class DragAndDropItem : MonoBehaviour, IBeginDragHandler, IDragHandler, I
             GM.CenterRC.gameObject.SetActive(true);
             GM.SetIsSkillOnthePlanaet(true);
             GM.hitVector = hit.point;
+            GM.hitMarkerParent.SetActive(true);
         }
         else
         {
+            GM.hitMarkerParent.SetActive(false);
             GM.CenterRC.gameObject.SetActive(false);
             GM.SetIsSkillOnthePlanaet(false);
             GM.RC.gameObject.SetActive(false);
@@ -114,7 +117,7 @@ public class DragAndDropItem : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         GM.hitMarkerParent.gameObject.SetActive(false);
         if (GM.IsSkillCanUse())
         {
-            GM.SendMessageToSkillUse(this.num);
+            Network_Client.Send("Skill/" + KingGodClient.Instance.Playernum + "," + num + "," + GM.hitVector.x + "," + GM.hitVector.y + "," + GM.hitVector.z +"," + Time.frameCount.ToString());
             GM.SetIsSkillOnthePlanaet(false);
             IsItemCanDrag = false;
             GM.SM.SetSkillPanelQueue(this.gameObject.GetComponent<DragAndDropItem>());

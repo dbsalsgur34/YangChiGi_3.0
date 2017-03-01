@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using ClientSide;
 
 public class SheepControlThree : MonoBehaviour {
 
@@ -65,6 +66,7 @@ public class SheepControlThree : MonoBehaviour {
 
     public void SetthisLocalPosition()
     {
+        //Random.InitState(KingGodClient.Instance.Seed);
         Vector2 Circleposition = Random.insideUnitCircle * 3;
         this.transform.localPosition = new Vector3(Circleposition.x, 0, Circleposition.y);
         this.transform.localRotation = Quaternion.Euler(Vector3.zero);

@@ -51,7 +51,7 @@ public class GameButtonEvent : MonoBehaviour {
     {
         if (GM.IsGameStart())
         {
-            Network_Client.Send("Shepherd_C/" + KingGodClient.Instance.Playernum +","+ (int)GM.Player.GetComponent<PlayerControlThree>().PS + "," + Time.frameCount.ToString());
+            Network_Client.Send("Shepherd/" + KingGodClient.Instance.Playernum +","+ (int)GM.Player.GetComponent<PlayerControlThree>().PS + "," + Time.frameCount.ToString());
             ChangeSearchButtonText();
         }
     }

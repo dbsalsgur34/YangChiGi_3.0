@@ -22,11 +22,20 @@ namespace ClientSide
                 case "Start":
                     StartCoroutine(GameManager.GMInstance.ReadyScreen());
                     break;
-                case "Shepherd_S":
+                case "Shepherd":
                     GameManager.GMInstance.GetMessage(splitMsg[0],splitMsg[1]);
                     break;
                 case "DequeComplete":
                     Destroy(KingGodClient.Instance.gameObject);
+                    break;
+                case "Skill":
+                    GameManager.GMInstance.GetMessage(splitMsg[0], splitMsg[1]);
+                    break;
+                case "Out":
+                    GameManager.GMInstance.GetMessage(splitMsg[0], splitMsg[1]);
+                    break;
+                case "GameEnd":
+                    GameManager.GMInstance.GetMessage(splitMsg[0], splitMsg[1]);
                     break;
                 default:
                     break;

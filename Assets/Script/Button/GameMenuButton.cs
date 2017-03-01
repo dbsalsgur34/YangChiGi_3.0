@@ -8,15 +8,12 @@ public class GameMenuButton : MonoBehaviour {
     public enum GameMenuButtonType
     {
         EXITMENU,
-        SOUND,
-        SURRENDER,
-        NOTSUR,
-        YESSUR
+        SOUND
     }
 
     public GameMenuButtonType GBT;
     public GameObject TempMenu;
-    public GameObject CheckSurrender;
+
 	// Use this for initialization
 	void Start ()
     {
@@ -25,17 +22,9 @@ public class GameMenuButton : MonoBehaviour {
         {
             B.onClick.AddListener(ExitMenuEvent);
         }
-        if (GBT == GameMenuButtonType.SURRENDER)
+        else if (GBT == GameMenuButtonType.SOUND)
         {
-            B.onClick.AddListener(SurrenderEvent);
-        }
-        if (GBT == GameMenuButtonType.NOTSUR)
-        {
-            B.onClick.AddListener(NotSurrenderEvent);
-        }
-        if (GBT == GameMenuButtonType.YESSUR)
-        {
-            B.onClick.AddListener(YesSurrenderEvent);
+            B.onClick.AddListener(SoundEvent);
         }
 	}
 
@@ -44,20 +33,9 @@ public class GameMenuButton : MonoBehaviour {
         TempMenu.SetActive(false);
     }
 
-    void SurrenderEvent()
+    void SoundEvent()
     {
-        CheckSurrender.SetActive(true);
+
     }
 
-    void NotSurrenderEvent()
-    {
-        TempMenu.SetActive(false);
-        CheckSurrender.SetActive(false);
-    }
-
-    void YesSurrenderEvent()
-    {
-        return;
-    }
-    
 }

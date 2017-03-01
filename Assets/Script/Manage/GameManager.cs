@@ -176,7 +176,10 @@ public class GameManager : ManagerBase {
 
     void finishgame()
     {
-        StartCoroutine("FinishRoutine");
+        if (this.TimerStart)
+        {
+            StartCoroutine("FinishRoutine");
+        }
     }
 
     public void SheepSpawn(GameObject sheepprefab,float scale, int number, int seed)   //양을 임의의 위치에 소환하는 메서드.
@@ -233,8 +236,9 @@ public class GameManager : ManagerBase {
         Enemy.GetComponent<PlayerControlThree>().IsgameOver = true;
         PlayManage.Instance.PlayerScore = Player.GetComponent<PlayerControlThree>().SheepCount;
         PlayManage.Instance.EnemyScore = Enemy.GetComponent<PlayerControlThree>().SheepCount;
-        yield return new WaitForSeconds(3f);
-        SceneManager.LoadScene("Result");
+        Network_Client.Send("GameOver/" + this.PlayerNumber);
+        this.TimerStart = false;
+        yield return null;
     }
 
     void TimerSet()
@@ -392,11 +396,11 @@ public class GameManager : ManagerBase {
         
     }
 
-    public void SendMessageToSkillUse(int num)
+    public void SendMessageToSkillUse(int num, GameObject Player, GameObject Enemy, GameObject HQ, Vector3 HV)
     {
-        Vector3 targetVector = this.HQ.transform.position - hitVector;
+        Vector3 targetVector = HQ.transform.position - HV;
         float angle = Mathf.Atan2(targetVector.x, targetVector.z) * Mathf.Rad2Deg;
-        SM.UsingSkill(num,this.Player,this.Enemy,this.Planet.transform, this.HQ.gameObject.transform,angle);
+        SM.UsingSkill(num,Player,Enemy,this.Planet.transform, HQ.gameObject.transform,angle);
     }
 
     public bool IsGameStart()
@@ -440,21 +444,39 @@ public class GameManager : ManagerBase {
     public void GetMessage(string MessageType , string Message)
     {
         string[] MessageArray = Message.Split(',');
-        GameObject target;
+        PlayerControlThree target;
+        PlayerControlThree Opposite;
         if (int.Parse(MessageArray[0]) == this.PlayerNumber)
         {
-            target = Player;
+            target = Player.GetComponent<PlayerControlThree>();
+            Opposite = Enemy.GetComponent < PlayerControlThree>();
         }
         else
         {
-            target = Enemy;
+            target = Enemy.GetComponent<PlayerControlThree>();
+            Opposite = Player.GetComponent<PlayerControlThree>();
         }
-
+        Debug.Log(MessageArray[0]);
         switch (MessageType)
         {
-            case "Shepherd_S" :
+            case "Shepherd" :
                 target.GetComponent<PlayerControlThree>().SearchPhaseShift();
                 break;
+            case "Skill":
+                Vector3 skillVector = new Vector3(float.Parse(MessageArray[2]), float.Parse(MessageArray[3]), float.Parse(MessageArray[4]));
+                SendMessageToSkillUse(int.Parse(MessageArray[1]),target.gameObject,Opposite.gameObject,target.HQ, skillVector);
+                break;
+            case "Out":
+                target.PS = PlayerState.BACKTOHOME;
+                break;
+            case "GameEnd":
+                GoToResultScene();
+                break;
         }
+    }
+
+    void GoToResultScene()
+    {
+        PlayManage.Instance.LoadScene("Result");
     }
 }

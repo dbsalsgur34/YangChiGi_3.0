@@ -51,7 +51,7 @@ public class CameraControl : MonoBehaviour
 
     void CameraAction()
     {
-#if UNITY_EDITOR
+#if UNITY_EDITOR || UNITY_STANDALONE_WIN
 
         if (Input.GetMouseButtonDown(0) && EventSystem.current.IsPointerOverGameObject() == false)
         {

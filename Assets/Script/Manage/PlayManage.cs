@@ -17,7 +17,6 @@ public class PlayManage : ManagerBase {
     public float distance;
     public float EXP;
     public float sound;
-    public int Quality;
 
     public float PlayerScore;
     public float EnemyScore;
@@ -63,7 +62,6 @@ public class PlayManage : ManagerBase {
         PlayerPrefs.SetFloat("INITIALSCORE",score);
         PlayerPrefs.SetFloat("INITIALDISTANCE",distance);
         PlayerPrefs.SetFloat("SOUND", sound);
-        PlayerPrefs.SetInt("QUALITY", Quality);
         PlayerPrefs.SetFloat("EXP", EXP);
     }
 
@@ -76,7 +74,6 @@ public class PlayManage : ManagerBase {
         this.score = PlayerPrefs.GetFloat("INITIALSCORE", 0);
         this.distance = PlayerPrefs.GetFloat("INITIALDISTANCE", 15);
         this.sound = PlayerPrefs.GetFloat("SOUND", 50);
-        this.Quality = PlayerPrefs.GetInt("QUALITY", 2);
         this.EXP = PlayerPrefs.GetFloat("EXP", 0);
     }
 
@@ -89,7 +86,6 @@ public class PlayManage : ManagerBase {
         this.score = 0;
         this.distance = 15;
         this.sound = 50;
-        this.Quality = 2;
         this.EXP = 0;
         SaveData();
     }

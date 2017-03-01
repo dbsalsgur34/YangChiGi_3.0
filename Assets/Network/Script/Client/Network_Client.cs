@@ -5,6 +5,7 @@ using System.Threading;
 using System;
 using System.Text;
 using System.IO;
+using ClientSide;
 
 public class Network_Client {
     public static string serverAddress;
@@ -130,6 +131,8 @@ public class Network_Client {
 		if(tcpClient != null)
 			tcpClient.Close();
 
-		Debug.Log ("SHUT DOWN");
+        Network_Client.Send("SHUTDOWN");
+
+        Debug.Log ("SHUT DOWN");
 	}
 }

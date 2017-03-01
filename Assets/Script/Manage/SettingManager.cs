@@ -7,9 +7,6 @@ public class SettingManager : ManagerBase {
 
     public Slider sound;
     public Text soundamount;
-    public Button High;
-    public Button Mid;
-    public Button Low;
     public Button Reset;
     public Button ShowDev;
     public GameObject Warning;
@@ -24,7 +21,6 @@ public class SettingManager : ManagerBase {
 
         this.Warning.SetActive(false);
         this.sound.value = PlayManage.Instance.sound;
-        this.quality = PlayManage.Instance.Quality;
 
         Reset.onClick.AddListener(DeleteAllData);
 	}
@@ -38,11 +34,6 @@ public class SettingManager : ManagerBase {
     {
         soundamount.text = sound.value.ToString("N0");
         PlayManage.Instance.sound = this.sound.value;
-    }
-
-    public void QualitySetting(int q)
-    {
-        PlayManage.Instance.Quality = q;
     }
 
     public void ActiveObject(GameObject target)
