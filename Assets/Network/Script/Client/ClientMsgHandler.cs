@@ -35,7 +35,7 @@ namespace ClientSide
                     GameManager.GMInstance.GetMessage(splitMsg[0], splitMsg[1]);
                     break;
                 case "GameEnd":
-                    GameManager.GMInstance.GetMessage(splitMsg[0], splitMsg[1]);
+                    PlayManage.Instance.LoadScene("Result");
                     break;
                 default:
                     break;

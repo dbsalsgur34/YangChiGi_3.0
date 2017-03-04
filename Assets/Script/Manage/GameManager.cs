@@ -54,6 +54,9 @@ public class GameManager : ManagerBase {
 
     public static GameManager GMInstance;
 
+    public bool TEMP;
+    int startFrame = 0;
+
     public override void Awake()
     {
         base.Awake();
@@ -215,6 +218,7 @@ public class GameManager : ManagerBase {
 
     public IEnumerator ReadyScreen()
     {
+        startFrame = Time.frameCount;
         Player.GetComponent<PlayerControlThree>().IsgameOver = true;
         Enemy.GetComponent<PlayerControlThree>().IsgameOver = true;
         EndText.gameObject.SetActive(true);
@@ -236,7 +240,7 @@ public class GameManager : ManagerBase {
         Enemy.GetComponent<PlayerControlThree>().IsgameOver = true;
         PlayManage.Instance.PlayerScore = Player.GetComponent<PlayerControlThree>().SheepCount;
         PlayManage.Instance.EnemyScore = Enemy.GetComponent<PlayerControlThree>().SheepCount;
-        Network_Client.Send("GameOver/" + this.PlayerNumber);
+        Network_Client.Send("GameOver/" + this.PlayerNumber + "," + (Time.frameCount - startFrame));
         this.TimerStart = false;
         yield return null;
     }
@@ -393,6 +397,15 @@ public class GameManager : ManagerBase {
             CenterRC.DrawCenterCircle(this.Planet.transform.position, 25.5f);
             ShowhitMarker(hitVector);
         }
+
+        if (Timer < 100 && TEMP)
+        {         
+            Time.timeScale = 4f;
+        }
+        if(Timer >= 100)
+        {
+            Time.timeScale = 1f;
+        }
         
     }
 
@@ -468,9 +481,6 @@ public class GameManager : ManagerBase {
                 break;
             case "Out":
                 target.PS = PlayerState.BACKTOHOME;
-                break;
-            case "GameEnd":
-                GoToResultScene();
                 break;
         }
     }

@@ -97,6 +97,22 @@ public class PlayerControlThree : MonoBehaviour {
         SheepList.RemoveAt(index);
     }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.tag == "Head")
+        {
+            StartCoroutine(PlayerCollide(this.gameObject.GetComponent<Rigidbody>(),this.gameObject.GetComponent<PlayerControlThree>()));
+        }
+    }
+
+    IEnumerator PlayerCollide(Rigidbody RB, PlayerControlThree PCT)
+    {
+        PCT.IsgameOver = true;
+        RB.AddForce(Vector3.back * 10);
+        yield return new WaitForSeconds(1f);
+        PCT.IsgameOver = false;
+    }
+
     void GoStraight()
     {
         if (TargetSheep != null)
