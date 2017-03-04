@@ -17,20 +17,20 @@ Platform assembly: C:\Users\mhy\Documents\GitHub\YangChiGi_3.0\Sever_Data\Manage
 Loading C:\Users\mhy\Documents\GitHub\YangChiGi_3.0\Sever_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
 Platform assembly: C:\Users\mhy\Documents\GitHub\YangChiGi_3.0\Sever_Data\Managed\UnityEngine.PlaymodeTestsRunner.dll (this message is harmless)
 Loading C:\Users\mhy\Documents\GitHub\YangChiGi_3.0\Sever_Data\Managed\UnityEngine.PlaymodeTestsRunner.dll into Unity Child Domain
-- Completed reload, in  0.039 seconds
+- Completed reload, in  0.079 seconds
 Platform assembly: C:\Users\mhy\Documents\GitHub\YangChiGi_3.0\Sever_Data\Managed\System.Core.dll (this message is harmless)
 Platform assembly: C:\Users\mhy\Documents\GitHub\YangChiGi_3.0\Sever_Data\Managed\System.dll (this message is harmless)
 desktop: 1920x1080 60Hz; virtual: 1920x1080 at 0,0
 <RI> Initializing input.
 <RI> Input initialized.
 <RI> Initialized touch support.
-UnloadTime: 1.124903 ms
+UnloadTime: 1.011181 ms
 Begin Network_Server
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
 
 Setting up 1 worker threads for Enlighten.
-  Thread -> id: 2268 -> priority: 1 
+  Thread -> id: 2de4 -> priority: 1 
 Platform assembly: C:\Users\mhy\Documents\GitHub\YangChiGi_3.0\Sever_Data\Managed\System.Configuration.dll (this message is harmless)
 Platform assembly: C:\Users\mhy\Documents\GitHub\YangChiGi_3.0\Sever_Data\Managed\System.Xml.dll (this message is harmless)
 Ready
