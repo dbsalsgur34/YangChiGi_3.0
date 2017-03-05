@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using ClientSide;
 
 public class ResultManager : ManagerBase{
 
@@ -21,9 +22,16 @@ public class ResultManager : ManagerBase{
     Text EXPgaintext;
     GameObject Back_To_Lobby;
 
-	// Use this for initialization
-	void Start ()
+    // Use this for initialization
+
+    public override void Awake()
     {
+        base.Awake();
+    }
+
+    public override void Start ()
+    {
+        base.Start();
         StartInit();
         StartCoroutine("ResultRoutine");
 	}
@@ -97,11 +105,12 @@ public class ResultManager : ManagerBase{
         EXPgaintext.gameObject.SetActive(true);
         yield return new WaitForSeconds(1f);
         Back_To_Lobby.SetActive(true);
-#if UNITY_EDITOR
+#if UNITY_EDITOR || UNITY_WINDOW
         yield return new WaitUntil(() => Input.GetMouseButtonDown(0));
 #elif UNITY_ANDROID
         yield return new WaitUntil(() => Input.GetTouch(0).tapCount > 0);
 #endif
+        Destroy(KingGodClient.Instance.gameObject);
         StartCoroutine(PlayManage.Instance.LoadScene("Lobby"));
     }
 

@@ -5,7 +5,6 @@ using UnityEngine;
 public class Hornet : SkillBase {
 
     public float Speed;
-
     // Use this for initialization
     public override void Awake()
     {
@@ -30,9 +29,23 @@ public class Hornet : SkillBase {
         
         if (SS == SkillState.LAUNCHED)
         {
-            Quaternion targetrotation = Quaternion.LookRotation(this.transform.position - Target.transform.position);
-            SkillParent.transform.rotation = Quaternion.RotateTowards(SkillParent.transform.rotation, targetrotation, Gospeed * Time.deltaTime);
+            this.SkillParent.transform.rotation *= (GoStraight(Gospeed) * TurnToTarget());
         }
+    }
+
+    Quaternion TurnToTarget()
+    {
+        float angle;
+        Vector3 PO = this.gameObject.transform.position;
+        Vector3 TO = TG.transform.position;
+        Vector3 PTVector = TO - PO;
+        angle = Vector3.Dot(this.gameObject.transform.right, PTVector);
+        return Quaternion.AngleAxis(angle, SkillParent.transform.up); 
+    }
+
+    Quaternion GoStraight(float SP)
+    {
+        return Quaternion.Euler(new Vector3(-SP * Time.deltaTime, 0, 0));
     }
 
     IEnumerator HornetLife()

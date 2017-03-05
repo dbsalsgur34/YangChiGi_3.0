@@ -12,7 +12,7 @@ public class ClickToDisable : MonoBehaviour {
         {
             DisableAction();
         }
-    }
+    
 #elif UNITY_EDITOR
         if (Input.GetMouseButtonDown(0))
         {

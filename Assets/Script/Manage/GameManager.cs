@@ -238,8 +238,8 @@ public class GameManager : ManagerBase {
         EndText.text = "Time Over!";
         Player.GetComponent<PlayerControlThree>().IsgameOver = true;
         Enemy.GetComponent<PlayerControlThree>().IsgameOver = true;
-        PlayManage.Instance.PlayerScore = Player.GetComponent<PlayerControlThree>().SheepCount;
-        PlayManage.Instance.EnemyScore = Enemy.GetComponent<PlayerControlThree>().SheepCount;
+        PlayManage.Instance.PlayerScore = this.PlayerScore;
+        PlayManage.Instance.EnemyScore = this.EnemyScore;
         Network_Client.Send("GameOver/" + this.PlayerNumber + "," + (Time.frameCount - startFrame));
         this.TimerStart = false;
         yield return null;
