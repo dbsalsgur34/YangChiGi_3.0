@@ -4,7 +4,10 @@ using UnityEngine;
 
 public class Hornet : SkillBase {
 
-    public float Speed;
+    public float speed = 20;
+    public float maxDegree = 10;
+    public float freezeTime = 5f;
+
     // Use this for initialization
     public override void Awake()
     {
@@ -15,21 +18,22 @@ public class Hornet : SkillBase {
 
     void HornetAction(GameObject Target)
     {
-        float slowspeed = Speed / 10;
-        float Gospeed;
+        float slowSpeed = speed / 10;
+        float goSpeed;
 
         if (Target != null && !Target.GetComponent<PlayerControlThree>().InHQ )
         {
-            Gospeed = Speed;
+            goSpeed = speed;
         }
         else
         {
-            Gospeed = slowspeed;
+            goSpeed = slowSpeed;
         }
         
         if (SS == SkillState.LAUNCHED)
         {
-            this.SkillParent.transform.rotation *= (GoStraight(Gospeed) * TurnToTarget());
+            this.SkillParent.transform.rotation = TurnToTarget();
+            this.SkillParent.transform.rotation *= GoStraight(goSpeed);
         }
     }
 
@@ -40,12 +44,13 @@ public class Hornet : SkillBase {
         Vector3 TO = TG.transform.position;
         Vector3 PTVector = TO - PO;
         angle = Vector3.Dot(this.gameObject.transform.right, PTVector);
-        return Quaternion.AngleAxis(angle, SkillParent.transform.up); 
+        Quaternion AA = Quaternion.AngleAxis(angle, SkillParent.transform.up) * this.SkillParent.transform.rotation;
+        return Quaternion.Slerp(this.SkillParent.transform.rotation, AA, maxDegree * Time.deltaTime);
     }
 
     Quaternion GoStraight(float SP)
     {
-        return Quaternion.Euler(new Vector3(-SP * Time.deltaTime, 0, 0));
+        return Quaternion.Euler(new Vector3(SP * Time.deltaTime, 0, 0));
     }
 
     IEnumerator HornetLife()
@@ -62,7 +67,7 @@ public class Hornet : SkillBase {
         {
             if (!other.gameObject.GetComponent<PlayerControlThree>().InHQ)
             {
-                other.gameObject.GetComponent<PlayerControlThree>().StartCoroutine(other.gameObject.GetComponent<PlayerControlThree>().HornetAttack());
+                other.gameObject.GetComponent<PlayerControlThree>().StartCoroutine(other.gameObject.GetComponent<PlayerControlThree>().HornetAttack(this.freezeTime));
             }
             SkillParent.SetActive(false);
         }

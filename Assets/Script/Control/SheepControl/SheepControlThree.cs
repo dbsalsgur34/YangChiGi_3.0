@@ -74,6 +74,6 @@ public class SheepControlThree : MonoBehaviour {
 
     void ResetTarget(GameObject col)
     {
-        col.GetComponent<PlayerControlThree>().TargetSheep = null;
+        col.GetComponent<PlayerControlThree>().targetObject = null;
     }
 }

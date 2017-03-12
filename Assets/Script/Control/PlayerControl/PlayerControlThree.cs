@@ -18,25 +18,28 @@ public class PlayerControlThree : MonoBehaviour {
     public float Score;
     public float InitialScore;
     public float speed;
-    public float angle;
+    //public float angle;
     public float turnspeed;
     public float mindistance;
     public GameManager GM;
     public List<GameObject> SheepList;
     public GameObject HQ;
-    public GameObject TargetSheep;
+    public GameObject targetObject;
     public GameObject SheepArea;
     public bool InHQ;
     public bool IsgameOver;
     public PlayerState PS;
     //비공개 항목
-
     string HorizontalControlName;
     string VerticalControlName;
     float HorizontalInputValue;
     float VerticalInputValue;
     Transform curtransform;
     Transform prevtransform;
+    Transform playerParent;
+    Vector3 targetVector;
+    bool IsKnockBack = false;
+    public float knockBackPower = 10;
 
     public void Start()
     {
@@ -44,7 +47,7 @@ public class PlayerControlThree : MonoBehaviour {
         VerticalControlName = "Vertical" + PlayerNumber;
         GM = GameObject.FindGameObjectWithTag("Manager").GetComponent<GameManager>();
         this.speed = PlayManage.Instance.speed;
-        this.angle = PlayManage.Instance.angle;
+        //this.angle = PlayManage.Instance.angle;
         this.InitialScore = PlayManage.Instance.score;
         this.mindistance = PlayManage.Instance.distance;
         IsgameOver = false;
@@ -54,6 +57,10 @@ public class PlayerControlThree : MonoBehaviour {
         PS = PlayerState.BACKTOHOME;
         SheepArea = new GameObject("SheepArea");
         SheepArea.transform.position = this.transform.position;
+
+        playerParent = this.transform.parent;
+        playerParent.transform.position = Vector3.zero;
+        playerParent.transform.rotation = HQ.transform.rotation;
     }
 
     public void PlayerInput()
@@ -74,7 +81,7 @@ public class PlayerControlThree : MonoBehaviour {
 #endif
     }
 
-    void KeyboardInput()
+    /*void KeyboardInput()
     {
         PlayerInput();
         if (HorizontalInputValue != 0)
@@ -82,7 +89,7 @@ public class PlayerControlThree : MonoBehaviour {
             Quaternion targetrotation = Quaternion.AngleAxis(angle * HorizontalInputValue, this.transform.up) * this.transform.rotation;
             this.transform.rotation = Quaternion.Slerp(this.transform.rotation, targetrotation, turnspeed * Time.deltaTime);
         }
-    }
+    }*/
 
     public void AddSheepList(GameObject Sheep)
     {
@@ -97,15 +104,33 @@ public class PlayerControlThree : MonoBehaviour {
         SheepList.RemoveAt(index);
     }
 
-    void GoStraight()
+    void PlayerMove()
     {
-        if (TargetSheep != null)
+        if (targetObject != null)
         {
-            Vector3 targetvector = TargetSheep.transform.position - this.transform.position;
+            /*Vector3 targetvector = targetObject.transform.position - this.transform.position;
             Quaternion targetrotation = Quaternion.LookRotation(new Vector3(targetvector.x, targetvector.y, targetvector.z), this.transform.up);
             this.transform.rotation = Quaternion.Slerp(this.transform.rotation, targetrotation, turnspeed * Time.deltaTime);
-            this.transform.Translate(Vector3.forward * speed * Time.deltaTime);
+            this.transform.Translate(Vector3.forward * speed * Time.deltaTime);*/
+            this.playerParent.transform.rotation = TurnToTarget();
+            this.playerParent.transform.rotation *= GoStraight(speed);
         }
+    }
+
+    Quaternion TurnToTarget()
+    {
+        float angle;
+        Vector3 PO = this.gameObject.transform.position;
+        Vector3 TO = targetObject.transform.position;
+        Vector3 PTVector = TO - PO;
+        angle = Vector3.Dot(this.gameObject.transform.right, PTVector);
+        Quaternion AA = Quaternion.AngleAxis(angle, playerParent.transform.up) * this.playerParent.transform.rotation;
+        return Quaternion.Slerp(this.playerParent.transform.rotation, AA, turnspeed * Time.deltaTime);
+    }
+
+    Quaternion GoStraight(float SP)
+    {
+        return Quaternion.Euler(new Vector3(SP * Time.deltaTime, 0, 0));
     }
 
     void LeaderSheep()
@@ -225,16 +250,16 @@ public class PlayerControlThree : MonoBehaviour {
                             Mincount = i;
                     }
                 }
-                TargetSheep = GM.SheepList[Mincount];
+                targetObject = GM.SheepList[Mincount];
             }
             else
             {
-                TargetSheep = HQ;
+                targetObject = HQ;
             }
         }
         else if (PS == PlayerState.BACKTOHOME)
         {
-            TargetSheep = HQ;
+            targetObject = HQ;
         }
         else if (PS == PlayerState.ENEMYSEARCH)
         {
@@ -251,11 +276,11 @@ public class PlayerControlThree : MonoBehaviour {
             int tempcount = Target.GetComponent<PlayerControlThree>().SheepList.Count;
             if (tempcount == 0)
             {
-                TargetSheep = Target;
+                targetObject = Target;
             }
             else
             {
-                TargetSheep = Target.GetComponent<PlayerControlThree>().SheepList[tempcount - 1];
+                targetObject = Target.GetComponent<PlayerControlThree>().SheepList[tempcount - 1];
             }
         }
     }
@@ -265,7 +290,7 @@ public class PlayerControlThree : MonoBehaviour {
         if (PS == PlayerState.SHEEPSEARCH)
         {
             PS = PlayerState.ENEMYSEARCH;
-            TargetSheep = HQ;
+            targetObject = HQ;
         }
         else if (PS == PlayerState.BACKTOHOME)
         {
@@ -293,12 +318,40 @@ public class PlayerControlThree : MonoBehaviour {
         }
     }
 
-    public IEnumerator HornetAttack()
+    public IEnumerator HornetAttack(float freezeTime)
     {
         float tempspeed = this.speed;
         this.speed = 0;
-        yield return new WaitForSeconds(10f);
+        yield return new WaitForSeconds(freezeTime);
         this.speed = tempspeed;
+    }
+
+    private void OnCollisionEnter(Collision col)
+    {
+        if(col.gameObject.tag == "Head")
+        {
+            targetVector = (col.transform.position - this.gameObject.transform.position).normalized * knockBackPower;
+            StartCoroutine(SwitchKnockBack());
+        }
+    }
+
+    void KnockBack(Vector3 targetV)
+    {
+        this.gameObject.transform.localPosition = new Vector3(0, 26, 0);
+        this.gameObject.transform.localRotation = Quaternion.identity;
+        Vector3 knockBackVector = this.gameObject.transform.position - targetV;
+        Quaternion Q = Quaternion.FromToRotation(this.gameObject.transform.position,knockBackVector) * this.playerParent.rotation;
+        Quaternion QQ = Quaternion.Euler(Q.eulerAngles);
+        this.playerParent.rotation = Quaternion.Slerp(this.playerParent.rotation, QQ, Time.deltaTime);
+    }
+
+    IEnumerator SwitchKnockBack()
+    {
+        IsKnockBack = true;
+        IsgameOver = true;
+        yield return new WaitForSeconds(1f);
+        IsKnockBack = false;
+        IsgameOver = false;
     }
 
     public void FixedUpdate()
@@ -309,16 +362,21 @@ public class PlayerControlThree : MonoBehaviour {
             //KeyboardInput();
             SheepCount = CalSheepScore();
             //CheckSheepType();
-            //AfterBoost(Time.fixedTime, 60f);
             SearchClosestSheep();
+
             if ((PS == PlayerState.BACKTOHOME || GM.SheepList.Count == 0) && Vector3.Distance(this.gameObject.transform.position, this.HQ.transform.position) < 0.4)
             {
                 return;
             }
             else
             {
-                GoStraight();
+                PlayerMove();
             }
+        }
+
+        if (IsKnockBack)
+        {
+            KnockBack(targetVector);
         }
     }
 }

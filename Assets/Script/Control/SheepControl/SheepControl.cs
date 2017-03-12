@@ -125,13 +125,13 @@ public class SheepControl : MonoBehaviour
 
     void ResetTarget()
     {
-        if (player1.TargetSheep == this.gameObject)
+        if (player1.targetObject == this.gameObject)
         {
-            player1.TargetSheep = null;
+            player1.targetObject = null;
         }
-        if (player2.TargetSheep == this.gameObject)
+        if (player2.targetObject == this.gameObject)
         {
-            player2.TargetSheep = null;
+            player2.targetObject = null;
         }
     }
 
