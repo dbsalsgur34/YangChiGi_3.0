@@ -67,6 +67,11 @@ public class Hornet : SkillBase {
         {
             if (!other.gameObject.GetComponent<PlayerControlThree>().InHQ)
             {
+                if (other.GetComponent<PlayerControlThree>().IsFreeze)
+                {
+                    SkillParent.SetActive(false);
+                    return;
+                }
                 other.gameObject.GetComponent<PlayerControlThree>().StartCoroutine(other.gameObject.GetComponent<PlayerControlThree>().HornetAttack(this.freezeTime));
             }
             SkillParent.SetActive(false);

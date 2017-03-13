@@ -32,7 +32,6 @@ public class SelectButton : MonoBehaviour {
         playerlevel = PlayManage.Instance.playerlevel;
         if (playerlevel >= restraintlevel)
         {
-            B.onClick.AddListener(SendInfotoGlobalObject);
             B.onClick.AddListener(ShowExplain);
             ET = GameObject.Find("ExplainText").GetComponent<Text>();
             leveltext.text = null;
@@ -46,15 +45,6 @@ public class SelectButton : MonoBehaviour {
                 otherImage[i].color = new Vector4(0, 0, 0, 0);
             }
         }
-    }
-
-    void SendInfotoGlobalObject()
-    {
-        PlayManage.Instance.speed = this.speed;
-        PlayManage.Instance.angle = this.angle;
-        PlayManage.Instance.score = this.score;
-        PlayManage.Instance.distance = this.distance;
-
     }
 
     void ShowExplain()

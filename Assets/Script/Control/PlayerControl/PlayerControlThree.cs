@@ -28,7 +28,10 @@ public class PlayerControlThree : MonoBehaviour {
     public GameObject SheepArea;
     public bool InHQ;
     public bool IsgameOver;
+    public bool IsBoost;
+    public bool IsFreeze;
     public PlayerState PS;
+    public float knockBackPower = 10;
     //비공개 항목
     string HorizontalControlName;
     string VerticalControlName;
@@ -39,28 +42,36 @@ public class PlayerControlThree : MonoBehaviour {
     Transform playerParent;
     Vector3 targetVector;
     bool IsKnockBack = false;
-    public float knockBackPower = 10;
+    float time;
 
     public void Start()
     {
-        HorizontalControlName = "Horizontal" + PlayerNumber;
-        VerticalControlName = "Vertical" + PlayerNumber;
+
+        PlayerInstnaceInit();
         GM = GameObject.FindGameObjectWithTag("Manager").GetComponent<GameManager>();
-        this.speed = PlayManage.Instance.speed;
-        //this.angle = PlayManage.Instance.angle;
-        this.InitialScore = PlayManage.Instance.score;
-        this.mindistance = PlayManage.Instance.distance;
-        IsgameOver = false;
-        
-        turnspeed = 10f;
-        
-        PS = PlayerState.BACKTOHOME;
+
         SheepArea = new GameObject("SheepArea");
         SheepArea.transform.position = this.transform.position;
 
         playerParent = this.transform.parent;
         playerParent.transform.position = Vector3.zero;
         playerParent.transform.rotation = HQ.transform.rotation;
+    }
+
+    void PlayerInstnaceInit()
+    {
+        HorizontalControlName = "Horizontal" + PlayerNumber;
+        VerticalControlName = "Vertical" + PlayerNumber;
+        
+        speed = 10f;
+        turnspeed = 30f;
+        mindistance = 15f;
+        SheepCount = 0f;
+        Score = 0f;
+        InitialScore = 0f;
+        IsgameOver = false;
+        PS = PlayerState.BACKTOHOME;
+        IsBoost = false;
     }
 
     public void PlayerInput()
@@ -320,10 +331,12 @@ public class PlayerControlThree : MonoBehaviour {
 
     public IEnumerator HornetAttack(float freezeTime)
     {
+        IsFreeze = true;
         float tempspeed = this.speed;
         this.speed = 0;
         yield return new WaitForSeconds(freezeTime);
         this.speed = tempspeed;
+        IsFreeze = false;
     }
 
     private void OnCollisionEnter(Collision col)
@@ -342,11 +355,13 @@ public class PlayerControlThree : MonoBehaviour {
         Vector3 knockBackVector = this.gameObject.transform.position - targetV;
         Quaternion Q = Quaternion.FromToRotation(this.gameObject.transform.position,knockBackVector) * this.playerParent.rotation;
         Quaternion QQ = Quaternion.Euler(Q.eulerAngles);
+        float flowtime = Time.fixedTime - time;
         this.playerParent.rotation = Quaternion.Slerp(this.playerParent.rotation, QQ, Time.deltaTime);
     }
 
     IEnumerator SwitchKnockBack()
     {
+        time = Time.fixedTime;
         IsKnockBack = true;
         IsgameOver = true;
         yield return new WaitForSeconds(1f);

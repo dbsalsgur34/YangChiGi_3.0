@@ -11,10 +11,6 @@ public class PlayManage : ManagerBase {
 
     public string playerID;
     public int playerlevel;
-    public float speed;
-    public float angle;
-    public float score;
-    public float distance;
     public float EXP;
     public float sound;
 
@@ -57,10 +53,6 @@ public class PlayManage : ManagerBase {
     {
         PlayerPrefs.SetString("PLAYERID", playerID);
         PlayerPrefs.SetInt("PLAYERLEVEL", playerlevel);
-        PlayerPrefs.SetFloat("INITIALSPEED",speed);
-        PlayerPrefs.SetFloat("INITIALANGLE", angle);
-        PlayerPrefs.SetFloat("INITIALSCORE",score);
-        PlayerPrefs.SetFloat("INITIALDISTANCE",distance);
         PlayerPrefs.SetFloat("SOUND", sound);
         PlayerPrefs.SetFloat("EXP", EXP);
     }
@@ -69,10 +61,6 @@ public class PlayManage : ManagerBase {
     {
         this.playerID = PlayerPrefs.GetString("PLAYERID", "Beginner");
         this.playerlevel = PlayerPrefs.GetInt("PLAYERLEVEL", 1);
-        this.speed = PlayerPrefs.GetFloat("INITIALSPEED",5);
-        this.angle = PlayerPrefs.GetFloat("INITIALANGLE", 5);
-        this.score = PlayerPrefs.GetFloat("INITIALSCORE", 0);
-        this.distance = PlayerPrefs.GetFloat("INITIALDISTANCE", 15);
         this.sound = PlayerPrefs.GetFloat("SOUND", 50);
         this.EXP = PlayerPrefs.GetFloat("EXP", 0);
     }
@@ -81,10 +69,6 @@ public class PlayManage : ManagerBase {
     {
         this.playerID = "Beginner";
         this.playerlevel = 1;
-        this.speed = 5;
-        this.angle = 5;
-        this.score = 0;
-        this.distance = 15;
         this.sound = 50;
         this.EXP = 0;
         SaveData();
