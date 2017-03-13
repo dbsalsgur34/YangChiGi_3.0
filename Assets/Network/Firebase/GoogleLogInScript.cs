@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 
 public class GoogleLogInScript : MonoBehaviour {
-	static string access_token = "380685054111-8ib2c4fs9nls6njlp953q4dn98cskh25.apps.googleusercontent.com";
+    /*
+    static string access_token = "380685054111-8ib2c4fs9nls6njlp953q4dn98cskh25.apps.googleusercontent.com";
 	Firebase.Auth.FirebaseAuth auth = Firebase.Auth.FirebaseAuth.DefaultInstance;
 	Firebase.Auth.Credential credential;
 
@@ -16,4 +17,5 @@ public class GoogleLogInScript : MonoBehaviour {
 			// Use this for initialization
 		});
 	}
+    */
 }
