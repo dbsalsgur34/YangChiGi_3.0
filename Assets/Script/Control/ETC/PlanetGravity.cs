@@ -24,8 +24,17 @@ public class PlanetGravity : MonoBehaviour {
 
     public void GravityofPlanet(float gs)
     {
+        float gravity;
         gravityVector = (this.transform.position - planet.transform.position).normalized;
-        RB.AddForce(gravityVector * -gs);
+        if (Vector3.Distance(this.transform.position, planet.transform.position) > 30)
+        {
+            gravity = gs * 100;
+        }
+        else
+        {
+            gravity = gs;
+        }
+        RB.AddForce(gravityVector * -gravity);
     }
 
     public void RotationControl()

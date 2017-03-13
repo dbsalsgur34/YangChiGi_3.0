@@ -79,3 +79,8 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+
+Assets/Network/Firebase.meta
+Assets/Network/Firebase/Firebase/Plugins.meta
+Assets/Network/Firebase/Firebase.meta
+Assets/Network/Firebase/Firebase/Plugins/iOS.meta

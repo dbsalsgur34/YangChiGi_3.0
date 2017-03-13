@@ -31,10 +31,6 @@ public class PlayerControl : MonoBehaviour
         HorizontalControlName = "Horizontal" + PlayerNumber;
         VerticalControlName = "Vertical" + PlayerNumber;
         GM = GameObject.Find("GameManager").GetComponent<GameManager>();
-        this.speed = PlayManage.Instance.speed;
-        this.angle = PlayManage.Instance.angle;
-        this.InitialScore = PlayManage.Instance.score;
-        this.mindistance = PlayManage.Instance.distance;
 
         IsgameOver = false;
     }
