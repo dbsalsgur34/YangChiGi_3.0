@@ -16,6 +16,8 @@ public class SkillBase : MonoBehaviour {
     protected GameObject TG;       //Skill의 Target.
     public GameObject SkillParent;
     public float PreCoolTime;
+    public float waitTime = 5f;
+    public float duration = 5f;
     public SkillState SS;
     public bool IsSkillNeedGuideLine;
     private void OnTriggerEnter(Collider other)
@@ -33,7 +35,7 @@ public class SkillBase : MonoBehaviour {
         GM = GameObject.FindGameObjectWithTag("Manager").GetComponent<GameManager>();
         Transform originalParent = transform.parent;            //check if this camera already has a parent
         SkillParent = new GameObject("SkillParent");                //create a new gameObject
-        transform.parent = SkillParent.transform;                    //make this camera a child of the new gameObject
+        this.transform.parent = SkillParent.transform;                    //make this camera a child of the new gameObject
         SkillParent.transform.parent = originalParent;            //make the new gameobject a child of the original camera parent if it had one
     }
 

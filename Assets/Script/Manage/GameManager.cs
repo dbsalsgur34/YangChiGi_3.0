@@ -54,7 +54,6 @@ public class GameManager : ManagerBase {
 
     public static GameManager GMInstance;
 
-    public bool TEMP;
     int startFrame = 0;
 
     public override void Awake()
@@ -398,14 +397,7 @@ public class GameManager : ManagerBase {
             ShowhitMarker(hitVector);
         }
 
-        if (Timer < 100 && TEMP)
-        {         
-            Time.timeScale = 4f;
-        }
-        if(Timer >= 100)
-        {
-            Time.timeScale = 1f;
-        }
+
         
     }
 

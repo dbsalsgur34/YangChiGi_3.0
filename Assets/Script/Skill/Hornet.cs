@@ -6,7 +6,7 @@ public class Hornet : SkillBase {
 
     public float speed = 20;
     public float maxDegree = 10;
-    public float freezeTime = 5f;
+    public float freezeTime = 3f;
 
     // Use this for initialization
     public override void Awake()
@@ -55,9 +55,9 @@ public class Hornet : SkillBase {
 
     IEnumerator HornetLife()
     {
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(waitTime);
         SS = SkillState.LAUNCHED;
-        yield return new WaitForSeconds(10f);
+        yield return new WaitForSeconds(duration);
         SkillParent.SetActive(false);
     }
 
@@ -72,7 +72,7 @@ public class Hornet : SkillBase {
                     SkillParent.SetActive(false);
                     return;
                 }
-                other.gameObject.GetComponent<PlayerControlThree>().StartCoroutine(other.gameObject.GetComponent<PlayerControlThree>().HornetAttack(this.freezeTime));
+                other.gameObject.GetComponent<PlayerControlThree>().StartCoroutine(other.gameObject.GetComponent<PlayerControlThree>().HornetAttack(this.freezeTime,0));
             }
             SkillParent.SetActive(false);
         }

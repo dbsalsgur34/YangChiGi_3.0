@@ -11,8 +11,6 @@ public enum DogState
 
 public class Dog : SkillBase {
 
-    
-
     public DogState DS;
     public List<GameObject> SheepList;
 

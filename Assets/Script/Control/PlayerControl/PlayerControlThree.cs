@@ -58,13 +58,16 @@ public class PlayerControlThree : MonoBehaviour {
         playerParent.transform.rotation = HQ.transform.rotation;
     }
 
+    float Initspeed = 10f;
+    float Initturnspeed = 30f;
+
     void PlayerInstnaceInit()
     {
         HorizontalControlName = "Horizontal" + PlayerNumber;
         VerticalControlName = "Vertical" + PlayerNumber;
         
-        speed = 10f;
-        turnspeed = 30f;
+        speed = Initspeed;
+        turnspeed = Initturnspeed;
         mindistance = 15f;
         SheepCount = 0f;
         Score = 0f;
@@ -329,11 +332,11 @@ public class PlayerControlThree : MonoBehaviour {
         }
     }
 
-    public IEnumerator HornetAttack(float freezeTime)
+    public IEnumerator HornetAttack(float freezeTime, float freezeSpeed)
     {
         IsFreeze = true;
         float tempspeed = this.speed;
-        this.speed = 0;
+        this.speed = freezeSpeed;
         yield return new WaitForSeconds(freezeTime);
         this.speed = tempspeed;
         IsFreeze = false;
@@ -356,7 +359,7 @@ public class PlayerControlThree : MonoBehaviour {
         Quaternion Q = Quaternion.FromToRotation(this.gameObject.transform.position,knockBackVector) * this.playerParent.rotation;
         Quaternion QQ = Quaternion.Euler(Q.eulerAngles);
         float flowtime = Time.fixedTime - time;
-        this.playerParent.rotation = Quaternion.Slerp(this.playerParent.rotation, QQ, Time.deltaTime);
+        this.playerParent.rotation = Quaternion.Slerp(this.playerParent.rotation, QQ, (1f-Mathf.Sqrt(Mathf.Sqrt(flowtime)))*Time.deltaTime);
     }
 
     IEnumerator SwitchKnockBack()

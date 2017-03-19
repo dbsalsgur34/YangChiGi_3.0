@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class Accel : SkillBase {
 
-    public float accelTime = 5f;
-
     // Use this for initialization
     public override void Awake()
     {
@@ -46,7 +44,7 @@ public class Accel : SkillBase {
         Owner.GetComponent<PlayerControlThree>().IsBoost = true;
         Owner.GetComponent<PlayerControlThree>().speed *= 1.5f;
         Owner.GetComponent<PlayerControlThree>().turnspeed *= 1.5f;
-        yield return new WaitForSeconds(accelTime);
+        yield return new WaitForSeconds(duration);
         Owner.GetComponent<PlayerControlThree>().speed /= 1.5f;
         Owner.GetComponent<PlayerControlThree>().turnspeed /= 1.5f;
         Owner.GetComponent<PlayerControlThree>().IsBoost = false;
