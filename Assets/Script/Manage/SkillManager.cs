@@ -21,12 +21,12 @@ public class SkillManager : MonoBehaviour
         index = 0;
     }
 
-    public void UsingSkill(int SkillNumber, GameObject Owner, GameObject Target, Transform Pivot, Transform Pivotrotation,float angle)
+    public void UsingSkill(int SkillNumber, GameObject Owner, GameObject Target, Transform Pivot, Transform Pivotrotation,float angle, Vector3 skillVector)
     {
         GameObject ActivatedSkill = Instantiate(SkillDB.SkillPrefab[SkillNumber]);
         SkillBase ActivatedSkillInit = ActivatedSkill.GetComponent<SkillBase>();
         ActivatedSkillInit.SetInstance(Owner, Target);
-        ActivatedSkillInit.SetPivot(Pivot,Pivotrotation,angle);
+        ActivatedSkillInit.SetPivot(Pivot,Pivotrotation,angle,skillVector);
     }
 
     public void SetSkillPanelQueue(DragAndDropItem item)
@@ -55,7 +55,7 @@ public class SkillManager : MonoBehaviour
 
     void Update()
     {
-        while (SkillPanelQueue.Count != 0 && GM.TimerStart)
+        while (SkillPanelQueue.Count != 0 && GM.ReturnTimerStart())
         {
             SetSkillPanelSkill();
         }

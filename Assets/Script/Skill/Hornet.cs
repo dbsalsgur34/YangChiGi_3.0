@@ -72,7 +72,7 @@ public class Hornet : SkillBase {
                     SkillParent.SetActive(false);
                     return;
                 }
-                other.gameObject.GetComponent<PlayerControlThree>().StartCoroutine(other.gameObject.GetComponent<PlayerControlThree>().HornetAttack(this.freezeTime,0));
+                other.gameObject.GetComponent<PlayerControlThree>().StartCoroutine(other.gameObject.GetComponent<PlayerControlThree>().PlayerFreeze(this.freezeTime,100));
             }
             SkillParent.SetActive(false);
         }
@@ -83,9 +83,9 @@ public class Hornet : SkillBase {
         return base.SetInstance(IO, ITG);
     }
 
-    public override void SetPivot(Transform pivot, Transform pivotRotation, float angle)
+    public override void SetPivot(Transform pivot, Transform pivotRotation, float angle, Vector3 skillVector)
     {
-        base.SetPivot(pivot, pivotRotation, angle);
+        base.SetPivot(pivot, pivotRotation, angle, skillVector);
     }
 
     public override float ShowPreCooltime()

@@ -46,7 +46,7 @@ public class SkillBase : MonoBehaviour {
         return ((Owner != null && TG != null) ? true : false);
     }
 
-    public virtual void SetPivot(Transform pivot, Transform pivotRotation, float angle)
+    public virtual void SetPivot(Transform pivot, Transform pivotRotation, float angle, Vector3 skillVector)
     {
         this.SkillParent.transform.position = pivot.position;
 

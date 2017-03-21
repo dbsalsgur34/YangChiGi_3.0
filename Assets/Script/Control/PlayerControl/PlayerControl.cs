@@ -137,14 +137,14 @@ public class PlayerControl : MonoBehaviour
             }
         }
 
-        if (bronze >= 5)
+        /*if (bronze >= 5)
         {
             ChangeSheep("BronzeSheep", GM.silversheepprefab);
         }
         if (sliver >= 5)
         {
             ChangeSheep("SliverSheep", GM.goldensheepprefab);
-        }
+        }*/
 
     }
 

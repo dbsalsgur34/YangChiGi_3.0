@@ -41,7 +41,7 @@ public class PlayerControlThree : MonoBehaviour {
     Transform prevtransform;
     Transform playerParent;
     Vector3 targetVector;
-    bool IsKnockBack = false;
+    bool IsKnockBack;
     float time;
 
     public void Start()
@@ -59,7 +59,7 @@ public class PlayerControlThree : MonoBehaviour {
     }
 
     float Initspeed = 10f;
-    float Initturnspeed = 30f;
+    float Initturnspeed = 100f;
 
     void PlayerInstnaceInit()
     {
@@ -75,7 +75,8 @@ public class PlayerControlThree : MonoBehaviour {
         IsgameOver = false;
         PS = PlayerState.BACKTOHOME;
         IsBoost = false;
-    }
+        IsKnockBack = false;
+     }
 
     public void PlayerInput()
     {
@@ -139,7 +140,7 @@ public class PlayerControlThree : MonoBehaviour {
         Vector3 PTVector = TO - PO;
         angle = Vector3.Dot(this.gameObject.transform.right, PTVector);
         Quaternion AA = Quaternion.AngleAxis(angle, playerParent.transform.up) * this.playerParent.transform.rotation;
-        return Quaternion.Slerp(this.playerParent.transform.rotation, AA, turnspeed * Time.deltaTime);
+        return Quaternion.RotateTowards(this.playerParent.transform.rotation, AA, turnspeed * Time.deltaTime);
     }
 
     Quaternion GoStraight(float SP)
@@ -165,10 +166,12 @@ public class PlayerControlThree : MonoBehaviour {
     float CalSheepScore()
     {
         float calscore = InitialScore;
+
         foreach (GameObject i in SheepList)
         {
             calscore += i.GetComponent<SheepControlThree>().SheepScore;
         }
+
         return calscore;
     }
 
@@ -188,15 +191,14 @@ public class PlayerControlThree : MonoBehaviour {
             }
         }
 
-        if (bronze >= 5)
+        /*if (bronze >= 5)
         {
             ChangeSheep("BronzeSheep", GM.silversheepprefab);
         }
         if (sliver >= 5)
         {
             ChangeSheep("SliverSheep", GM.goldensheepprefab);
-        }
-
+        }*/
     }
 
     void ChangeSheep(string targettag, GameObject targetSheep)
@@ -325,20 +327,20 @@ public class PlayerControlThree : MonoBehaviour {
             for (int i = SheepList.Count - 1; i >= 0; i--)
             {
                 SheepList[i].SetActive(false);
-                SheepList.RemoveAt(i);
                 Score++;
                 yield return new WaitForSeconds(0.1f);
             }
+            SheepList.RemoveRange(0,SheepList.Count);
         }
     }
 
-    public IEnumerator HornetAttack(float freezeTime, float freezeSpeed)
+    public IEnumerator PlayerFreeze(float freezeTime, float freezeSpeed)
     {
         IsFreeze = true;
         float tempspeed = this.speed;
-        this.speed = freezeSpeed;
+        this.speed /= freezeSpeed;
         yield return new WaitForSeconds(freezeTime);
-        this.speed = tempspeed;
+        this.speed *= freezeSpeed;
         IsFreeze = false;
     }
 
@@ -359,7 +361,7 @@ public class PlayerControlThree : MonoBehaviour {
         Quaternion Q = Quaternion.FromToRotation(this.gameObject.transform.position,knockBackVector) * this.playerParent.rotation;
         Quaternion QQ = Quaternion.Euler(Q.eulerAngles);
         float flowtime = Time.fixedTime - time;
-        this.playerParent.rotation = Quaternion.Slerp(this.playerParent.rotation, QQ, (1f-Mathf.Sqrt(Mathf.Sqrt(flowtime)))*Time.deltaTime);
+        this.playerParent.rotation = Quaternion.Slerp(this.playerParent.rotation, QQ, (1f-(Mathf.Sqrt(flowtime)))*Time.fixedDeltaTime);
     }
 
     IEnumerator SwitchKnockBack()

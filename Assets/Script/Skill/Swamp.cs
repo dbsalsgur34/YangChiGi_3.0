@@ -37,7 +37,8 @@ public class Swamp : SkillBase {
 
     Quaternion targetRotation(Vector3 target)
     {
-        return Quaternion.FromToRotation(this.transform.position, target) * SkillParent.transform.rotation; 
+        Quaternion Q = Quaternion.FromToRotation(this.transform.position, target) * SkillParent.transform.rotation;
+        return Quaternion.Euler(Q.eulerAngles);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -63,10 +64,10 @@ public class Swamp : SkillBase {
         return base.SetInstance(IO, ITG);
     }
 
-    public override void SetPivot(Transform pivot, Transform pivotRotation, float angle)
+    public override void SetPivot(Transform pivot, Transform pivotRotation, float angle, Vector3 skillVector)
     {
-        base.SetPivot(pivot, pivotRotation, angle);
-        SkillParent.transform.rotation = targetRotation(GM.hitVector);
+        base.SetPivot(pivot, pivotRotation, angle, skillVector);
+        SkillParent.transform.rotation = targetRotation(skillVector);
     }
 
     public override float ShowPreCooltime()

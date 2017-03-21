@@ -16,18 +16,16 @@ public class GameManager : ManagerBase {
     Text EndText;
 
     public GameObject Enemy;
-    Button SelectedButton;
-
     float SheepCount;
-    public float PlayerScore;
-    public float EnemyScore;
-    public int PlayerNumber;
+    float PlayerScore;
+    float EnemyScore;
+    int PlayerNumber;
 
     public GameObject Player;
     public GameObject Sheephorde;
     public GameObject bronzesheepprefab;
-    public GameObject silversheepprefab;
-    public GameObject goldensheepprefab;
+    //public GameObject silversheepprefab;
+    //public GameObject goldensheepprefab;
     public GameObject BackGround;
 
     public CameraControl mainCamera;
@@ -42,9 +40,9 @@ public class GameManager : ManagerBase {
     public float PlanetScale;
     public float initialtime;
     public int initialSheep;
-    
+    public float delayTime = 0.1f;
     float Timer;
-    public bool TimerStart;
+    bool TimerStart;
     bool IsSkillonthePlanet;
     int RazorPoint;
 
@@ -54,7 +52,8 @@ public class GameManager : ManagerBase {
 
     public static GameManager GMInstance;
 
-    int startFrame = 0;
+    int startTime = 0;
+    float midTime = 0;
 
     public override void Awake()
     {
@@ -94,7 +93,8 @@ public class GameManager : ManagerBase {
         TimerStart = false;
 
         //오브젝트 생성.
-        SheepSpawn(bronzesheepprefab, PlanetScale, initialSheep, KingGodClient.Instance.Seed);
+        Random.InitState(KingGodClient.Instance.Seed);
+        SheepSpawn(bronzesheepprefab, PlanetScale, initialSheep);
         GrassSpawn(grassprefab, 24.5f, 150);
         //스킬 이펙트 관련 초기화
         hitMarkerInit();
@@ -105,6 +105,16 @@ public class GameManager : ManagerBase {
         base.Start();
         HQ = Player.GetComponent<PlayerControlThree>().HQ.GetComponent<HQControl>();
         Network_Client.Send("Ready/" + KingGodClient.Instance.Playernum);
+    }
+
+    public bool ReturnTimerStart()
+    {
+        return TimerStart;
+    }   //bool TimerStart 리턴.
+
+    public float ReturnTimePass()
+    {
+        return (Timer - startTime);
     }
 
     void Showremainingtime()
@@ -184,9 +194,9 @@ public class GameManager : ManagerBase {
         }
     }
 
-    public void SheepSpawn(GameObject sheepprefab,float scale, int number, int seed)   //양을 임의의 위치에 소환하는 메서드.
+    void SheepSpawn(GameObject sheepprefab,float scale, int number)   //양을 임의의 위치에 소환하는 메서드.
     {
-        Random.InitState(seed);
+        
         for (int i = 0; i < number; i++)
         {
             Vector3 newposition = Random.onUnitSphere * scale;
@@ -203,7 +213,7 @@ public class GameManager : ManagerBase {
         }
     }
 
-    public void GrassSpawn(List<GameObject> grasslist, float scale, int number)
+    void GrassSpawn(List<GameObject> grasslist, float scale, int number)
     {
         int listcount = grasslist.Count-1;
         for (int i = 0; i < number; i++)
@@ -217,12 +227,13 @@ public class GameManager : ManagerBase {
 
     public IEnumerator ReadyScreen()
     {
-        startFrame = Time.frameCount;
         Player.GetComponent<PlayerControlThree>().IsgameOver = true;
         Enemy.GetComponent<PlayerControlThree>().IsgameOver = true;
         EndText.gameObject.SetActive(true);
         EndText.text = "Ready...";
         yield return new WaitForSeconds(3f);
+        Network_Client.Send("started");
+        startTime = 0;
         EndScreen.SetActive(false);
         Player.GetComponent<PlayerControlThree>().IsgameOver = false;
         Enemy.GetComponent<PlayerControlThree>().IsgameOver = false;
@@ -239,9 +250,18 @@ public class GameManager : ManagerBase {
         Enemy.GetComponent<PlayerControlThree>().IsgameOver = true;
         PlayManage.Instance.PlayerScore = this.PlayerScore;
         PlayManage.Instance.EnemyScore = this.EnemyScore;
-        Network_Client.Send("GameOver/" + this.PlayerNumber + "," + (Time.frameCount - startFrame));
+        Network_Client.Send("GameOver/" + this.PlayerNumber + "," + ReturnTimePass());
         this.TimerStart = false;
         yield return null;
+    }
+
+    public IEnumerator GoToResultScene()
+    {
+        if (!TimerStart)
+        {
+            yield return new WaitForSeconds(2f);
+            StartCoroutine(PlayManage.Instance.LoadScene("Result"));
+        }
     }
 
     void TimerSet()
@@ -397,15 +417,20 @@ public class GameManager : ManagerBase {
             ShowhitMarker(hitVector);
         }
 
-
-        
+        if (Timer - midTime > 5)
+        {
+            midTime = Timer;
+            Network_Client.Send("Position/" + Player.transform.position +"," + Enemy.transform.position + "," + ReturnTimePass());
+            SheepSpawn(bronzesheepprefab, PlanetScale, 1);
+        }
     }
 
-    public void SendMessageToSkillUse(int num, GameObject Player, GameObject Enemy, GameObject HQ, Vector3 HV)
+    IEnumerator SendMessageToSkillUse(int num, GameObject Player, GameObject Enemy, GameObject HQ, Vector3 HV,float useTime)
     {
         Vector3 targetVector = HQ.transform.position - HV;
         float angle = Mathf.Atan2(targetVector.x, targetVector.z) * Mathf.Rad2Deg;
-        SM.UsingSkill(num,Player,Enemy,this.Planet.transform, HQ.gameObject.transform,angle);
+        yield return new WaitUntil(() => this.ReturnTimePass() >= (useTime + delayTime));
+        SM.UsingSkill(num,Player,Enemy,this.Planet.transform, HQ.gameObject.transform,angle, HV);
     }
 
     public bool IsGameStart()
@@ -469,16 +494,11 @@ public class GameManager : ManagerBase {
                 break;
             case "Skill":
                 Vector3 skillVector = new Vector3(float.Parse(MessageArray[2]), float.Parse(MessageArray[3]), float.Parse(MessageArray[4]));
-                SendMessageToSkillUse(int.Parse(MessageArray[1]),target.gameObject,Opposite.gameObject,target.HQ, skillVector);
+                StartCoroutine(SendMessageToSkillUse(int.Parse(MessageArray[1]),target.gameObject,Opposite.gameObject,target.HQ, skillVector, float.Parse(MessageArray[5])));
                 break;
             case "Out":
                 target.PS = PlayerState.BACKTOHOME;
                 break;
         }
-    }
-
-    void GoToResultScene()
-    {
-        PlayManage.Instance.LoadScene("Result");
     }
 }

@@ -128,9 +128,9 @@ public class Dog : SkillBase {
         return base.SetInstance(IO, ITG);
     }
 
-    public override void SetPivot(Transform pivot, Transform pivotRotation, float angle)
+    public override void SetPivot(Transform pivot, Transform pivotRotation, float angle, Vector3 skillVector)
     {
-        base.SetPivot(pivot, pivotRotation, angle);
+        base.SetPivot(pivot, pivotRotation, angle, skillVector);
     }
 
     public override float ShowPreCooltime()

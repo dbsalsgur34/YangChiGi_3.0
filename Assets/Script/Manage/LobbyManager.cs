@@ -86,7 +86,6 @@ public class LobbyManager : ManagerBase {
         }
     }
 
-
     void CancleMatching()
     {
         IsGameMatching = false;
@@ -103,7 +102,6 @@ public class LobbyManager : ManagerBase {
             PlayManage.Instance.playerlevel = this.level;
             PlayManage.Instance.EXP = this.EXP;
             LobbyInit();
-
         }
     }
 
@@ -112,7 +110,7 @@ public class LobbyManager : ManagerBase {
         IsGameMatching = true;
         if (KingGodClient.Instance == null)
         {
-            Instantiate(NetworkObjectPrefab);
+            NetworkObject = Instantiate(NetworkObjectPrefab);
         }
         else
         {

@@ -117,7 +117,7 @@ public class DragAndDropItem : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         GM.hitMarkerParent.gameObject.SetActive(false);
         if (GM.IsSkillCanUse())
         {
-            Network_Client.Send("Skill/" + KingGodClient.Instance.Playernum + "," + num + "," + GM.hitVector.x + "," + GM.hitVector.y + "," + GM.hitVector.z +"," + Time.frameCount.ToString());
+            Network_Client.Send("Skill/" + KingGodClient.Instance.Playernum + "," + num + "," + GM.hitVector.x + "," + GM.hitVector.y + "," + GM.hitVector.z +"," + GM.ReturnTimePass());
             GM.SetIsSkillOnthePlanaet(false);
             IsItemCanDrag = false;
             GM.SM.SetSkillPanelQueue(this.gameObject.GetComponent<DragAndDropItem>());

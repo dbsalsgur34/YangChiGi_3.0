@@ -36,7 +36,7 @@ namespace ClientSide
                     break;
                 case "GameEnd":
                     Debug.Log("Get");
-                    StartCoroutine(PlayManage.Instance.LoadScene("Result"));
+                    StartCoroutine(GameManager.GMInstance.GoToResultScene());
                     break;
                 default:
                     break;

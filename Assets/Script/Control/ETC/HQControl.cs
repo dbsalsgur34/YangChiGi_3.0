@@ -42,7 +42,7 @@ public class HQControl : MonoBehaviour {
 
     }*/
 
-    private void OnTriggerStay(Collider col)
+    private void OnTriggerEnter(Collider col)
     {
         if (col.gameObject.tag == "Head" && col.gameObject.GetComponent<PlayerControlThree>().HQ == this.gameObject)
         {
