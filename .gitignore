@@ -79,3 +79,12 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+Assets/Plugins.meta
+Assets/Plugins/Android.meta
+Assets/Plugins/Android/firebase-common-10.2.0.meta
+Assets/Plugins/Android/firebase-common-10.2.0/res.meta
+Assets/Plugins/Android/firebase-iid-10.2.0.meta
+Assets/Plugins/Android/firebase-iid-10.2.0/res.meta
+Assets/Plugins/Android/firebase-messaging-unity-1.1.0.meta
+Assets/Plugins/Android/firebase-messaging-unity-1.1.0/res.meta
+ProjectSettings/GraphicsSettings.asset

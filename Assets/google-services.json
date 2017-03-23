@@ -1,0 +1,73 @@
+{
+  "project_info": {
+    "project_number": "380685054111",
+    "firebase_url": "https://yang-chigi.firebaseio.com",
+    "project_id": "yang-chigi",
+    "storage_bucket": "yang-chigi.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:380685054111:android:c227349fc998005b",
+        "android_client_info": {
+          "package_name": "com.UnDev.YCG"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "380685054111-8ib2c4fs9nls6njlp953q4dn98cskh25.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyABbB7pLXkZsAciP3FH2crmExrcTJUvRts"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:380685054111:android:536e02a05e649b8b",
+        "android_client_info": {
+          "package_name": "com.UnDev.YangChiGi"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "380685054111-8ib2c4fs9nls6njlp953q4dn98cskh25.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyABbB7pLXkZsAciP3FH2crmExrcTJUvRts"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
