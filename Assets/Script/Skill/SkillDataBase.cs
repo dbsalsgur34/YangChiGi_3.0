@@ -9,7 +9,7 @@ public class SkillDataBase : MonoBehaviour {
     public List<Sprite> SkillIcon;
     public List<int> SkillIndexList;
 
-    void SetRandomNumber(int StartNumber, int EndNumber)
+    public void SetRandomNumber(int StartNumber, int EndNumber)
     {
         while (SkillIndexList.Count <= EndNumber - 1)
         {
@@ -29,15 +29,36 @@ public class SkillDataBase : MonoBehaviour {
         }
     }
 
-    private void Awake()
+    public void SetRandomNumber(int[] numbers)
     {
-        if (SkillPrefab.Count == SkillIcon.Count)
+        while (SkillIndexList.Count < numbers.Length)
         {
-            SetRandomNumber(1, SkillPrefab.Count-1);
+            int temp = Random.Range(0, numbers.Length);
+            bool checknum = false;
+            foreach (int i in SkillIndexList)
+            {
+                if (i == numbers[temp])
+                {
+                    checknum = true;
+                }
+            }
+            if (!checknum)
+            {
+                SkillIndexList.Add(numbers[temp]);
+            }
+        }
+    }
+
+    public Sprite SetSkillIcon(int num, bool ShowPadLock)
+    {
+        if (!ShowPadLock && num >= 0)
+        {
+            return SkillIcon[num];
         }
         else
         {
-            Debug.Log("Fill SkillPrefab or SkillIcon.");
+            return Resources.Load<Sprite>("Image/Resource/Button/Black/padlock");
         }
     }
+
 }

@@ -17,9 +17,11 @@ public class DragAndDropItem : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     public GameManager GM;
     public LayerMask LM;
 
-    public int num { get; set; }
     public float time;
     public Text timetext;
+
+    int num;
+    bool IsSkillNeedGuideLine;
 
     private void Start()
     {
@@ -59,6 +61,12 @@ public class DragAndDropItem : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         }
     }
 
+    public void SetInstance(int number, bool GuideLineNeed)
+    {
+        this.num = number;
+        this.IsSkillNeedGuideLine = GuideLineNeed;
+    }
+
     public void OnDrag(PointerEventData data)
     {
         if (IsItemCanDrag)
@@ -80,8 +88,7 @@ public class DragAndDropItem : MonoBehaviour, IBeginDragHandler, IDragHandler, I
 
         if (hit.transform != null)
         {
-            GM.RC.gameObject.SetActive(true);
-            GM.CenterRC.gameObject.SetActive(true);
+            RazorActiveOption(true,true);
             GM.SetIsSkillOnthePlanaet(true);
             GM.hitVector = hit.point;
             GM.hitMarkerParent.SetActive(true);
@@ -89,12 +96,24 @@ public class DragAndDropItem : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         else
         {
             GM.hitMarkerParent.SetActive(false);
-            GM.CenterRC.gameObject.SetActive(false);
             GM.SetIsSkillOnthePlanaet(false);
-            GM.RC.gameObject.SetActive(false);
+            RazorActiveOption(false,false);
         }
-
     }
+
+    void RazorActiveOption(bool RCactive,bool CenterRCactive)
+    {
+        if (this.IsSkillNeedGuideLine)
+        {
+            GM.SetRazorActive(RCactive, CenterRCactive);
+        }
+        else
+        {
+            GM.SetRazorActive(false, CenterRCactive);
+        }
+    }
+
+    
 
     public void OnEndDrag(PointerEventData eventData)
     {
@@ -112,8 +131,7 @@ public class DragAndDropItem : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         sourceCell = null;
 
         GM.mainCamera.IsSkillCutScene = false;
-        GM.RC.gameObject.SetActive(false);
-        GM.CenterRC.gameObject.SetActive(false);
+        RazorActiveOption(false,false);
         GM.hitMarkerParent.gameObject.SetActive(false);
         if (GM.IsSkillCanUse())
         {

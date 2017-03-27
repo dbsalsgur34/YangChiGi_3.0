@@ -62,7 +62,7 @@ public class CameraControl : MonoBehaviour
                 float xDif = Input.mousePosition.x - oldInputPosition.x;
                 float yDif = Input.mousePosition.y - oldInputPosition.y;
                 if (!naturalMotion) { xDif *= -1; yDif *= -1; }
-                if (xDif != 0) { camParent.transform.Rotate(Vector3.up * xDif * -tumbleSensitivity); }
+                if (xDif != 0) { camParent.transform.Rotate(Vector3.forward * xDif * -tumbleSensitivity); }
                 if (yDif != 0) { camParent.transform.Rotate(Vector3.right * yDif * tumbleSensitivity); }
                 oldInputPosition = Input.mousePosition;
         }
