@@ -23,7 +23,7 @@ public class GameManager : ManagerBase {
 
     public GameObject Player;
     public GameObject Sheephorde;
-    public GameObject bronzesheepprefab;
+    GameObject bronzesheepprefab;
     //public GameObject silversheepprefab;
     //public GameObject goldensheepprefab;
     public GameObject BackGround;
@@ -31,8 +31,8 @@ public class GameManager : ManagerBase {
     public CameraControl mainCamera;
     public SkillManager SM;
     public HQControl HQ;
-    public RazorControl RC;
-    public RazorControl CenterRC;
+    RazorControl RC;
+    RazorControl CenterRC;
     public List<GameObject> SheepList;
 
     public List<GameObject> grassprefab;
@@ -62,6 +62,9 @@ public class GameManager : ManagerBase {
         Planet = GameObject.Find("Planet");
         Sheephorde = GameObject.Find("Sheephorde");
         BackGround = GameObject.Find("BackGround");
+        bronzesheepprefab = Resources.Load<GameObject>("Prefab/Sheeps/BronzeSheep");
+        RC = GameObject.FindGameObjectWithTag("Razor").GetComponent<RazorControl>();
+        CenterRC = GameObject.FindGameObjectWithTag("CenterRazor").GetComponent<RazorControl>();
         SM = GameObject.Find("SkillManager").GetComponent<SkillManager>();
         this.PlayerNumber = KingGodClient.Instance.Playernum;
         if (PlayerNumber == 1)
@@ -232,7 +235,7 @@ public class GameManager : ManagerBase {
         EndText.gameObject.SetActive(true);
         EndText.text = "Ready...";
         yield return new WaitForSeconds(3f);
-        Network_Client.Send("started");
+        //Network_Client.Send("started");
         startTime = 0;
         EndScreen.SetActive(false);
         Player.GetComponent<PlayerControlThree>().IsgameOver = false;
@@ -248,8 +251,7 @@ public class GameManager : ManagerBase {
         EndText.text = "Time Over!";
         Player.GetComponent<PlayerControlThree>().IsgameOver = true;
         Enemy.GetComponent<PlayerControlThree>().IsgameOver = true;
-        PlayManage.Instance.PlayerScore = this.PlayerScore;
-        PlayManage.Instance.EnemyScore = this.EnemyScore;
+        PlayManage.Instance.SaveScore(this.PlayerScore, this.EnemyScore);
         Network_Client.Send("GameOver/" + this.PlayerNumber + "," + ReturnTimePass());
         this.TimerStart = false;
         yield return null;
@@ -469,6 +471,12 @@ public class GameManager : ManagerBase {
     public void SetIsSkillOnthePlanaet(bool TF)
     {
         IsSkillonthePlanet = TF;
+    }
+
+    public void SetRazorActive(bool RCactive, bool CenterRCactive)
+    {
+        RC.gameObject.SetActive(RCactive);
+        CenterRC.gameObject.SetActive(CenterRCactive);
     }
 
     public void GetMessage(string MessageType , string Message)

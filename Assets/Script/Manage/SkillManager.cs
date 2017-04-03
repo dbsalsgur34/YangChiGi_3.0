@@ -7,7 +7,7 @@ public class SkillManager : MonoBehaviour
 {
     SkillDataBase SkillDB;
     GameManager GM;
-    List<GameButtonEvent> SkillButtonList;
+
     public List<DragAndDropItem> SkillPanelQueue;
     int[] SkillindexArray;
     int index;
@@ -15,7 +15,7 @@ public class SkillManager : MonoBehaviour
     private void Start()
     {
         //스킬 관련 초기화.
-        SkillDB = this.gameObject.GetComponent<SkillDataBase>();
+        SkillDB = PlayManage.Instance.gameObject.GetComponent<SkillDataBase>();
         GM = GameObject.FindGameObjectWithTag("Manager").GetComponent<GameManager>();
         SkillindexArray = new int[SkillDB.SkillPrefab.Count - 1];
         index = 0;
@@ -39,7 +39,7 @@ public class SkillManager : MonoBehaviour
         if (SkillPanelQueue[0] != null)
         {
             int i = SkillDB.SkillIndexList[index];
-            SkillPanelQueue[0].num = i;
+            SkillPanelQueue[0].SetInstance(i,SkillDB.SkillPrefab[i].GetComponent<SkillBase>().ShowIsSkillNeedGuideLine());
             StartCoroutine(SkillPanelQueue[0].SkillDelay(SkillDB.SkillPrefab[i].GetComponent<SkillBase>().ShowPreCooltime(),SkillDB.SkillIcon[0], SkillDB.SkillIcon[i]));
             SkillPanelQueue.RemoveAt(0);
             if (index < SkillDB.SkillIndexList.Count - 1)
