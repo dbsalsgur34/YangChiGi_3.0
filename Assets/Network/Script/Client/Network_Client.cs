@@ -10,7 +10,7 @@ using ClientSide;
 public class Network_Client {
     public static string serverAddress;
 	public static int PORT = 11900;
-
+	
 	private static TcpClient tcpClient;
 	private static NetworkStream networkStream;
 	private static StreamReader streamReader;
@@ -20,6 +20,9 @@ public class Network_Client {
 	private static Thread thread_receive;
 
 	private static int networkId = -1;
+
+	private static DataBaseIO dataBaseIO;
+
 	public static int NetworkId{
 		get{return networkId;}
 		set{
@@ -34,6 +37,7 @@ public class Network_Client {
 	}
 
 	public static void Begin(string ip){
+		dataBaseIO = new DataBaseIO();
         //ShutDown();
         serverAddress = ip;
         tcpClient = new TcpClient();
@@ -91,6 +95,7 @@ public class Network_Client {
 				isConnected = false;
 				networkId = -1;
 			}
+			dataBaseIO.push(str);
 		}else{
 			Debug.Log("Send: Network Disconnected.");
 		}
