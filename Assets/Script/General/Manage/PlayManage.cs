@@ -17,6 +17,8 @@ public class PlayManage : ManagerBase {
     private float exp;
     private float sound = 50;
     private SkillDataBase SDB;
+    private UIBaseManage UIB;
+
 
     public string PlayerID
     {
@@ -61,7 +63,7 @@ public class PlayManage : ManagerBase {
     private FirebaseDatabase DB;
     private DatabaseReference userInfoReferrence;
 
-    new private void Awake()                //싱글톤 오브젝트를 만들자!
+    public override void Awake()                //싱글톤 오브젝트를 만들자!
     {
         //auth = FirebaseAuth.DefaultInstance;
         //DB = FirebaseDatabase.DefaultInstance;
@@ -77,7 +79,7 @@ public class PlayManage : ManagerBase {
         {
             Destroy(this.gameObject);   //싱글톤 오브젝트가 있을경우 다른 오브젝트를 제거.
         }
-
+        UIB = GameObject.FindGameObjectWithTag("UIBase").GetComponent<UIBaseManage>();
     }
 
     private void PlayManageAwake()
@@ -109,10 +111,8 @@ public class PlayManage : ManagerBase {
 
     public IEnumerator LoadScene(string name)
     {
-        IEnumerator FO = FadeOut(FadeImage);
-        StartCoroutine(FO);
-        yield return new WaitUntil( () => FO.MoveNext() == false);
-        SceneManager.LoadScene(name);
+        StartCoroutine(UIB.LoadSceneAndFadeInOut(name));
+        yield return null;
     }
 
     public void SaveData()
@@ -149,11 +149,6 @@ public class PlayManage : ManagerBase {
         this.EXP = 0;
         this.SkillPreSet = new int[4] { 1,2,3,4 };
         SaveData();
-    }
-
-    public void SetFadeImage(Image target)
-    {
-        this.FadeImage = target;
     }
 
     public SkillDataBase GetSkillDataBase()

@@ -135,16 +135,16 @@ public class GameUIManager : MonoBehaviour {
 
     public IEnumerator ReadyScreen()
     {
-        player.IsgameOver = true;
-        enemy.IsgameOver = true;
+        player.GetPlayerState().IsStop = true;
+        enemy.GetPlayerState().IsStop = true;
         EndText.gameObject.SetActive(true);
         EndText.text = "Ready...";
         yield return new WaitForSeconds(3f);
-        //Network_Client.Send("started");
+        //KingGodClient.Instance.GetNetworkMessageSender().SendStartedToServer();
         startTime = 0;
         EndScreen.SetActive(false);
-        player.IsgameOver = false;
-        enemy.IsgameOver = false;
+        player.GetPlayerState().IsStop = false;
+        enemy.GetPlayerState().IsStop = false;
         this.TimerStart = true;
         yield return 0;
     }
@@ -154,13 +154,22 @@ public class GameUIManager : MonoBehaviour {
         EndScreen.SetActive(true);
         Text EndText = GameObject.Find("EndText").GetComponent<Text>();
         EndText.text = "Time Over!";
-        player.GetComponent<PlayerControlThree>().IsgameOver = true;
-        enemy.GetComponent<PlayerControlThree>().IsgameOver = true;
+        player.GetPlayerState().IsStop = true;
+        enemy.GetPlayerState().IsStop = true;
         PlayManage.Instance.PlayerScore = player.Score;
         PlayManage.Instance.EnemyScore = enemy.Score;
-        Network_Client.Send("GameOver/" + KingGodClient.Instance.Playernum + "," + GetTimePass());
+        KingGodClient.Instance.GetNetworkMessageSender().SendGameOverToServer(KingGodClient.Instance.Playernum ,GetTimePass());
         this.TimerStart = false;
-        yield return null;
+        yield return new WaitForSeconds(1f);
+    }
+
+    public IEnumerator GoToResultScene()
+    {
+        if (!this.GetIsTimerStart())
+        {
+            yield return new WaitForSeconds(2f);
+            StartCoroutine(PlayManage.Instance.LoadScene("Result"));
+        }
     }
 
     private void CalTime()

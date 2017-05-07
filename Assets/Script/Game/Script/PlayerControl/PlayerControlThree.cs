@@ -1,9 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using ClientSide;
 
-public enum PlayerState
+public enum PlayerSearchState
 {
     SHEEPSEARCH,
     ENEMYSEARCH,
@@ -28,17 +27,43 @@ public class PlayerControlThree : MonoBehaviour {
     private float initialScore;
     //public float angle;
     
-    public GameManager GM;
+    private GameManager GM;
     public List<GameObject> SheepList;
     public GameObject HQ;
     public GameObject targetObject;
     public GameObject SheepArea;
-    public bool InHQ;
-    public bool IsgameOver;
-    public bool IsBoost;
-    public bool IsFreeze;
-    public bool IsKnockBack;
-    public PlayerState PS;
+
+    public class PlayerState
+    {
+        public bool InHQ { get; set; }
+        public bool IsStop { get; set; }
+        public bool IsBoost { get; set; }
+        public bool IsFreeze { get; set; }
+        public bool IsKnockBack { get; set; }
+
+        public PlayerState()
+        {
+            InHQ = true;
+            IsStop = false;
+            IsBoost = false;
+            IsFreeze = false;
+            IsKnockBack = false;
+        }
+    }
+
+    private PlayerState PS;
+
+    public PlayerState GetPlayerState()
+    {
+        return this.PS;
+    }
+
+    private PlayerSearchState PSS;
+
+    public PlayerSearchState GetPlayerSearchState()
+    {
+        return this.PSS;
+    }
 
     private PlayerMovingInstance PMI;
 
@@ -65,7 +90,7 @@ public class PlayerControlThree : MonoBehaviour {
             Speed = initSpeed;
             initTurnSpeed = 100;
             TurnSpeed = initTurnSpeed;
-            minDistance = 15f;
+            minDistance = 5f;
         }
 
         private string HorizontalControlName;
@@ -130,13 +155,20 @@ public class PlayerControlThree : MonoBehaviour {
     public void Start()
     {
         PlayerInstnaceInit();
-        GM = GameObject.FindGameObjectWithTag("Manager").GetComponent<GameManager>();
+        GM = GameManager.GMInstance;
 
         SheepArea = new GameObject("SheepArea");
         SheepArea.transform.position = this.transform.position;
     }
 
-    void PlayerInstnaceInit()
+    
+
+    public void SetPlayerState(PlayerSearchState newPSS)
+    {
+        this.PSS = newPSS;
+    }
+    
+    private void PlayerInstnaceInit()
     {
         string HorizontalControlName = "Horizontal" + PlayerNumber;
         string VerticalControlName = "Vertical" + PlayerNumber;
@@ -148,13 +180,13 @@ public class PlayerControlThree : MonoBehaviour {
         SheepCount = 0f;
         Score = 0f;
         initialScore = 0f;
-        IsgameOver = false;
-        PS = PlayerState.BACKTOHOME;
-        IsBoost = false;
-        IsKnockBack = false;
+
+        PSS = PlayerSearchState.BACKTOHOME;
+
+        PS = new PlayerState();
      }
 
-    public void PlayerInput()
+    private void PlayerInput()
     {
 #if UNITY_EDITOR       //Unity Editor에서만!
         PMI.HorizontalInputValue = Input.GetAxisRaw(PMI.GetHorizontalControlName());
@@ -279,7 +311,7 @@ public class PlayerControlThree : MonoBehaviour {
         }*/
     }
 
-    private void ChangeSheep(string targettag, GameObject targetSheep)
+    /*private void ChangeSheep(string targettag, GameObject targetSheep)
     {
         int ChangeCount = 5;
         for (int i = SheepList.Count - 1; ; i--)
@@ -291,8 +323,8 @@ public class PlayerControlThree : MonoBehaviour {
                 newsheep.transform.position = SheepList[i].transform.position;
                 newsheep.transform.rotation = SheepList[i].transform.rotation;
 
-                tempsheepcontrol.Master = SheepList[i].GetComponent<SheepControlThree>().Master;
-                tempsheepcontrol.SS = SheepState.HAVEOWNER;
+                tempsheepcontrol.SetMaster(SheepList[i].GetComponent<SheepControlThree>().Master);
+                tempsheepcontrol.CheckSheepState();
                 GameObject tempsheep = SheepList[i];
                 SheepList[i] = newsheep;
                 tempsheep.SetActive(false);
@@ -303,10 +335,10 @@ public class PlayerControlThree : MonoBehaviour {
             {
                 GameObject followsheep;
                 followsheep = SheepList[i + 1];
-                /*if (i == 0)
+                if (i == 0)
                     followsheep.GetComponent<SheepControltwo>().leader = this.gameObject;
                 else
-                    followsheep.GetComponent<SheepControltwo>().leader = SheepList[i - 1];*/
+                    followsheep.GetComponent<SheepControltwo>().leader = SheepList[i - 1];
                 GameObject tempsheep = SheepList[i];
                 SheepList.RemoveAt(i);
                 tempsheep.SetActive(false);
@@ -317,45 +349,45 @@ public class PlayerControlThree : MonoBehaviour {
                 break;
             }
         }
-    }
+    }*/
 
-    void SearchClosestSheep()
+    private void SearchClosestSheep()
     {
         int Mincount = 0;
         float distance1;
         float distance2;
-        if (PS == PlayerState.SHEEPSEARCH)
+        if (PSS == PlayerSearchState.SHEEPSEARCH)
         {
-            if (GM.SheepList.Count != 0)
+            if (GM.GetSheepListCount() != 0)
             {
-                for (int i = 1; i <= GM.SheepList.Count - 1; i++)
+                for (int i = 1; i <= GM.GetSheepListCount() - 1; i++)
                 {
-                    distance1 = Vector3.Distance(this.transform.position, GM.SheepList[Mincount].transform.position);
-                    distance2 = Vector3.Distance(this.transform.position, GM.SheepList[i].transform.position);
+                    distance1 = Vector3.Distance(this.transform.position, GM.GetSheepFromSheepList(Mincount).transform.position);
+                    distance2 = Vector3.Distance(this.transform.position, GM.GetSheepFromSheepList(i).transform.position);
                     if (distance1 <= distance2)
                     {
                         continue;
                     }
                     else if (distance2 < distance1)
                     {
-                        if (GM.SheepList[i].GetComponent<SheepControlThree>().Master != null && GM.SheepList[i].GetComponent<SheepControlThree>().Master.tag == "Dog" && GM.SheepList[i].GetComponent<SheepControlThree>().Master.GetComponent<Dog>().Owner == this.gameObject)
+                        if (GM.GetSheepFromSheepList(i).Master != null && GM.GetSheepFromSheepList(i).Master.tag == "Dog" && GM.GetSheepFromSheepList(i).Master.GetComponent<Dog>().AreYouMyMaster(this.gameObject))
                             continue;
                         else
                             Mincount = i;
                     }
                 }
-                targetObject = GM.SheepList[Mincount];
+                targetObject = GM.GetSheepFromSheepList(Mincount).gameObject;
             }
             else
             {
                 targetObject = HQ;
             }
         }
-        else if (PS == PlayerState.BACKTOHOME)
+        else if (PSS == PlayerSearchState.BACKTOHOME)
         {
             targetObject = HQ;
         }
-        else if (PS == PlayerState.ENEMYSEARCH)
+        else if (PSS == PlayerSearchState.ENEMYSEARCH)
         {
             GameObject Target;
             if (GM.GetEnemy().gameObject.Equals(this.gameObject))
@@ -381,19 +413,19 @@ public class PlayerControlThree : MonoBehaviour {
 
     private void SearchPhaseShift()
     {
-        if (PS == PlayerState.SHEEPSEARCH)
+        if (PSS == PlayerSearchState.SHEEPSEARCH)
         {
-            PS = PlayerState.ENEMYSEARCH;
+            PSS = PlayerSearchState.ENEMYSEARCH;
             targetObject = HQ;
         }
-        else if (PS == PlayerState.BACKTOHOME)
+        else if (PSS == PlayerSearchState.BACKTOHOME)
         {
-            PS = PlayerState.SHEEPSEARCH;
+            PSS = PlayerSearchState.SHEEPSEARCH;
             SearchClosestSheep();
         }
-        else if (PS == PlayerState.ENEMYSEARCH)
+        else if (PSS == PlayerSearchState.ENEMYSEARCH)
         {
-            PS = PlayerState.BACKTOHOME;
+            PSS = PlayerSearchState.BACKTOHOME;
             SearchClosestSheep();
         }
     }
@@ -414,12 +446,12 @@ public class PlayerControlThree : MonoBehaviour {
 
     public IEnumerator PlayerFreeze(float freezeTime, float freezeSpeed)
     {
-        IsFreeze = true;
+        this.PS.IsFreeze = true;
         float tempspeed = PMI.Speed;
         PMI.Speed /= freezeSpeed;
         yield return new WaitForSeconds(freezeTime);
         PMI.Speed *= freezeSpeed;
-        IsFreeze = false;
+        this.PS.IsFreeze = false;
     }
 
     private void OnCollisionEnter(Collision col)
@@ -431,7 +463,7 @@ public class PlayerControlThree : MonoBehaviour {
         }
     }
 
-    void KnockBack(Vector3 targetV)
+    private void KnockBack(Vector3 targetV)
     {
         this.gameObject.transform.localPosition = new Vector3(0, 26, 0);
         this.gameObject.transform.localRotation = Quaternion.identity;
@@ -442,19 +474,19 @@ public class PlayerControlThree : MonoBehaviour {
         PMI.GetPlayerParent().rotation = Quaternion.Slerp(PMI.GetPlayerParent().rotation, QQ, (1f-(Mathf.Sqrt(flowtime)))*Time.fixedDeltaTime);
     }
 
-    IEnumerator SwitchKnockBack()
+    private IEnumerator SwitchKnockBack()
     {
         PMI.Time = Time.fixedTime;
-        IsKnockBack = true;
-        IsgameOver = true;
+        this.PS.IsKnockBack = true;
+        this.PS.IsStop = true;
         yield return new WaitForSeconds(1f);
-        IsKnockBack = false;
-        IsgameOver = false;
+        this.PS.IsKnockBack = false;
+        this.PS.IsStop = false;
     }
 
     public void FixedUpdate()
     {
-        if (IsgameOver == false && GM.IsGameStart())
+        if (!PS.IsStop && GM.IsGameStart())
         {
             LeaderSheep();
             //KeyboardInput();
@@ -462,7 +494,7 @@ public class PlayerControlThree : MonoBehaviour {
             //CheckSheepType();
             SearchClosestSheep();
 
-            if ((PS == PlayerState.BACKTOHOME || GM.SheepList.Count == 0) && Vector3.Distance(this.gameObject.transform.position, this.HQ.transform.position) < 0.4)
+            if ((PSS == PlayerSearchState.BACKTOHOME || GM.GetSheepListCount() == 0) && Vector3.Distance(this.gameObject.transform.position, this.HQ.transform.position) < 0.4)
             {
                 return;
             }
@@ -472,7 +504,7 @@ public class PlayerControlThree : MonoBehaviour {
             }
         }
 
-        if (IsKnockBack)
+        if (PS.IsKnockBack)
         {
             KnockBack(PMI.targetVector);
         }

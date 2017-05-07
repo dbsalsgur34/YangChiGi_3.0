@@ -13,6 +13,7 @@ namespace ClientSide
 	    public static KingGodClient instance;
         public int Seed;
         public int Playernum;
+        private NetworkMessageSender NMS;
 
 	    void Awake(){
             if (Instance == null)           //Static 변수를 지정하고 이것이 없을경우 - PlayManage 스크립트를 저장하고 이것이 전 범위적인 싱글톤 오브젝트가 된다.
@@ -25,6 +26,7 @@ namespace ClientSide
                 Destroy(this.gameObject);   //싱글톤 오브젝트가 있을경우 다른 오브젝트를 제거.
             }
             networkTranslator = GetComponent<NetworkTranslator>();
+            NMS = new NetworkMessageSender();
 
 	    }
 
@@ -38,6 +40,11 @@ namespace ClientSide
 		    Network_Client.ShutDown();
 	    }
 
+        public NetworkMessageSender GetNetworkMessageSender()
+        {
+            return this.NMS;
+        }
+
         public void Matching()
         {
             Network_Client.Send(freeId.ToString() + "/" + "Matching");
@@ -47,6 +54,8 @@ namespace ClientSide
         {
             this.freeId = freeId;
         }
+
+
 
     }
 

@@ -21,7 +21,7 @@ public class PlayerControltwo : MonoBehaviour
 
     public bool InHQ;
     public bool IsgameOver;
-    public PlayerState PS;
+    public PlayerSearchState PS;
     //비공개 항목
 
     string HorizontalControlName;
@@ -40,7 +40,7 @@ public class PlayerControltwo : MonoBehaviour
         IsgameOver = false;
         string HQname = "HQ" + PlayerNumber.ToString();
         HQ = GameObject.Find(HQname);
-        PS = PlayerState.BACKTOHOME;
+        PS = PlayerSearchState.BACKTOHOME;
     }
 
     public void PlayerInput()
@@ -61,7 +61,7 @@ public class PlayerControltwo : MonoBehaviour
 #endif
     }
 
-    void KeyboardInput()
+    private void KeyboardInput()
     {
         PlayerInput();
         if (HorizontalInputValue != 0)
@@ -88,7 +88,7 @@ public class PlayerControltwo : MonoBehaviour
         SheepList.RemoveRange(index, SheepList.Count - index);
     }
 
-    void GoStraight()
+    private void GoStraight()
     {
         if (TargetSheep != null)
         {
@@ -99,7 +99,7 @@ public class PlayerControltwo : MonoBehaviour
         }
     }
 
-    void LeaderSheep()
+    private void LeaderSheep()
     {
         for (int i = 0; i < SheepList.Count; i++)
         {
@@ -125,7 +125,7 @@ public class PlayerControltwo : MonoBehaviour
         }
     }
 
-    float CalSheepScore()
+    private float CalSheepScore()
     {
         float calscore = InitialScore;
         foreach (GameObject i in SheepList)
@@ -135,7 +135,7 @@ public class PlayerControltwo : MonoBehaviour
         return calscore;
     }
 
-    void CheckSheepType()
+    private void CheckSheepType()
     {
         int bronze = 0;
         int sliver = 0;
@@ -162,20 +162,20 @@ public class PlayerControltwo : MonoBehaviour
 
     }
 
-    void ChangeSheep(string targettag, GameObject targetSheep)
+    private void ChangeSheep(string targettag, GameObject targetSheep)
     {
         int ChangeCount = 5;
         for (int i = SheepList.Count - 1; ; i--)
         {
             if (ChangeCount == 5 && SheepList[i].tag == targettag)
             {
-                GameObject newsheep = Instantiate(targetSheep, GM.Sheephorde.transform);
+                GameObject newsheep = Instantiate(targetSheep);
                 SheepControlThree tempsheepcontrol = newsheep.GetComponent<SheepControlThree>();
                 newsheep.transform.position = SheepList[i].transform.position;
                 newsheep.transform.rotation = SheepList[i].transform.rotation;
 
                 tempsheepcontrol.Master = SheepList[i].GetComponent<SheepControlThree>().Master;
-                tempsheepcontrol.SS = SheepState.HAVEOWNER;
+                //tempsheepcontrol.SS = SheepState.HAVEOWNER;
                 GameObject tempsheep = SheepList[i];
                 SheepList[i] = newsheep;
                 tempsheep.SetActive(false);
@@ -202,7 +202,7 @@ public class PlayerControltwo : MonoBehaviour
         }
     }
 
-    void AfterBoost(float targetTime,float DurationTime)
+    private void AfterBoost(float targetTime,float DurationTime)
     {
         if (IsBoost == true && targetTime >= DurationTime)
         {
@@ -212,7 +212,7 @@ public class PlayerControltwo : MonoBehaviour
         }
     }
 
-    void SearchClosestSheep()
+    /*void SearchClosestSheep()
     {
         int Mincount = 0;
         float distance1;
@@ -252,24 +252,24 @@ public class PlayerControltwo : MonoBehaviour
         {
             TargetSheep = GM.GetEnemy().gameObject;
         }
-    }
+    }*/
 
     public void SearchPhaseShift()
     {
-        if (PS == PlayerState.SHEEPSEARCH)
+        if (PS == PlayerSearchState.SHEEPSEARCH)
         {
-            PS = PlayerState.ENEMYSEARCH;
+            PS = PlayerSearchState.ENEMYSEARCH;
             TargetSheep = HQ;
         }
-        else if (PS == PlayerState.BACKTOHOME)
+        else if (PS == PlayerSearchState.BACKTOHOME)
         {
-            PS = PlayerState.SHEEPSEARCH;
-            SearchClosestSheep();
+            PS = PlayerSearchState.SHEEPSEARCH;
+            //SearchClosestSheep();
         }
-        else if (PS == PlayerState.ENEMYSEARCH)
+        else if (PS == PlayerSearchState.ENEMYSEARCH)
         {
-            PS = PlayerState.BACKTOHOME;
-            SearchClosestSheep();
+            PS = PlayerSearchState.BACKTOHOME;
+            //SearchClosestSheep();
         }
     }
 
@@ -304,15 +304,15 @@ public class PlayerControltwo : MonoBehaviour
             SheepCount = CalSheepScore();
             //CheckSheepType();
             //AfterBoost(Time.fixedTime, 60f);
-            SearchClosestSheep();
-            if ((PS == PlayerState.BACKTOHOME || GM.SheepList.Count ==0) && Vector3.Distance(this.gameObject.transform.position, this.HQ.transform.position) < 0.4)
-            {
-                return;
-            }
-            else
-            {
-                GoStraight();
-            }
+            //SearchClosestSheep();
+            //if ((PS == PlayerState.BACKTOHOME || GM.SheepList.Count ==0) && Vector3.Distance(this.gameObject.transform.position, this.HQ.transform.position) < 0.4)
+            //{
+            //    return;
+            //}
+            //else
+            //{
+            //    GoStraight();
+            //}
         }
     }
 }

@@ -38,17 +38,17 @@ public class Accel : SkillBase {
     IEnumerator AccelAction()
     {
         PlayerControlThree OwnerPCT = Owner.GetComponent<PlayerControlThree>();
-        if (OwnerPCT.IsBoost)
+        if (OwnerPCT.GetPlayerState().IsBoost)
         {
-            yield return new WaitUntil(() => OwnerPCT.IsBoost == false);
+            yield return new WaitUntil(() => OwnerPCT.GetPlayerState().IsBoost == false);
         }
-        OwnerPCT.IsBoost = true;
+        OwnerPCT.GetPlayerState().IsBoost = true;
         OwnerPCT.GetPMI().Speed *= 1.5f;
         OwnerPCT.GetPMI().TurnSpeed *= 1.5f;
         yield return new WaitForSeconds(duration);
         OwnerPCT.GetPMI().Speed /= 1.5f;
         OwnerPCT.GetPMI().TurnSpeed /= 1.5f;
-        OwnerPCT.IsBoost = false;
+        OwnerPCT.GetPlayerState().IsBoost = false;
         this.gameObject.SetActive(false);
     }
 }

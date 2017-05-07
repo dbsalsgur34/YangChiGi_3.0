@@ -7,7 +7,7 @@ namespace ClientSide
 {
     public class ClientMsgHandler : MsgHandler
     {
-        public override void HandleMsg(string networkMessage)
+        protected override void HandleMsg(string networkMessage)
         {
             string[] splitMsg = networkMessage.Split('/');
             switch (splitMsg[0])
@@ -23,7 +23,7 @@ namespace ClientSide
                     StartCoroutine(GameUIManager.GUIMInstance.ReadyScreen());
                     break;
                 case "Shepherd":
-                    GameManager.GMInstance.GetMessage(splitMsg[0],splitMsg[1]);
+                    GameManager.GMInstance.GetMessage(splitMsg[0], splitMsg[1]);
                     break;
                 case "DequeComplete":
                     Destroy(KingGodClient.Instance.gameObject);
@@ -36,7 +36,7 @@ namespace ClientSide
                     break;
                 case "GameEnd":
                     Debug.Log("Get");
-                    StartCoroutine(GameManager.GMInstance.GoToResultScene());
+                    StartCoroutine(GameUIManager.GUIMInstance.GoToResultScene());
                     break;
                 default:
                     break;

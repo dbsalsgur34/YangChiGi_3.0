@@ -9,7 +9,7 @@ public class LobbyManager : ManagerBase {
     private Text playerleveltext;
     private Text playerIDtext;
     private Text playerEXP;
-    private GameObject clientObject;
+    //private GameObject clientObject;
     private GameObject LoadingScene;
     private Image targeticon;
     private Text MatchingMessage;
@@ -22,6 +22,11 @@ public class LobbyManager : ManagerBase {
 
     private GameObject NetworkObject;
     private bool IsGameMatching;
+
+    public override void Awake()
+    {
+        base.Awake();
+    }
 
     public override void Start()
     {
@@ -99,8 +104,7 @@ public class LobbyManager : ManagerBase {
     {
         IsGameMatching = false;
         LoadingScene.SetActive(false);
-        Network_Client.Send("Cancle");
-        NetworkObject.SetActive(false);
+        KingGodClient.Instance.GetNetworkMessageSender().SendCancleToServer();
     }
 
     private void CalEXP()

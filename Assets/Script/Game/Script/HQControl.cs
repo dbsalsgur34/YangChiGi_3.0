@@ -47,13 +47,15 @@ public class HQControl : MonoBehaviour {
         if (col.gameObject.tag == "Head" && col.gameObject.GetComponent<PlayerControlThree>().HQ == this.gameObject)
         {
             StartCoroutine(col.gameObject.GetComponent<PlayerControlThree>().EnterHQ());
-            col.gameObject.GetComponent<PlayerControlThree>().InHQ = true;
+            col.gameObject.GetComponent<PlayerControlThree>().GetPlayerState().InHQ = true;
         }
         else if (col.gameObject.tag == "Dog")
         {
-            if (col.gameObject.GetComponent<Dog>().SheepList.Count == 0)
+            Dog dangDang = col.gameObject.GetComponent<Dog>();
+
+            if (dangDang.GetDogSheepCount() == 0)
             {
-                if (col.gameObject.GetComponent<Dog>().DS == DogState.GO)
+                if (dangDang.GetDogState() == DogState.GO)
                 {
                     return;
                 }
@@ -64,7 +66,7 @@ public class HQControl : MonoBehaviour {
             }
             else
             {
-                StartCoroutine(col.gameObject.GetComponent<Dog>().EnterHQ());
+                StartCoroutine(dangDang.EnterHQ());
             }
         }
     }
@@ -73,7 +75,7 @@ public class HQControl : MonoBehaviour {
     {
         if (col.gameObject.tag == "Head" && col.gameObject.GetComponent<PlayerControlThree>().HQ == this.gameObject)
         {
-            col.gameObject.GetComponent<PlayerControlThree>().InHQ = false;
+            col.gameObject.GetComponent<PlayerControlThree>().GetPlayerState().InHQ = false;
         }
     }
 

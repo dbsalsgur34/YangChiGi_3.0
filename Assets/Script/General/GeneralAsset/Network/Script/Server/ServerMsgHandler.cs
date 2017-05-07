@@ -7,7 +7,7 @@ namespace ServerSide
 {
     public class ServerMsgHandler : MsgHandler {
 
-        public override void HandleMsg(string networkMessage)
+        protected override void HandleMsg(string networkMessage)
         {
             string[] splitMsg = networkMessage.Split('/');
             switch (splitMsg[1])

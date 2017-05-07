@@ -12,9 +12,9 @@ public enum SkillState
 public class SkillBase : MonoBehaviour {
 
     protected GameManager GM;
-    public GameObject Owner;
+    protected GameObject Owner;
     protected GameObject TG;       //Skill의 Target.
-    public GameObject SkillParent;
+    protected GameObject SkillParent;
     public float PreCoolTime;
     public float waitTime = 5f;
     public float duration = 5f;
@@ -63,5 +63,10 @@ public class SkillBase : MonoBehaviour {
     public virtual bool ShowIsSkillNeedGuideLine()
     {
         return this.IsSkillNeedGuideLine;
+    }
+
+    public bool AreYouMyMaster(GameObject target)
+    {
+        return (target.Equals(this.Owner)) ? true : false;
     }
 }

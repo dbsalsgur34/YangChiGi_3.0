@@ -26,7 +26,7 @@ public class NetworkTranslator : MonoBehaviour {
 			msgCount = ReceiveQueue.GetCount();
 			if(msgCount > 0){
 				for(int loop = 0; loop < msgCount; loop++){
-					msgHandler.HandleMsg(ReceiveQueue.SyncDequeMsg());
+					msgHandler.SetHandleMsg(ReceiveQueue.SyncDequeMsg());
 				}
 			}
 

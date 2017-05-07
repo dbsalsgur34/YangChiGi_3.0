@@ -14,21 +14,22 @@ public enum GameButtonType
 
 public class GameButtonEvent : MonoBehaviour {
 
-    public Button B;
-    public GameManager GM;
-    public PlayerControlThree PCT;
+    private Button B;
+    private GameManager GM;
+    private PlayerControlThree PCT;
     public GameButtonType GBT;
-    public GameObject TempMenu;
-    public bool IsthisButtonActive;
+    private GameObject TempMenu;
+    private bool IsthisButtonActive;
     public bool IsSkillCanActive;
 
-    public Text ButtonText;
+    private Text ButtonText;
     // Use this for initialization
+
     private void Start()
     {
         B = this.gameObject.GetComponent<Button>();
         ButtonText = gameObject.GetComponentInChildren<Text>();
-        GM = GameObject.FindGameObjectWithTag("Manager").GetComponent<GameManager>();
+        GM = GameManager.GMInstance;
         PCT = GM.GetPlayer();
 
         if (GBT == GameButtonType.PHASESHIFTBUTTON)
@@ -47,35 +48,35 @@ public class GameButtonEvent : MonoBehaviour {
         }
     }
 
-    void SwitchPhase()
+    private void SwitchPhase()
     {
         if (GM.IsGameStart())
         {
-            Network_Client.Send("Shepherd/" + KingGodClient.Instance.Playernum +","+ (int)GM.GetPlayer().GetComponent<PlayerControlThree>().PS + "," + GameUIManager.GUIMInstance.GetTimePass());
+            KingGodClient.Instance.GetNetworkMessageSender().SendPlayerStateToServer(KingGodClient.Instance.Playernum, (int)GM.GetPlayer().GetPlayerSearchState(), GameUIManager.GUIMInstance.GetTimePass());
             ChangeSearchButtonText();
         }
     }
 
-    void ChangeSearchButtonText()
+    private void ChangeSearchButtonText()
     {
         string searchtext = "Search";
         string backtohome = "Back";
         string enemytext = "Enemy";
-        if (PCT.PS == PlayerState.BACKTOHOME)
+        if (PCT.GetPlayerSearchState() == PlayerSearchState.BACKTOHOME)
         {
             ButtonText.text = searchtext;
         }
-        else if (PCT.PS == PlayerState.SHEEPSEARCH)
+        else if (PCT.GetPlayerSearchState() == PlayerSearchState.SHEEPSEARCH)
         {
             ButtonText.text = enemytext;
         }
-        else if (PCT.PS == PlayerState.ENEMYSEARCH)
+        else if (PCT.GetPlayerSearchState() == PlayerSearchState.ENEMYSEARCH)
         {
             ButtonText.text = backtohome;
         }
     }
 
-    void SwitchCameraPhase()
+    private void SwitchCameraPhase()
     {
         if (GM.IsGameStart())
         {
@@ -83,22 +84,22 @@ public class GameButtonEvent : MonoBehaviour {
             string HQtext = "HQ";
             string Playertext = "Player";
 
-            if (GM.mainCamera.ReturnCameraState() == CameraState.FREE)
+            if (GM.GetMainCamera().ReturnCameraState() == CameraState.FREE)
             {
                 ButtonText.text = freetext;
             }
-            else if (GM.mainCamera.ReturnCameraState() == CameraState.LOCKONHQ)
+            else if (GM.GetMainCamera().ReturnCameraState() == CameraState.LOCKONHQ)
             {
                 ButtonText.text = HQtext;
             }
-            else if (GM.mainCamera.ReturnCameraState() == CameraState.LOCKONPLAYER)
+            else if (GM.GetMainCamera().ReturnCameraState() == CameraState.LOCKONPLAYER)
             {
                 ButtonText.text = Playertext;
             }
         }
     }
 
-    void OptionButtonEvent()
+    private void OptionButtonEvent()
     {
         if (GM.IsGameStart())
         {

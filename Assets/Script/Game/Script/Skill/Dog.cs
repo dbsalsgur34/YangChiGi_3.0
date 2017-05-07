@@ -11,9 +11,8 @@ public enum DogState
 
 public class Dog : SkillBase {
 
-    public DogState DS;
-    public List<GameObject> SheepList;
-
+    private DogState DS;
+    public List<SheepControlThree> SheepList;
     public float Speed;
     public float mindistance;
 
@@ -28,7 +27,7 @@ public class Dog : SkillBase {
         DS = DogState.GO;
     }
 
-    void GoStraight()
+    private void GoStraight()
     {
         float betangle = Vector3.Angle(Owner.GetComponent<PlayerControlThree>().HQ.transform.position, this.transform.position);
         if (betangle > 90)
@@ -45,7 +44,7 @@ public class Dog : SkillBase {
         }
     }
 
-    void LeaderSheep()
+    private void LeaderSheep()
     {
         for (int i = 0; i < SheepList.Count; i++)
         {
@@ -71,16 +70,16 @@ public class Dog : SkillBase {
         }
     }
 
-    public void ChangeMaster(GameObject Sheep, GameObject target)
+    public void ChangeMaster(SheepControlThree Sheep, PlayerControlThree target)
     {
         int index = SheepList.IndexOf(Sheep);
 
         for (int temp = index; temp <= SheepList.Count - 1; temp++)
         {
-            SheepList[temp].GetComponent<SheepControlThree>().Master = target;
-            GM.FindAndRemoveAtSheepList(this.SheepList[temp]);
-            target.GetComponent<PlayerControlThree>().SheepList.Add(this.SheepList[temp]);
-            SheepList[temp].transform.parent = target.GetComponent<PlayerControlThree>().SheepArea.transform;
+            SheepList[temp].Master = target.gameObject;
+            GM.FindAndRemoveAtSheepList(this.SheepList[temp].gameObject);
+            target.SheepList.Add(this.SheepList[temp].gameObject);
+            SheepList[temp].transform.parent = target.SheepArea.transform;
             SheepList[temp].GetComponent<SheepControlThree>().SetthisLocalPosition();
         }
         SheepList.RemoveRange(index, SheepList.Count - index);
@@ -88,21 +87,22 @@ public class Dog : SkillBase {
 
     public override void SkillAction(Collider other)
     {
-        if (other.gameObject.tag == "BronzeSheep" && other.GetComponent<SheepControlThree>().SS != SheepState.HAVEOWNER)
+        if (other.gameObject.tag == "BronzeSheep" && other.GetComponent<SheepControlThree>().GetSheepState() != SheepState.HAVEOWNER)
         {
             bool IsthisSheepInList = false;
-            foreach (GameObject i in this.SheepList)
+            foreach (SheepControlThree i in this.SheepList)
             {
-                if (other.gameObject == i)
+                if (other.gameObject == i.gameObject)
                 {
                     IsthisSheepInList = true;
                 }
             }
             if (IsthisSheepInList == false)
             {
-                other.GetComponent<SheepControlThree>().Master = this.gameObject;
-                other.GetComponent<SheepControlThree>().SS = SheepState.HAVEOWNER;
-                this.SheepList.Add(other.gameObject);
+                SheepControlThree SCT = other.GetComponent<SheepControlThree>();
+                SCT.Master = this.gameObject;
+                SCT.CheckSheepState();
+                this.SheepList.Add(SCT);
             }
         }
     }
@@ -113,14 +113,24 @@ public class Dog : SkillBase {
         {
             for (int i = SheepList.Count - 1; i >= 0; i--)
             {
-                GM.FindAndRemoveAtSheepList(this.SheepList[i]);
-                SheepList[i].SetActive(false);
+                GM.FindAndRemoveAtSheepList(this.SheepList[i].gameObject);
+                SheepList[i].gameObject.SetActive(false);
                 SheepList.RemoveAt(i);
                 Owner.GetComponent<PlayerControlThree>().Score++;
                 yield return new WaitForSeconds(0.1f);
             }
             this.gameObject.SetActive(false);
         }
+    }
+
+    public DogState GetDogState()
+    {
+        return this.DS;
+    }
+
+    public int GetDogSheepCount()
+    {
+        return this.SheepList.Count;
     }
 
     public override bool SetInstance(GameObject IO, GameObject ITG)
@@ -152,5 +162,6 @@ public class Dog : SkillBase {
         LeaderSheep();
     }
 
+    
 
 }

@@ -21,7 +21,7 @@ public class Hornet : SkillBase {
         float slowSpeed = speed / 10;
         float goSpeed;
 
-        if (Target != null && !Target.GetComponent<PlayerControlThree>().InHQ )
+        if (Target != null && !Target.GetComponent<PlayerControlThree>().GetPlayerState().InHQ )
         {
             goSpeed = speed;
         }
@@ -65,14 +65,15 @@ public class Hornet : SkillBase {
     {
         if (other.gameObject.tag == "Head" && other.gameObject == TG)
         {
-            if (!other.gameObject.GetComponent<PlayerControlThree>().InHQ)
+            PlayerControlThree otherPCT = other.GetComponent<PlayerControlThree>();
+            if (!otherPCT.GetPlayerState().InHQ)
             {
-                if (other.GetComponent<PlayerControlThree>().IsFreeze)
+                if (otherPCT.GetPlayerState().IsFreeze)
                 {
                     SkillParent.SetActive(false);
                     return;
                 }
-                other.gameObject.GetComponent<PlayerControlThree>().StartCoroutine(other.gameObject.GetComponent<PlayerControlThree>().PlayerFreeze(this.freezeTime,100));
+                otherPCT.StartCoroutine(otherPCT.PlayerFreeze(this.freezeTime,100));
             }
             SkillParent.SetActive(false);
         }

@@ -55,7 +55,7 @@ public class SheepControltwo : MonoBehaviour
             }
             else if (Master.gameObject.tag == "Dog")
             {
-                Master.GetComponent<Dog>().ChangeMaster(this.gameObject, target);
+                //Master.GetComponent<Dog>().ChangeMaster(this.gameObject, target);
                 ResetTarget(target.gameObject);
             }
         }

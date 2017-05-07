@@ -5,7 +5,7 @@ using UnityEngine;
 public class DemoMsgHandler : MsgHandler {
 	#region implemented abstract members of MsgHandler
 
-	public override void HandleMsg (string networkMessage){
+	protected override void HandleMsg (string networkMessage){
 		Debug.Log ("MSG: " + networkMessage);
 	}
 

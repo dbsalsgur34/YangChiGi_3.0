@@ -14,18 +14,20 @@ public class DragAndDropItem : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     static public event DragEvent OnItemDragStartEvent;                             // Drag start event
     static public event DragEvent OnItemDragEndEvent;                               // Drag end event
     public bool IsItemCanDrag;
-    public GameManager GM;
+
     public LayerMask LM;
 
     public float time;
     public Text timetext;
 
-    int num;
-    bool IsSkillNeedGuideLine;
+    private int num;
+    private bool IsSkillNeedGuideLine;
+    private GameManager GM;
 
     private void Start()
     {
-        GM.SM.SetSkillPanelQueue(this.gameObject.GetComponent<DragAndDropItem>());
+        GM = GameManager.GMInstance;
+        GM.GetSkillManager().SetSkillPanelQueue(this.gameObject.GetComponent<DragAndDropItem>());
         timetext = GetComponentInChildren<Text>();
         timetext.gameObject.SetActive(false);
     }
@@ -52,7 +54,7 @@ public class DragAndDropItem : MonoBehaviour, IBeginDragHandler, IDragHandler, I
                 icon.transform.SetAsLastSibling();                                      // Set as last child in canvas transform
             }
 
-            GM.mainCamera.SetIsSkillCutScene(true);
+            GM.GetMainCamera().SetIsSkillCutScene(true);
 
             if (OnItemDragStartEvent != null)
             {
@@ -79,7 +81,7 @@ public class DragAndDropItem : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         }
     }
 
-    void CheckIsIcononthePlanet()
+    private void CheckIsIcononthePlanet()
     {
         RaycastHit hit = new RaycastHit();
 
@@ -91,12 +93,12 @@ public class DragAndDropItem : MonoBehaviour, IBeginDragHandler, IDragHandler, I
             RazorActiveOption(true,true);
             GM.SetIsSkillOnthePlanaet(true);
             GM.hitVector = hit.point;
-            GM.hitMarkerParent.SetActive(true);
+            GM.SetHitMarkerParentActive(true);
         }
         else
         {
-            GM.hitMarkerParent.SetActive(false);
-            GM.SetIsSkillOnthePlanaet(false);
+            GM.SetHitMarkerParentActive(false);
+            GM.SetIsSkillOnthePlanaet(true);
             RazorActiveOption(false,false);
         }
     }
@@ -113,8 +115,6 @@ public class DragAndDropItem : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         }
     }
 
-    
-
     public void OnEndDrag(PointerEventData eventData)
     {
         if (icon != null)
@@ -130,15 +130,15 @@ public class DragAndDropItem : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         icon = null;
         sourceCell = null;
 
-        GM.mainCamera.SetIsSkillCutScene(false);
+        GM.GetMainCamera().SetIsSkillCutScene(false);
         RazorActiveOption(false,false);
-        GM.hitMarkerParent.gameObject.SetActive(false);
+        GM.SetHitMarkerParentActive(false);
         if (GM.IsSkillCanUse())
         {
-            Network_Client.Send("Skill/" + KingGodClient.Instance.Playernum + "," + num + "," + GM.hitVector.x + "," + GM.hitVector.y + "," + GM.hitVector.z +"," + GameUIManager.GUIMInstance.GetTimePass());
+            KingGodClient.Instance.GetNetworkMessageSender().SendSkillVectorToServer(KingGodClient.Instance.Playernum,num,GM.hitVector,GameUIManager.GUIMInstance.GetTimePass());
             GM.SetIsSkillOnthePlanaet(false);
             IsItemCanDrag = false;
-            GM.SM.SetSkillPanelQueue(this.gameObject.GetComponent<DragAndDropItem>());
+            GM.GetSkillManager().SetSkillPanelQueue(this.gameObject.GetComponent<DragAndDropItem>());
         }
         else { return; }
     }

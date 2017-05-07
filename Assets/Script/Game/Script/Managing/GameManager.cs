@@ -14,19 +14,20 @@ public class GameManager : ManagerBase {
     private GameObject Enemy;
     private int PlayerNumber;
     private GameObject Player;
-    public GameObject Sheephorde;
-    GameObject bronzesheepprefab;
-    //public GameObject silversheepprefab;
-    //public GameObject goldensheepprefab;
-    public GameObject BackGround;
-
-    public CameraControl mainCamera;
-    public SkillManager SM;
-    public HQControl HQ;
+    private GameObject Sheephorde;
+    private GameObject bronzesheepprefab;
+    /*public GameObject silversheepprefab;
+    public GameObject goldensheepprefab;*/
+    private GameObject BackGround;
+    private CameraControl mainCamera;
+    private SkillManager SM;
+    private HQControl HQ;
     private RazorControl RC;
     private RazorControl CenterRC;
-    public List<GameObject> SheepList;
+
+    public List<SheepControlThree> SheepList;
     public List<GameObject> grassprefab;
+
     private float PlayerScore;
     private float EnemyScore;
 
@@ -35,8 +36,8 @@ public class GameManager : ManagerBase {
     public int initialSheep;
     public float delayTime = 0.1f;
 
-    bool IsSkillonthePlanet;
-    int RazorPoint;
+    private bool IsSkillonthePlanet;
+    private int RazorPoint;
 
     public Vector3 hitVector
     {
@@ -44,7 +45,7 @@ public class GameManager : ManagerBase {
     }
 
     private SpriteRenderer hitMarker;
-    public GameObject hitMarkerParent;
+    private GameObject hitMarkerParent;
 
     private GameUIManager GUIM;
     private float midTime;
@@ -64,12 +65,13 @@ public class GameManager : ManagerBase {
         base.Awake();
         GMInstance = this;
         Planet = GameObject.Find("Planet");
-        Sheephorde = GameObject.Find("Sheephorde");
+        Sheephorde = GameObject.FindGameObjectWithTag("SheepHorde");
         BackGround = GameObject.Find("BackGround");
         bronzesheepprefab = Resources.Load<GameObject>("Prefab/Sheeps/BronzeSheep");
         RC = GameObject.FindGameObjectWithTag("Razor").GetComponent<RazorControl>();
         CenterRC = GameObject.FindGameObjectWithTag("CenterRazor").GetComponent<RazorControl>();
-        SM = GameObject.Find("SkillManager").GetComponent<SkillManager>();
+        SM = GameObject.FindGameObjectWithTag("SkillManager").GetComponent<SkillManager>();
+        mainCamera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraControl>();
         this.PlayerNumber = KingGodClient.Instance.Playernum;
         if (PlayerNumber == 1)
         {
@@ -92,14 +94,13 @@ public class GameManager : ManagerBase {
         GrassSpawn(grassprefab, 24.5f, 150);
         //스킬 이펙트 초기화
         hitMarkerInit();
-
     }
 
     public override void Start()
     {
         base.Start();
         HQ = Player.GetComponent<PlayerControlThree>().HQ.GetComponent<HQControl>();
-        Network_Client.Send("Ready/" + KingGodClient.Instance.Playernum);
+        KingGodClient.Instance.GetNetworkMessageSender().SendReadyToServer(KingGodClient.Instance.Playernum);
         midTime = 0;
     }
 
@@ -112,7 +113,7 @@ public class GameManager : ManagerBase {
             {
                 GameObject tempSheep = Instantiate(sheepprefab, newposition, Quaternion.Euler(0, 0, 0), Sheephorde.transform);
                 tempSheep.transform.rotation = Quaternion.FromToRotation(tempSheep.transform.up, newposition) * tempSheep.transform.rotation;
-                SheepList.Add(tempSheep);
+                SheepList.Add(tempSheep.GetComponent<SheepControlThree>());
             }
             else
             {
@@ -133,20 +134,14 @@ public class GameManager : ManagerBase {
         }    
     }
 
-    public IEnumerator GoToResultScene()
-    {
-        if (!GUIM.GetIsTimerStart())
-        {
-            yield return new WaitForSeconds(2f);
-            StartCoroutine(PlayManage.Instance.LoadScene("Result"));
-        }
-    }
-
     public void FindAndRemoveAtSheepList(GameObject target)
     {
-        int index;
+        int index = -1;
         index = SheepList.FindIndex(x => x.gameObject == target);
-        SheepList.RemoveAt(index);
+        if (index > -1)
+        {
+            SheepList.RemoveAt(index);
+        }
     }
 
     /*public void SkillButtonAction(Button targetbutton)
@@ -275,7 +270,7 @@ public class GameManager : ManagerBase {
     */
 
     // Update is called once per frame
-    void FixedUpdate()
+    private void FixedUpdate()
     {
         Application.runInBackground = true;
 
@@ -289,7 +284,7 @@ public class GameManager : ManagerBase {
         if (GUIM.GetTimePass() - midTime > 5)
         {
             midTime = GUIM.GetTimePass();
-            Network_Client.Send("Position/" + Player.transform.position +"," + Enemy.transform.position + "," + GUIM.GetTimePass());
+            KingGodClient.Instance.GetNetworkMessageSender().SendPlayerEnemyPositionToServer(this.Player.transform.position,this.Enemy.transform.position,GUIM.GetTimePass());
             SheepSpawn(bronzesheepprefab, PlanetScale, 1);
         }
     }
@@ -358,6 +353,16 @@ public class GameManager : ManagerBase {
         return this.EnemyScore;
     }
 
+    public SkillManager GetSkillManager()
+    {
+        return this.SM;
+    }
+
+    public CameraControl GetMainCamera()
+    {
+        return this.mainCamera;
+    }
+
     public void GetMessage(string MessageType , string Message)
     {
         string[] MessageArray = Message.Split(',');
@@ -384,8 +389,23 @@ public class GameManager : ManagerBase {
                 StartCoroutine(SendMessageToSkillUse(int.Parse(MessageArray[1]),target.gameObject,Opposite.gameObject,target.HQ, skillVector, float.Parse(MessageArray[5])));
                 break;
             case "Out":
-                target.PS = PlayerState.BACKTOHOME;
+                target.SetPlayerState(PlayerSearchState.BACKTOHOME);
                 break;
         }
+    }
+
+    public void SetHitMarkerParentActive(bool state)
+    {
+        this.hitMarkerParent.SetActive(state);
+    }
+
+    public SheepControlThree GetSheepFromSheepList(int index)
+    {
+        return this.SheepList[index];
+    }
+
+    public int GetSheepListCount()
+    {
+        return this.SheepList.Count;
     }
 }

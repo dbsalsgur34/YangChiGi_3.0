@@ -144,6 +144,22 @@ public class CameraControl : MonoBehaviour
         return this.CS;
     }
 
+    public void SwitchCameraState()
+    {
+        if (this.CS == CameraState.FREE)
+        {
+            this.CS = CameraState.LOCKONHQ;
+        }
+        else if (this.CS == CameraState.LOCKONHQ)
+        {
+            this.CS = CameraState.LOCKONPLAYER;
+        }
+        else if (this.CS == CameraState.LOCKONPLAYER)
+        {
+            this.CS = CameraState.FREE;
+        }
+    }
+
     public void SetIsSkillCutScene(bool IsSkillCutScene)
     {
         this.IsSkillCutScene = IsSkillCutScene;
