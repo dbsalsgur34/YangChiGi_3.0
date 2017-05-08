@@ -19,8 +19,6 @@ public class GameButtonEvent : MonoBehaviour {
     private PlayerControlThree PCT;
     public GameButtonType GBT;
     private GameObject TempMenu;
-    private bool IsthisButtonActive;
-    public bool IsSkillCanActive;
 
     private Text ButtonText;
     // Use this for initialization
@@ -52,7 +50,7 @@ public class GameButtonEvent : MonoBehaviour {
     {
         if (GM.IsGameStart())
         {
-            KingGodClient.Instance.GetNetworkMessageSender().SendPlayerStateToServer(KingGodClient.Instance.Playernum, (int)GM.GetPlayer().GetPlayerSearchState(), GameUIManager.GUIMInstance.GetTimePass());
+            KingGodClient.Instance.GetNetworkMessageSender().SendPlayerStateToServer(KingGodClient.Instance.playerNum, (int)GM.GetPlayer().GetPlayerSearchState(), GameUIManager.GUIMInstance.GetTimePass());
             ChangeSearchButtonText();
         }
     }
@@ -83,6 +81,8 @@ public class GameButtonEvent : MonoBehaviour {
             string freetext = "Free";
             string HQtext = "HQ";
             string Playertext = "Player";
+
+            GM.GetMainCamera().SwitchCameraState();
 
             if (GM.GetMainCamera().ReturnCameraState() == CameraState.FREE)
             {

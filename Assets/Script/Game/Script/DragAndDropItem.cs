@@ -98,7 +98,7 @@ public class DragAndDropItem : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         else
         {
             GM.SetHitMarkerParentActive(false);
-            GM.SetIsSkillOnthePlanaet(true);
+            GM.SetIsSkillOnthePlanaet(false);
             RazorActiveOption(false,false);
         }
     }
@@ -135,7 +135,7 @@ public class DragAndDropItem : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         GM.SetHitMarkerParentActive(false);
         if (GM.IsSkillCanUse())
         {
-            KingGodClient.Instance.GetNetworkMessageSender().SendSkillVectorToServer(KingGodClient.Instance.Playernum,num,GM.hitVector,GameUIManager.GUIMInstance.GetTimePass());
+            KingGodClient.Instance.GetNetworkMessageSender().SendSkillVectorToServer(KingGodClient.Instance.playerNum,num,GM.hitVector,GameUIManager.GUIMInstance.GetTimePass());
             GM.SetIsSkillOnthePlanaet(false);
             IsItemCanDrag = false;
             GM.GetSkillManager().SetSkillPanelQueue(this.gameObject.GetComponent<DragAndDropItem>());

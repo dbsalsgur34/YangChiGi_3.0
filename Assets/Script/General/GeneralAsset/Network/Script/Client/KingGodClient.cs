@@ -12,7 +12,7 @@ namespace ClientSide
         private int freeId = -1;
 	    public static KingGodClient instance;
         public int Seed;
-        public int Playernum;
+        public int playerNum;
         private NetworkMessageSender NMS;
 
 	    void Awake(){
@@ -54,9 +54,6 @@ namespace ClientSide
         {
             this.freeId = freeId;
         }
-
-
-
     }
 
 }

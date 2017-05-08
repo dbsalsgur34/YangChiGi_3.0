@@ -35,7 +35,7 @@ namespace ServerSide{
 					Socket welcomeSocket = tcpListener.AcceptSocket();
 					ClientManager.AddClient(welcomeSocket);
 				} catch (Exception e) {
-					
+                    Debug.Log(e.ToString());
 					break;
 				}
 			}

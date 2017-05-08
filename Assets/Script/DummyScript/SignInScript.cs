@@ -11,8 +11,8 @@ using Firebase.Unity.Editor;
 
 public class SignInScript : MonoBehaviour {
     FirebaseAuth auth;
-    FirebaseDatabase db;
-    DatabaseReference dbReference;
+    //FirebaseDatabase db;
+    //DatabaseReference dbReference;
 
     public InputField email;
     public InputField password;
@@ -24,8 +24,8 @@ public class SignInScript : MonoBehaviour {
         FirebaseApp.DefaultInstance.SetEditorDatabaseUrl("https://yang-chigi.firebaseio.com/");
 
         auth = FirebaseAuth.DefaultInstance;
-        db = FirebaseDatabase.DefaultInstance;
-        dbReference = db.RootReference;
+        //db = FirebaseDatabase.DefaultInstance;
+        //dbReference = db.RootReference;
         email.text = "asdf@naver.com";
         password.text = "asdfasdf";
 

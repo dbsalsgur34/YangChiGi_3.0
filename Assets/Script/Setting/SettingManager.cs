@@ -54,7 +54,7 @@ public class SettingManager : ManagerBase {
 
     private void DeleteAllData()
     {
-        PlayManage.Instance.ResetData();
+        PlayManage.Instance.SendMessage("ResetData");
         this.sound.value = 50;
         this.Warning.SetActive(false);
     }

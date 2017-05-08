@@ -38,7 +38,7 @@ public class Network_Client {
         serverAddress = ip;
         tcpClient = new TcpClient();
 		NetworkId = -1;
-
+        Debug.Log("StartConnect");
 		thread_connect = new Thread(BeginConnection);
 		thread_connect.Start();
 	}
@@ -46,16 +46,23 @@ public class Network_Client {
 	static bool shutDown = false;
 	private static void BeginConnection(){
 		int conCount = 0;
+        if (shutDown == true)
+        {
+            shutDown = false;
+        }
 		while(isConnected == false){
-			if (shutDown)
-				return;
+            if (shutDown)
+            {
+                Debug.Log("Already ShutDowned");
+                return;
+            }
 			try{
 				Debug.Log("Connecting to..." + serverAddress + ":" + PORT);
 				tcpClient.Connect(serverAddress, PORT);
 				isConnected = true;
 
 			}catch(SocketException e){
-				//ConsoleMsgQueue.EnqueMsg("Connection Msg: " + e.SocketErrorCode.ToString());
+				Debug.Log("Connection Msg: " + e.SocketErrorCode.ToString());
 				conCount++;
 				if(conCount > 5){
 					Debug.Log("Fail Connect, Exit Connecting");
@@ -65,7 +72,7 @@ public class Network_Client {
 
 				Thread.Sleep(2000);
 			}catch(Exception e){
-			//	ConsoleMsgQueue.EnqueMsg(e.ToString());
+			    Debug.Log(e.ToString());
 			}
 		}
 			
@@ -87,7 +94,7 @@ public class Network_Client {
 				streamWriter.WriteLine(str);
 				streamWriter.Flush();
 			}catch(Exception e){
-				//ConsoleMsgQueue.EnqueMsg("Send: " + e.Message);
+				Debug.Log("Send: " + e.Message);
 				isConnected = false;
 				networkId = -1;
 			}
@@ -112,7 +119,7 @@ public class Network_Client {
 				}
 			}
 		}catch(Exception e){
-			//ConsoleMsgQueue.EnqueMsg("ReceivingOperation: " + e.Message);
+            Debug.Log("ReceivingOperation: " + e.Message);
 		}
 
 		isConnected = false;
@@ -136,4 +143,23 @@ public class Network_Client {
         Debug.Log ("SHUT DOWN");
 	}
 
+    public static void StopThread()
+    {
+        isConnected = false;
+        shutDown = true;
+        if(thread_connect != null)
+            thread_connect.Abort();
+        if(thread_receive != null)
+            thread_receive.Abort();
+        if (streamReader != null)
+            streamReader.Close();
+        if (streamWriter != null)
+            streamWriter.Close();
+        if (tcpClient != null)
+            tcpClient.Close();
+
+        Network_Client.Send("Cancle");
+
+        Debug.Log("Cancle");
+    }
 }

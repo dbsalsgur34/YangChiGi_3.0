@@ -4,12 +4,18 @@ using UnityEngine;
 
 public class CenterRazor : MonoBehaviour {
 
-    float theta;
-
-    IEnumerator DrawCircle(Vector3 pos1, float radius)
+    private float radius;
+    private LineRenderer lineRenderer;
+    private Color lineColor;
+    private float vertexCount;
+    private void Start()
     {
-        theta = 0;
-        float vertexCount;
+        lineRenderer = this.gameObject.GetComponent<LineRenderer>();
+        lineRenderer.startColor = lineColor; lineRenderer.endColor = lineColor;
+        lineRenderer.startWidth = 0.25f; lineRenderer.endWidth = 0.25f;
+        lineColor = Color.red;
+        radius = 26;
+
         if (radius < 6)
         {
             vertexCount = 2 * Mathf.PI * radius * 2;
@@ -18,13 +24,11 @@ public class CenterRazor : MonoBehaviour {
         {
             vertexCount = 2 * Mathf.PI * radius / 2;
         }
+    }
 
-        LineRenderer lineRenderer = GetComponent<LineRenderer>();
-        Color c1 = Color.red;
-
-        lineRenderer.SetColors(c1, c1);
-        lineRenderer.SetWidth(0.05f, 0.05f);
-        lineRenderer.SetVertexCount((int)vertexCount + 1);
+    IEnumerator DrawCircle(Vector3 pos1, float radius)
+    {
+        float theta = 0;
 
         float deltaTheta = (2.0f * Mathf.PI) / vertexCount;
 

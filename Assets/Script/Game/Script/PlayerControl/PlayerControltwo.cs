@@ -25,16 +25,16 @@ public class PlayerControltwo : MonoBehaviour
     //비공개 항목
 
     string HorizontalControlName;
-    string VerticalControlName;
+    //string VerticalControlName;
     float HorizontalInputValue;
-    float VerticalInputValue;
+    //float VerticalInputValue;
     Transform curtransform;
     Transform prevtransform;
 
     public void Start()
     {
         HorizontalControlName = "Horizontal" + PlayerNumber;
-        VerticalControlName = "Vertical" + PlayerNumber;
+        //VerticalControlName = "Vertical" + PlayerNumber;
         GM = GameObject.FindGameObjectWithTag("Manager").GetComponent<GameManager>();
 
         IsgameOver = false;
@@ -47,7 +47,7 @@ public class PlayerControltwo : MonoBehaviour
     {
 #if UNITY_EDITOR       //Unity Editor에서만!
         HorizontalInputValue = Input.GetAxisRaw(HorizontalControlName);
-        VerticalInputValue = Input.GetAxisRaw(VerticalControlName);
+        //VerticalInputValue = Input.GetAxisRaw(VerticalControlName);
 #elif UNITY_ANDROID
         Vector3 tpos = Input.GetTouch(0).position;
         if (tpos.x < Screen.width / 2)

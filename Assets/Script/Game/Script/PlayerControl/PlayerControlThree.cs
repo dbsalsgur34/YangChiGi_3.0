@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using ClientSide;
 
 public enum PlayerSearchState
 {
@@ -11,7 +12,6 @@ public enum PlayerSearchState
 
 public class PlayerControlThree : MonoBehaviour {
 
-    private int PlayerNumber;
     private float sheepCount;
     public float SheepCount
     {
@@ -75,15 +75,13 @@ public class PlayerControlThree : MonoBehaviour {
     //플레이어의 이동과 관련된 class
     public class PlayerMovingInstance
     {
-        public PlayerMovingInstance(string HControlName, string VControlName, Transform ParentOfPlayer)
+        public PlayerMovingInstance(Transform ParentOfPlayer, Transform curTarget, Transform prevTarget)
         {
-            HorizontalControlName = HControlName;
-            VerticalControlName = VControlName;
             HorizontalInputValue = 0;
             VerticalInputValue = 0;
             knockBackPower = 10;
-            curTransform = null;
-            prevTransform = null;
+            curTransform = curTarget;
+            prevTransform = prevTarget;
             playerParent = ParentOfPlayer;
             targetVector = Vector3.zero;
             initSpeed = 10;
@@ -93,8 +91,6 @@ public class PlayerControlThree : MonoBehaviour {
             minDistance = 5f;
         }
 
-        private string HorizontalControlName;
-        private string VerticalControlName;
         public float HorizontalInputValue;
         public float VerticalInputValue;
 
@@ -126,16 +122,6 @@ public class PlayerControlThree : MonoBehaviour {
         }
         private float minDistance;
 
-        public string GetHorizontalControlName()
-        {
-            return HorizontalControlName;
-        }
-
-        public string GetVerticalControlName()
-        {
-            return VerticalControlName;
-        }
-
         public Transform GetPlayerParent()
         {
             return playerParent;
@@ -154,14 +140,11 @@ public class PlayerControlThree : MonoBehaviour {
 
     public void Start()
     {
-        PlayerInstnaceInit();
-        GM = GameManager.GMInstance;
-
         SheepArea = new GameObject("SheepArea");
         SheepArea.transform.position = this.transform.position;
+        PlayerInstnaceInit();
+        GM = GameManager.GMInstance;
     }
-
-    
 
     public void SetPlayerState(PlayerSearchState newPSS)
     {
@@ -170,10 +153,8 @@ public class PlayerControlThree : MonoBehaviour {
     
     private void PlayerInstnaceInit()
     {
-        string HorizontalControlName = "Horizontal" + PlayerNumber;
-        string VerticalControlName = "Vertical" + PlayerNumber;
 
-        PMI = new PlayerMovingInstance(HorizontalControlName,VerticalControlName, this.gameObject.transform.parent);
+        PMI = new PlayerMovingInstance(this.gameObject.transform.parent,SheepArea.transform,this.transform);
         PMI.GetPlayerParent().position = Vector3.zero;
         PMI.GetPlayerParent().rotation = HQ.transform.rotation;
 
@@ -186,7 +167,7 @@ public class PlayerControlThree : MonoBehaviour {
         PS = new PlayerState();
      }
 
-    private void PlayerInput()
+    /*private void PlayerInput()
     {
 #if UNITY_EDITOR       //Unity Editor에서만!
         PMI.HorizontalInputValue = Input.GetAxisRaw(PMI.GetHorizontalControlName());
@@ -204,7 +185,7 @@ public class PlayerControlThree : MonoBehaviour {
 #endif
     }
 
-    /*void KeyboardInput()
+    void KeyboardInput()
     {
         PlayerInput();
         if (HorizontalInputValue != 0)
@@ -258,15 +239,12 @@ public class PlayerControlThree : MonoBehaviour {
 
     private void LeaderSheep()
     {
-        PMI.curTransform = SheepArea.transform;
-        PMI.prevTransform = this.transform;
-
         float dis = Vector3.Distance(PMI.prevTransform.position, PMI.curTransform.position);
         Vector3 newpos = PMI.prevTransform.position;
 
-        float divisor = PMI.GetMinDistance() * PMI.Speed;
-        if (divisor == 0) { divisor = 1; }
-        float T = Time.deltaTime * dis / divisor;
+        float divisor = Mathf.Sqrt(PMI.GetMinDistance() * PMI.Speed);
+        if (divisor == 0) { divisor = 1f; }
+        float T = Time.fixedDeltaTime * dis / divisor;
         if (T > 0.5f)
             T = 0.5f;
         PMI.curTransform.position = Vector3.Slerp(PMI.curTransform.position, newpos, T);

@@ -25,11 +25,6 @@ public class NetworkMessageSender : MonoBehaviour
         Network_Client.Send("started");
     }
 
-    public void SendCancleToServer()
-    {
-        Network_Client.Send("Cancle");
-    }
-
     public void SendGameOverToServer(int playerNum, float messageSendTime)
     {
         Network_Client.Send("GameOver/" + playerNum + "," + messageSendTime);

@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class SkillManager : MonoBehaviour
 {
     SkillDataBase SkillDB;
-    GameManager GM;
+
 
     public List<DragAndDropItem> SkillPanelQueue;
     int[] SkillindexArray;
@@ -16,7 +16,6 @@ public class SkillManager : MonoBehaviour
     {
         //스킬 관련 초기화.
         SkillDB = PlayManage.Instance.gameObject.GetComponent<SkillDataBase>();
-        GM = GameObject.FindGameObjectWithTag("Manager").GetComponent<GameManager>();
         SkillindexArray = new int[SkillDB.SkillPrefab.Count - 1];
         index = 0;
     }

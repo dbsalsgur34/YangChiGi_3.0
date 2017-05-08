@@ -22,14 +22,14 @@ public class PlayerControl : MonoBehaviour
     string HorizontalControlName;
     string VerticalControlName;
     float HorizontalInputValue;
-    float VerticalInputValue;
+    //float VerticalInputValue;
     Transform curtransform;
     Transform prevtransform;
 
     public void Start()
     {
         HorizontalControlName = "Horizontal" + PlayerNumber;
-        VerticalControlName = "Vertical" + PlayerNumber;
+        //VerticalControlName = "Vertical" + PlayerNumber;
         GM = GameObject.Find("GameManager").GetComponent<GameManager>();
 
         IsgameOver = false;
@@ -39,7 +39,7 @@ public class PlayerControl : MonoBehaviour
     {
 #if UNITY_EDITOR       //Unity Editor에서만!
         HorizontalInputValue = Input.GetAxisRaw(HorizontalControlName);
-        VerticalInputValue = Input.GetAxisRaw(VerticalControlName);
+        //VerticalInputValue = Input.GetAxisRaw(VerticalControlName);
 #elif UNITY_ANDROID
         Vector3 tpos = Input.GetTouch(0).position;
         if (tpos.x < Screen.width / 2)

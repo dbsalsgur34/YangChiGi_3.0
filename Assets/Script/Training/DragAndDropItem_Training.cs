@@ -21,7 +21,7 @@ public class DragAndDropItem_Training : MonoBehaviour, IBeginDragHandler, IDragH
 
     private void Start()
     {
-        if (PlayManage.Instance.PlayerLevel < RequiredLevel)
+        if (PlayManage.Instance.GetPlayerLevel() < RequiredLevel)
         {
             IsItemCanDrag = false;
             this.gameObject.GetComponent<Image>().sprite = PlayManage.Instance.GetSkillDataBase().SetSkillIcon(indexnum,true);

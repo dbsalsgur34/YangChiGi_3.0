@@ -9,22 +9,20 @@ public class SheepControlThree : MonoBehaviour {
     //public GameObject leader;
     private GameObject master;
 
-    private GameObject player1;
-    private GameObject player2;
+    //private GameObject player1;
+    //private GameObject player2;
 
     private SheepState SS;
 
     public float SmoothMove;
     public int SheepScore;
 
-    // Use this for initialization
-
-    private void Start()
+    /*private void Start()
     {
         player1 = GameObject.Find("PlayerOne");
         player2 = GameObject.Find("PlayerTwo");
 
-    }
+    }*/
 
     private void OnTriggerEnter(Collider col)       //부딪힌 오브젝트의 종류에 따른 반응 정리
     {

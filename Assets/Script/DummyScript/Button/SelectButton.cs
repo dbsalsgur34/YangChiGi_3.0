@@ -29,7 +29,7 @@ public class SelectButton : MonoBehaviour {
         B = this.gameObject.GetComponent<Button>();
         leveltext = this.gameObject.GetComponentInChildren<Text>();
         otherImage = this.gameObject.GetComponentsInChildren<Image>();
-        playerlevel = PlayManage.Instance.PlayerLevel;
+        playerlevel = PlayManage.Instance.GetPlayerLevel();
         if (playerlevel >= restraintlevel)
         {
             B.onClick.AddListener(ShowExplain);
@@ -47,7 +47,7 @@ public class SelectButton : MonoBehaviour {
         }
     }
 
-    void ShowExplain()
+    private void ShowExplain()
     {
         ET.text = this.explaintext1 + "\n" + this.explaintext2 + "\n" + explaintext3;
     }

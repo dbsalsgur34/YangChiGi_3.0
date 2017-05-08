@@ -18,7 +18,7 @@ public class ResultManager : ManagerBase{
 
     GameObject win;
     GameObject lose;
-    Image FadeImage;
+
     Text EXPgaintext;
     GameObject Back_To_Lobby;
 
@@ -40,7 +40,6 @@ public class ResultManager : ManagerBase{
     {
         playerScore = PlayManage.Instance.PlayerScore;
         enemyScore = PlayManage.Instance.EnemyScore;
-        EXP = PlayManage.Instance.EXP;
 
         playerName = GameObject.Find("PlayerName").GetComponent<Text>();
         enemyName = GameObject.Find("EnemyName").GetComponent<Text>();
@@ -49,7 +48,6 @@ public class ResultManager : ManagerBase{
         win = GameObject.Find("Win");
         lose = GameObject.Find("Lose");
         EXPgaintext = GameObject.Find("EXPText").GetComponent<Text>();
-        FadeImage = GameObject.FindWithTag("Fadescreen").GetComponent<Image>();
         Back_To_Lobby = GameObject.Find("Back_To_Lobby");
 
         playerName.text = PlayManage.Instance.PlayerID;
@@ -78,6 +76,7 @@ public class ResultManager : ManagerBase{
 
     IEnumerator ResultRoutine()
     {
+        Network_Client.StopThread();
         yield return new WaitForSeconds(1.0f);
         IEnumerator playerroutine = ShowScore(playerName, playerresult, playerScore);
         StartCoroutine(playerroutine);
@@ -110,7 +109,7 @@ public class ResultManager : ManagerBase{
 #elif UNITY_ANDROID
         yield return new WaitUntil(() => Input.GetTouch(0).tapCount > 0);
 #endif
-        Destroy(KingGodClient.Instance.gameObject);
+        PlayManage.Instance.SaveData();
         StartCoroutine(PlayManage.Instance.LoadScene("Lobby"));
     }
 
@@ -118,8 +117,7 @@ public class ResultManager : ManagerBase{
     {
         win.SetActive(true);
         EXPgaintext.text = "EXP + 100";
-        EXP += 100;
-        PlayManage.Instance.SaveData();
+        PlayManage.Instance.SendMessage("CalLevel_EXP",100);
     }
 
     void GameLose()
@@ -127,13 +125,13 @@ public class ResultManager : ManagerBase{
         lose.SetActive(true);
         EXPgaintext.text = "EXP + 10";
         EXP += 10;
-        PlayManage.Instance.SaveData();
+        PlayManage.Instance.SendMessage("CalLevel_EXP", 10);
     }
 
     void GameTie()
     {
         EXPgaintext.text = "EXP + 25";
         EXP += 25;
-        PlayManage.Instance.SaveData();
+        PlayManage.Instance.SendMessage("CalLevel_EXP", 25);
     }
 }

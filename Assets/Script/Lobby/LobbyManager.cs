@@ -15,12 +15,12 @@ public class LobbyManager : ManagerBase {
     private Text MatchingMessage;
     private Button MatchingCancleButton;
 
-    int level;
-    float EXP;
-    float maxEXP;
-    float Iconrotation;
+    private int level;
+    private float EXP;
+    private float maxEXP;
+    private float Iconrotation;
 
-    private GameObject NetworkObject;
+    //private GameObject NetworkObject;
     private bool IsGameMatching;
 
     public override void Awake()
@@ -46,8 +46,8 @@ public class LobbyManager : ManagerBase {
         playerleveltext = GameObject.Find("PlayerLevel").GetComponent<Text>();
         playerIDtext = GameObject.Find("PlayerID").GetComponent<Text>();
         playerEXP = GameObject.Find("PlayerExp").GetComponent<Text>();
-        level = PlayManage.Instance.PlayerLevel;
-        EXP = PlayManage.Instance.EXP;
+        level = PlayManage.Instance.GetPlayerLevel();
+        EXP = PlayManage.Instance.GetEXP();
         if (level < 10)
         {
             playerleveltext.text = "Level : 0" + level.ToString();
@@ -57,8 +57,8 @@ public class LobbyManager : ManagerBase {
             playerleveltext.text = "Level : " + level.ToString();
         }
         playerIDtext.text = PlayManage.Instance.PlayerID;
-        maxEXP = level * 1000;
-        playerEXP.text = "EXP : " + PlayManage.Instance.EXP.ToString("N0") + " / " + maxEXP.ToString("N0");
+        maxEXP = PlayManage.Instance.GetMaxEXP();
+        playerEXP.text = "EXP : " + EXP.ToString("N0") + " / " + maxEXP.ToString("N0");
     }
 
     private void LobbyObjectInit()
@@ -104,7 +104,7 @@ public class LobbyManager : ManagerBase {
     {
         IsGameMatching = false;
         LoadingScene.SetActive(false);
-        KingGodClient.Instance.GetNetworkMessageSender().SendCancleToServer();
+        Network_Client.StopThread();
     }
 
     private void CalEXP()
@@ -123,11 +123,10 @@ public class LobbyManager : ManagerBase {
         IsGameMatching = true;
         if (KingGodClient.Instance == null)
         {
-            NetworkObject = Instantiate(Resources.Load("Prefab/ETC/NetworkObject")) as GameObject;
+            Instantiate(Resources.Load("Prefab/ETC/NetworkObject"));
         }
         else
         {
-            NetworkObject.SetActive(true);
             Network_Client.Begin(KingGodClient.Instance.serverIP);
         }
     }

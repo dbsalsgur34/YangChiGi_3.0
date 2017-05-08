@@ -44,7 +44,7 @@ public class GameUIManager : MonoBehaviour {
         SheepCount = 0;
 
         TimerStart = false;
-        initialtime = 180f;
+        initialtime = 10f;
     }
 
     private void Start()
@@ -75,7 +75,10 @@ public class GameUIManager : MonoBehaviour {
         else
         {
             timetext = "Left Time : " + 0;
-            StartCoroutine(FinishRoutine());
+            if (TimerStart)
+            {
+                StartCoroutine(FinishRoutine());
+            }
         }
         UItext.text = timetext;
     }
@@ -158,7 +161,7 @@ public class GameUIManager : MonoBehaviour {
         enemy.GetPlayerState().IsStop = true;
         PlayManage.Instance.PlayerScore = player.Score;
         PlayManage.Instance.EnemyScore = enemy.Score;
-        KingGodClient.Instance.GetNetworkMessageSender().SendGameOverToServer(KingGodClient.Instance.Playernum ,GetTimePass());
+        KingGodClient.Instance.GetNetworkMessageSender().SendGameOverToServer(KingGodClient.Instance.playerNum ,GetTimePass());
         this.TimerStart = false;
         yield return new WaitForSeconds(1f);
     }

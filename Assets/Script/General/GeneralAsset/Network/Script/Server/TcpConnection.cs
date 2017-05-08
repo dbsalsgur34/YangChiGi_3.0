@@ -74,7 +74,7 @@ namespace ServerSide{
 					}
 				}
 			}catch(Exception e){
-				//ConsoleMsgQueue.EnqueMsg(clientId + ": ReceiveOperation: " + e.Message);
+				Debug.Log(clientId + ": ReceiveOperation: " + e.Message);
 				//ReceiveQueue.SyncEnqueMsg(dyingMsg);
 			}
 

@@ -13,7 +13,7 @@ namespace ClientSide
             switch (splitMsg[0])
             {
                 case "PlayerNum":
-                    KingGodClient.Instance.Playernum = (int.Parse(splitMsg[1]));
+                    KingGodClient.Instance.playerNum = (int.Parse(splitMsg[1]));
                     break;
                 case "Seed":
                     KingGodClient.Instance.Seed = (int.Parse(splitMsg[1]));
@@ -53,5 +53,8 @@ namespace ClientSide
      * 5) Shepherd_S/(PlayerNum, state, frame) : 양치기의 상태
      * 6) Skill_S/(PlayerNum, skillindex, x,y,z, frame)
      * 7) DequeComplete : Cancle 메세지를 날린 사람이 Get. 연결 대기를 취소한다.
+     * 8) Skill : 스킬 사용.
+     * 9) Out : 특정인이 게임에서 나갔을 시 발동.
+     * 10) GameEnd : 게임이 끝났을시. 
      */
 }

@@ -18,23 +18,37 @@ public class PlayManage : ManagerBase {
     private float sound = 50;
     private SkillDataBase SDB;
     private UIBaseManage UIB;
-
+    private float maxEXP;
 
     public string PlayerID
     {
         get;set;
     }
 
-    public int PlayerLevel
+    public int GetPlayerLevel()
     {
-        get { return playerLevel; }
-        set { if (value < 1) { playerLevel = 1; } else { playerLevel = value; }  }
+        return playerLevel;
     }
 
-    public float EXP
+    public float GetEXP()
     {
-        get { return exp; }
-        set { if (value < 0) { exp = 0; } else { exp = value; } }
+        return exp;
+    }
+
+    public float GetMaxEXP()
+    {
+        return maxEXP;
+    }
+
+    public void CalLevel_EXP(float getEXP)
+    {
+        exp += getEXP;
+        if (exp >= maxEXP)
+        {
+            this.playerLevel += 1;
+            exp -= maxEXP;
+        }
+        SaveData();
     }
 
     public float Sound
@@ -118,9 +132,9 @@ public class PlayManage : ManagerBase {
     public void SaveData()
     {
         PlayerPrefs.SetString("PLAYERID", this.PlayerID);
-        PlayerPrefs.SetInt("PLAYERLEVEL", this.PlayerLevel);
+        PlayerPrefs.SetInt("PLAYERLEVEL", this.playerLevel);
         PlayerPrefs.SetFloat("SOUND", this.Sound);
-        PlayerPrefs.SetFloat("EXP", this.EXP);
+        PlayerPrefs.SetFloat("EXP", this.exp);
         string SkillPreSetString = SkillPreSet[0]+","+SkillPreSet[1]+","+SkillPreSet[2]+","+SkillPreSet[3];
         PlayerPrefs.SetString("SKILLPRESET",SkillPreSetString);
     }
@@ -128,25 +142,26 @@ public class PlayManage : ManagerBase {
     private void LoadData()
     {
         this.PlayerID = PlayerPrefs.GetString("PLAYERID", "Beginner");
-        this.PlayerLevel = PlayerPrefs.GetInt("PLAYERLEVEL", 1);
+        this.playerLevel = PlayerPrefs.GetInt("PLAYERLEVEL", 1);
         this.Sound = PlayerPrefs.GetFloat("SOUND", 50);
-        this.EXP = PlayerPrefs.GetFloat("EXP", 0);
+        this.exp = PlayerPrefs.GetFloat("EXP", 0);
         string[] SkillPreSetList = PlayerPrefs.GetString("SKILLPRESET", "1,2,3,4").Split(',');
         for (int i = 0; i < 4; i++)
         {
             this.SkillPreSet[i] = int.Parse(SkillPreSetList[i]);
         }
         SDB.SetRandomNumber(SkillPreSet);
+        this.maxEXP = playerLevel * 1000;
     }
 
-    public void ResetData()
+    private void ResetData()
     {
         this.PlayerID = "Beginner";
-        this.PlayerLevel = 1;
+        this.playerLevel = 1;
         this.PlayerScore = 0;
         this.EnemyScore = 0;
         this.Sound = 50;
-        this.EXP = 0;
+        this.exp = 0;
         this.SkillPreSet = new int[4] { 1,2,3,4 };
         SaveData();
     }

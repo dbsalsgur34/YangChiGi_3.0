@@ -28,9 +28,6 @@ public class GameManager : ManagerBase {
     public List<SheepControlThree> SheepList;
     public List<GameObject> grassprefab;
 
-    private float PlayerScore;
-    private float EnemyScore;
-
     //Object 생성 관련된 변수들.
     public float PlanetScale;
     public int initialSheep;
@@ -72,7 +69,7 @@ public class GameManager : ManagerBase {
         CenterRC = GameObject.FindGameObjectWithTag("CenterRazor").GetComponent<RazorControl>();
         SM = GameObject.FindGameObjectWithTag("SkillManager").GetComponent<SkillManager>();
         mainCamera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraControl>();
-        this.PlayerNumber = KingGodClient.Instance.Playernum;
+        this.PlayerNumber = KingGodClient.Instance.playerNum;
         if (PlayerNumber == 1)
         {
             Player = GameObject.Find("PlayerOne");
@@ -100,7 +97,7 @@ public class GameManager : ManagerBase {
     {
         base.Start();
         HQ = Player.GetComponent<PlayerControlThree>().HQ.GetComponent<HQControl>();
-        KingGodClient.Instance.GetNetworkMessageSender().SendReadyToServer(KingGodClient.Instance.Playernum);
+        KingGodClient.Instance.GetNetworkMessageSender().SendReadyToServer(KingGodClient.Instance.playerNum);
         midTime = 0;
     }
 
@@ -122,7 +119,7 @@ public class GameManager : ManagerBase {
         }
     }
 
-    private void GrassSpawn(List<GameObject> grasslist, float scale, int number)
+    private void GrassSpawn(List<GameObject> grasslist, float scale, int number)        //나중에 간단하게 바꿔야 할 함수.
     {
         int listcount = grasslist.Count-1;
         for (int i = 0; i < number; i++)
@@ -341,16 +338,6 @@ public class GameManager : ManagerBase {
     {
         RC.gameObject.SetActive(RCactive);
         CenterRC.gameObject.SetActive(CenterRCactive);
-    }
-
-    public float GetPlayerScore()
-    {
-        return this.PlayerScore;
-    }
-
-    public float GetEnmyScore()
-    {
-        return this.EnemyScore;
     }
 
     public SkillManager GetSkillManager()
