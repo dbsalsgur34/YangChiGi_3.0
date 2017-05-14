@@ -29,7 +29,7 @@ public class RazorControl : MonoBehaviour {
     public void DrawCircle(Vector3 center, Vector3 HQ, Vector3 target, int RazorPoint)
     {
        
-        lineRenderer.numPositions = ((int)vertexCount + 1);
+        lineRenderer.positionCount = ((int)vertexCount + 1);
 
         float theta = 0;
         float maxtheta = (target == Vector3.zero) ? 0 : Vector3.Angle(HQ - center, target);
@@ -50,7 +50,7 @@ public class RazorControl : MonoBehaviour {
 
     public void DrawCenterCircle(Vector3 Center, float radius)
     {
-        lineRenderer.numPositions = ((int)vertexCount + 1);
+        lineRenderer.positionCount = ((int)vertexCount + 1);
 
         float theta = 0;
         float deltaTheta = (2.0f * Mathf.PI) / vertexCount;

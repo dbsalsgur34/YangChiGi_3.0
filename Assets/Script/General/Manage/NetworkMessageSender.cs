@@ -8,16 +8,17 @@ using ClientSide;
 
 public class NetworkMessageSender : MonoBehaviour
 {
-    FirebaseDatabase DB;
     DatabaseReference DBR;
 
     DatabaseReference UserReference;
     DatabaseReference MatchReference;
     private string targetMessage;
+
     public NetworkMessageSender()
     {
-        DB = FirebaseDatabase.DefaultInstance;
-        DBR = DB.RootReference;
+		FirebaseApp.DefaultInstance.SetEditorDatabaseUrl("https://yang-chigi.firebaseio.com/");
+		DBR = FirebaseDatabase.DefaultInstance.RootReference;
+		
     }
     public void SetMatchReference(string MatchID)
     {
@@ -26,7 +27,7 @@ public class NetworkMessageSender : MonoBehaviour
 
     private void PushLogToDatabase(string log)
     {
-        MatchReference.Child("Log").Push().SetValueAsync("log");
+        MatchReference.Child("Log").Push().SetValueAsync(log);
     }
 
     private void SendAndPush(string message)
@@ -55,7 +56,7 @@ public class NetworkMessageSender : MonoBehaviour
 
     public void SendStartedToServer()
     {
-        targetMessage = "started";
+        targetMessage = "Started";
         SendAndPush(targetMessage);
     }
 

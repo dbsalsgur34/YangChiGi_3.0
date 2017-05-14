@@ -79,8 +79,6 @@ public class PlayManage : ManagerBase {
 
     public override void Awake()                //싱글톤 오브젝트를 만들자!
     {
-        //auth = FirebaseAuth.DefaultInstance;
-        //DB = FirebaseDatabase.DefaultInstance;
         PlayManageAwake();
 
         if (Instance == null)           //Static 변수를 지정하고 이것이 없을경우 - PlayManage 스크립트를 저장하고 이것이 전 범위적인 싱글톤 오브젝트가 된다.

@@ -13,10 +13,10 @@ namespace ClientSide
             switch (splitMsg[0])
             {
                 case "PlayerNum":
-                    KingGodClient.Instance.playerNum = (int.Parse(splitMsg[1]));
-                    break;
+					KingGodClient.Instance.setPlayerNum(splitMsg[1]);
+					break;
                 case "Seed":
-                    KingGodClient.Instance.Seed = (int.Parse(splitMsg[1]));
+					KingGodClient.Instance.setSeed(splitMsg[1]);
                     StartCoroutine(PlayManage.Instance.LoadScene("YangChigi3.0"));
                     break;
                 case "Start":

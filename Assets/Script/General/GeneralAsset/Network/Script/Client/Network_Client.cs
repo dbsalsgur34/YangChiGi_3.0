@@ -145,6 +145,7 @@ public class Network_Client {
 
     public static void StopThread()
     {
+        Network_Client.Send("Cancle");
         isConnected = false;
         shutDown = true;
         if(thread_connect != null)
@@ -158,7 +159,6 @@ public class Network_Client {
         if (tcpClient != null)
             tcpClient.Close();
 
-        Network_Client.Send("Cancle");
 
         Debug.Log("Cancle");
     }

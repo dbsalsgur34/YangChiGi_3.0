@@ -7,14 +7,14 @@ using Firebase.Database;
 
 public class NetworkMessageReceiver : MonoBehaviour {
     DatabaseReference logReference;
-    public List<string> LogList;
-    NetworkMessageReceiver()
+	
+    public List<string> logList;
+
+    public NetworkMessageReceiver()
     {
-
-        logReference = FirebaseDatabase.DefaultInstance.GetReference("GameSessionComments");
-
-        logReference.ChildAdded += HandleChildAdded;
-    }
+		FirebaseApp.DefaultInstance.SetEditorDatabaseUrl("https://yang-chigi.firebaseio.com/");
+		
+	}
 
 
     void HandleChildAdded(object sender, ChildChangedEventArgs args)
@@ -25,8 +25,15 @@ public class NetworkMessageReceiver : MonoBehaviour {
             return;
         }
 
-        // Do something with the data in args.Snapshot
-    }
+		// Do something with the data in args.Snapshot
+		logList.Add(args.Snapshot.GetValue(true).ToString());
+		Debug.Log(logList.Count + " : " + logList[logList.Count-1]);
+	}
 
-   
+	public void SetLogReference(string matchID)
+	{
+		this.logReference = FirebaseDatabase.DefaultInstance.RootReference.Child("Match").Child(matchID).Child("Log");
+		this.logReference.ChildAdded += HandleChildAdded;
+		logList = new List<string>();
+	}
 }

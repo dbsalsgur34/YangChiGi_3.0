@@ -1,5 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Firebase;
+using Firebase.Unity.Editor;
+using Firebase.Database;
+using Firebase.Auth;
 
 
 //개쩌는 클라이언트가 시작하는 부분, 유니티 메인 쓰레드에서 통신을 담당한다
@@ -15,7 +19,7 @@ namespace ClientSide
         public int Seed;
         public int playerNum;
         private NetworkMessageSender NMS;
-
+		private NetworkMessageReceiver NMR;
 	    void Awake(){
             if (Instance == null)           //Static 변수를 지정하고 이것이 없을경우 - PlayManage 스크립트를 저장하고 이것이 전 범위적인 싱글톤 오브젝트가 된다.
             {
@@ -28,10 +32,12 @@ namespace ClientSide
             }
             networkTranslator = GetComponent<NetworkTranslator>();
             NMS = new NetworkMessageSender();
+			NMR = new NetworkMessageReceiver();
 
 	    }
 
 	    void Start () {
+			FirebaseApp.DefaultInstance.SetEditorDatabaseUrl("https://yang-chigi.firebaseio.com/");
 		    networkTranslator.SetMsgHandler(gameObject.AddComponent<ClientMsgHandler>());
 
 		    Network_Client.Begin (serverIP);
@@ -55,6 +61,16 @@ namespace ClientSide
         {
             this.freeId = freeId;
         }
+		public void setSeed(string Seed)
+		{
+			this.Seed = int.Parse(Seed);
+			NMS.SetMatchReference(Seed);
+			NMR.SetLogReference(Seed);
+		}
+		public void setPlayerNum(string playerNum)
+		{
+			this.playerNum = int.Parse(playerNum);
+		}
     }
 
 }

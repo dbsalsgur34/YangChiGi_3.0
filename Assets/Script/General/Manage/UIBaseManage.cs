@@ -37,23 +37,28 @@ public class UIBaseManage : FadeInOut {
             fadeImage = fadeImageObject.GetComponent<Image>();
             fadeImageObject.GetComponent<RectTransform>().localPosition = Vector3.zero;
         }
-
-        StartCoroutine(FadeIn(fadeImage));
+		try
+		{
+			StartCoroutine(FadeIn(fadeImage));
+		}
+		catch
+		{
+			StartCoroutine(FadeImageSet());
+		}
     }
 
     public IEnumerator LoadSceneAndFadeInOut(string name)
     {
-        IEnumerator FO = FadeOut(fadeImage);
-        StartCoroutine(FO);
-        yield return new WaitUntil(()=> FO.MoveNext() == false);
-        fadeImage = null;
-        fadeImageObject = null;
+			IEnumerator FO = FadeOut(fadeImage);
+			StartCoroutine(FO);
+			yield return new WaitUntil(() => FO.MoveNext() == false);
+			fadeImage = null;
+			fadeImageObject = null;
 
-        IEnumerator SM = SceneManage(name);
-        StartCoroutine(SM);
-        yield return new WaitUntil(() => SM.MoveNext() == false);
-        StartCoroutine(FadeImageSet());
-
+			IEnumerator SM = SceneManage(name);
+			StartCoroutine(SM);
+			yield return new WaitUntil(() => SM.MoveNext() == false);
+			StartCoroutine(FadeImageSet());
     }
 
     private IEnumerator SceneManage(string name)
