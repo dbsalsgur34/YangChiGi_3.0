@@ -51,7 +51,7 @@ Assets/Firebase/m2repository/com/google/firebase/firebase-auth-unity/maven-metad
 Assets/PlayServicesResolver/Editor/Google.IOSResolver.dll
 Assets/PlayServicesResolver/Editor/Google.JarResolver.dll
 Assets/PlayServicesResolver/Editor/Google.VersionHandler.dll
-Assets/PlayServicesResolver/Editor/play-services-resolver_v1.2.14.0.txt
+Assets/PlayServicesResolver/Editor/play-services-resolver.txt
 Assets/PlayServicesResolver/generate_gradle_prebuild.exe
 Assets/PlayServicesResolver/generate_gradle_prebuild.py
 Assets/PlayServicesResolver/gradle-template.zip
