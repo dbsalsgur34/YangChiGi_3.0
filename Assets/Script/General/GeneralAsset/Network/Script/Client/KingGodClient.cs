@@ -57,17 +57,18 @@ namespace ClientSide
             Network_Client.Send(freeId.ToString() + "/" + "Matching");
         }
 
-        public void setFreeId(int freeId)
+        public void SetFreeId(int freeId)
         {
             this.freeId = freeId;
         }
-		public void setSeed(string Seed)
+		public void SetSeed(string Seed)
 		{
+			Debug.Log("SetSeed");
 			this.Seed = int.Parse(Seed);
 			NMS.SetMatchReference(Seed);
 			NMR.SetLogReference(Seed);
 		}
-		public void setPlayerNum(string playerNum)
+		public void SetPlayerNum(string playerNum)
 		{
 			this.playerNum = int.Parse(playerNum);
 		}

@@ -13,20 +13,25 @@ namespace ClientSide
             switch (splitMsg[0])
             {
                 case "PlayerNum":
-					KingGodClient.Instance.setPlayerNum(splitMsg[1]);
+					KingGodClient.Instance.SetPlayerNum(splitMsg[1]);
 					break;
                 case "Seed":
-					KingGodClient.Instance.setSeed(splitMsg[1]);
+					KingGodClient.Instance.SetSeed(splitMsg[1]);
                     StartCoroutine(PlayManage.Instance.LoadScene("YangChigi3.0"));
                     break;
                 case "Start":
                     StartCoroutine(GameUIManager.GUIMInstance.ReadyScreen());
                     break;
-                case "Shepherd":
-                    GameManager.GMInstance.GetMessage(splitMsg[0], splitMsg[1]);
-                    break;
                 case "DequeComplete":
                     Destroy(KingGodClient.Instance.gameObject);
+                    break;
+                case "GameEnd":
+                    Debug.Log("Get");
+                    StartCoroutine(GameUIManager.GUIMInstance.GoToResultScene());
+                    break;
+					/*
+                case "Shepherd":
+                    GameManager.GMInstance.GetMessage(splitMsg[0], splitMsg[1]);
                     break;
                 case "Skill":
                     GameManager.GMInstance.GetMessage(splitMsg[0], splitMsg[1]);
@@ -34,10 +39,7 @@ namespace ClientSide
                 case "Out":
                     GameManager.GMInstance.GetMessage(splitMsg[0], splitMsg[1]);
                     break;
-                case "GameEnd":
-                    Debug.Log("Get");
-                    StartCoroutine(GameUIManager.GUIMInstance.GoToResultScene());
-                    break;
+					*/
                 default:
                     break;
             }

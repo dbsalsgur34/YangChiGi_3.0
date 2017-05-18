@@ -44,7 +44,7 @@ public class GameUIManager : MonoBehaviour {
         SheepCount = 0;
 
         TimerStart = false;
-        initialtime = 10f;
+        initialtime = 100f;
     }
 
     private void Start()

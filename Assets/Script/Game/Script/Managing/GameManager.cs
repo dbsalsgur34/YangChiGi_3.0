@@ -281,7 +281,7 @@ public class GameManager : ManagerBase {
         if (GUIM.GetTimePass() - midTime > 5)
         {
             midTime = GUIM.GetTimePass();
-            KingGodClient.Instance.GetNetworkMessageSender().SendPlayerEnemyPositionToServer(this.Player.transform.position,this.Enemy.transform.position,GUIM.GetTimePass());
+            KingGodClient.Instance.GetNetworkMessageSender().SendPlayerEnemyPositionToServer(this.Player.transform.position,this.PlayerNumber, this.Enemy.transform.position,GUIM.GetTimePass());
             SheepSpawn(bronzesheepprefab, PlanetScale, 1);
         }
     }

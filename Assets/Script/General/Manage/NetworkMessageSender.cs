@@ -6,7 +6,7 @@ using Firebase.Unity.Editor;
 using Firebase.Database;
 using ClientSide;
 
-public class NetworkMessageSender : MonoBehaviour
+public class NetworkMessageSender
 {
     DatabaseReference DBR;
 
@@ -42,9 +42,9 @@ public class NetworkMessageSender : MonoBehaviour
         SendAndPush(targetMessage);
     }
 
-    public void SendPlayerEnemyPositionToServer(Vector3 playerPosition, Vector3 enemyPosition, float messageSendTime)
+    public void SendPlayerEnemyPositionToServer(Vector3 playerPosition, int playerNum, Vector3 enemyPosition, float messageSendTime)
     {
-        targetMessage = "Position/" + playerPosition + "," + enemyPosition + "," + messageSendTime;
+        targetMessage = "Position/" + playerNum + "," + playerPosition + "," + enemyPosition + "," + messageSendTime;
         SendAndPush(targetMessage);
     }
 
