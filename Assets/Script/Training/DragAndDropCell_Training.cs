@@ -29,6 +29,9 @@ public class DragAndDropCell_Training : MonoBehaviour, IDropHandler
     public Color empty = new Color();                                       // Sprite color for empty cell
     public Color full = new Color();                                        // Sprite color for filled cell
 
+    private bool IsSkillSetPanel = false;
+    public int cellNumber;
+
     void OnEnable()
     {
         DragAndDropItem_Training.OnItemDragStartEvent += OnAnyItemDragStart;         // Handle any item drag start
@@ -44,6 +47,12 @@ public class DragAndDropCell_Training : MonoBehaviour, IDropHandler
     void Start()
     {
         SetBackgroundState(GetComponentInChildren<DragAndDropItem_Training>() == null ? false : true);
+    }
+
+    public void SetCelltoSkillSetPanel(int cellNumber)
+    {
+        this.IsSkillSetPanel = true;
+        this.cellNumber = cellNumber;
     }
 
     private void OnAnyItemDragStart(DragAndDropItem_Training item)
@@ -81,6 +90,7 @@ public class DragAndDropCell_Training : MonoBehaviour, IDropHandler
             {
                 SetBackgroundState(true);
             }
+
             myItem.MakeRaycast(true);                                       // Enable item's raycast
         }
         else
@@ -104,10 +114,10 @@ public class DragAndDropCell_Training : MonoBehaviour, IDropHandler
                     {
                         case CellType.UnlimitedSource:
                             string itemName = item.name;
-                            int itemnum = item.indexnum;
+                            int itemnum = item.indexNum;
                             item = Instantiate(item);                       // Clone item from source cell
                             item.name = itemName;
-                            item.indexnum = itemnum;
+                            item.indexNum = itemnum;
                             break;
                         default:
                             // Nothing to do

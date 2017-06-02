@@ -71,7 +71,7 @@ public class PlayManage : ManagerBase {
 
     private bool isSoundOn;
 
-    public int[] SkillPreSet;
+    public int[] skillPreSet;
 
     private FirebaseAuth auth;
     private FirebaseDatabase DB;
@@ -97,10 +97,10 @@ public class PlayManage : ManagerBase {
     private void PlayManageAwake()
     {
         FireBaseInit();
-        SkillPreSet = new int[4];
+        skillPreSet = new int[4];
         for (int i = 0; i < 4; i++)
         {
-            SkillPreSet[i] = -1;
+            skillPreSet[i] = 0;
         }
         PlayerScore = 0;
         EnemyScore = 0;
@@ -133,7 +133,7 @@ public class PlayManage : ManagerBase {
         PlayerPrefs.SetInt("PLAYERLEVEL", this.playerLevel);
         PlayerPrefs.SetFloat("SOUND", this.Sound);
         PlayerPrefs.SetFloat("EXP", this.exp);
-        string SkillPreSetString = SkillPreSet[0]+","+SkillPreSet[1]+","+SkillPreSet[2]+","+SkillPreSet[3];
+        string SkillPreSetString = skillPreSet[0]+","+skillPreSet[1]+","+skillPreSet[2]+","+skillPreSet[3];
         PlayerPrefs.SetString("SKILLPRESET",SkillPreSetString);
     }
 
@@ -146,9 +146,9 @@ public class PlayManage : ManagerBase {
         string[] SkillPreSetList = PlayerPrefs.GetString("SKILLPRESET", "1,2,3,4").Split(',');
         for (int i = 0; i < 4; i++)
         {
-            this.SkillPreSet[i] = int.Parse(SkillPreSetList[i]);
+            this.skillPreSet[i] = int.Parse(SkillPreSetList[i]);
         }
-        SDB.SetRandomNumber(SkillPreSet);
+        SDB.SetRandomNumber(skillPreSet);
         this.maxEXP = playerLevel * 1000;
     }
 
@@ -160,8 +160,19 @@ public class PlayManage : ManagerBase {
         this.EnemyScore = 0;
         this.Sound = 50;
         this.exp = 0;
-        this.SkillPreSet = new int[4] { 1,2,3,4 };
+        this.skillPreSet = new int[4] { 1,2,3,4 };
         SaveData();
+    }
+
+    public IEnumerator SetSkillPreSet(int index, int skillNum)
+    {
+        this.skillPreSet[index] = skillNum;
+        yield return null;
+    }
+
+    public int GetSkillPreSet(int index)
+    {
+        return skillPreSet[index];
     }
 
     public SkillDataBase GetSkillDataBase()

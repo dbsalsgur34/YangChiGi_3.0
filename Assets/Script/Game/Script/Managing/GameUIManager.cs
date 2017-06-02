@@ -15,14 +15,13 @@ public class GameUIManager : MonoBehaviour {
     private GameObject EndScreen;
     private Text EndText;
 
-    private float SheepCount;
+    private float sheepCount;
     private float initialtime;
 
     //Timer 관련 변수.
-    private bool TimerStart;
-    private float Timer = 0;
+    private bool timerStart;
+    private float timer = 0;
     private float startTime = 0;
-    
 
     //플레이어
     private PlayerControlThree player;
@@ -41,10 +40,11 @@ public class GameUIManager : MonoBehaviour {
         EndText = GameObject.Find("EndText").GetComponent<Text>();
         EndText.gameObject.SetActive(false);
 
-        SheepCount = 0;
+        sheepCount = 0;
 
-        TimerStart = false;
+        timerStart = false;
         initialtime = 100f;
+
     }
 
     private void Start()
@@ -56,26 +56,26 @@ public class GameUIManager : MonoBehaviour {
 
     public float GetTimePass()
     {
-        return (Timer - startTime);
+        return (timer - startTime);
     }
 
     public bool GetIsTimerStart()
     {
-        return TimerStart;
+        return timerStart;
     }
 
     private void Showremainingtime()
     {
         string timetext;
-        if (initialtime - Timer >= 0)
+        if (initialtime - timer >= 0)
         {
 
-            timetext = "Left Time : " + (initialtime - Timer).ToString("N0");       //Tostring뒤에 붙은 N0는 소수점 표기를 안한다는거.
+            timetext = "Left Time : " + (initialtime - timer).ToString("N0");       //Tostring뒤에 붙은 N0는 소수점 표기를 안한다는거.
         }
         else
         {
             timetext = "Left Time : " + 0;
-            if (TimerStart)
+            if (timerStart)
             {
                 StartCoroutine(FinishRoutine());
             }
@@ -101,14 +101,14 @@ public class GameUIManager : MonoBehaviour {
     private void ShowMySheep()
     {
         string scoretext;
-        SheepCount = player.SheepCount;
-        if (SheepCount >= 10)
+        sheepCount = player.SheepCount;
+        if (sheepCount >= 10)
         {
-            scoretext = "Current Sheep : " + SheepCount;
+            scoretext = "Current Sheep : " + sheepCount;
         }
         else
         {
-            scoretext = "Current Sheep : 0" + SheepCount;
+            scoretext = "Current Sheep : 0" + sheepCount;
         }
         UIcurrentSheep.text = scoretext;
     }
@@ -148,7 +148,7 @@ public class GameUIManager : MonoBehaviour {
         EndScreen.SetActive(false);
         player.GetPlayerState().IsStop = false;
         enemy.GetPlayerState().IsStop = false;
-        this.TimerStart = true;
+        this.timerStart = true;
         yield return 0;
     }
 
@@ -162,7 +162,7 @@ public class GameUIManager : MonoBehaviour {
         PlayManage.Instance.PlayerScore = player.Score;
         PlayManage.Instance.EnemyScore = enemy.Score;
         KingGodClient.Instance.GetNetworkMessageSender().SendGameOverToServer(KingGodClient.Instance.playerNum ,GetTimePass());
-        this.TimerStart = false;
+        this.timerStart = false;
         yield return new WaitForSeconds(1f);
     }
 
@@ -177,8 +177,8 @@ public class GameUIManager : MonoBehaviour {
 
     private void CalTime()
     {
-        if(TimerStart)
-            Timer += Time.deltaTime;
+        if(timerStart)
+            timer += Time.deltaTime;
     }
     private void FixedUpdate()
     {

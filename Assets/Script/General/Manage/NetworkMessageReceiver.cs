@@ -28,10 +28,7 @@ public class NetworkMessageReceiver
 		}
 
 		// Do something with the data in args.Snapshot
-		
-		string[] splitMsg = args.Snapshot.Value.ToString().Split('/');
-		//Debug.Log(splitMsg[0] + splitMsg[1]);
-		GameManager.GMInstance.GetMessage(splitMsg[0], splitMsg[1]);
+		GameManager.GMInstance.SetMessageQueue(args.Snapshot.Value.ToString());
 	}
 
 	public void SetLogReference(string matchID)

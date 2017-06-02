@@ -13,12 +13,12 @@ public class NetworkMessageSender
     DatabaseReference UserReference;
     DatabaseReference MatchReference;
     private string targetMessage;
+    private float timeDelay = 0.5f;
 
     public NetworkMessageSender()
     {
 		FirebaseApp.DefaultInstance.SetEditorDatabaseUrl("https://yang-chigi.firebaseio.com/");
 		DBR = FirebaseDatabase.DefaultInstance.RootReference;
-		
     }
     public void SetMatchReference(string MatchID)
     {
@@ -30,46 +30,46 @@ public class NetworkMessageSender
         MatchReference.Child("Log").Push().SetValueAsync(log);
     }
 
-    private void SendAndPush(string message)
+    private void Send(string message)
     {
         Network_Client.Send(message);
-        PushLogToDatabase(message);
+       
     }
     
     public void SendSkillVectorToServer(int playerNum,int skillIndex,Vector3 targetVector, float messageSendTime)
     {
-        targetMessage = "Skill/" + playerNum + "," + skillIndex + "," + targetVector.x + "," + targetVector.y + "," + targetVector.z + "," + messageSendTime;
-        SendAndPush(targetMessage);
+        targetMessage = "Skill/" + playerNum + "," + skillIndex + "," + targetVector.x + "," + targetVector.y + "," + targetVector.z + "," + (messageSendTime + timeDelay);
+        PushLogToDatabase(targetMessage);
     }
 
     public void SendPlayerEnemyPositionToServer(Vector3 playerPosition, int playerNum, Vector3 enemyPosition, float messageSendTime)
     {
-        targetMessage = "Position/" + playerNum + "," + playerPosition + "," + enemyPosition + "," + messageSendTime;
-        SendAndPush(targetMessage);
+        targetMessage = "Position/" + playerNum + "," + playerPosition + "," + enemyPosition + "," + (messageSendTime + timeDelay);
+        PushLogToDatabase(targetMessage);
     }
 
     public void SendReadyToServer(int playerNum)
     {
         targetMessage = "Ready/" + playerNum;
-        SendAndPush(targetMessage);
+        Send(targetMessage);
     }
 
     public void SendStartedToServer()
     {
         targetMessage = "Started";
-        SendAndPush(targetMessage);
+        Send(targetMessage);
     }
 
     public void SendGameOverToServer(int playerNum, float messageSendTime)
     {
-        targetMessage = "GameOver/" + playerNum + "," + messageSendTime;
-        SendAndPush(targetMessage);
+        targetMessage = "GameOver/" + playerNum + "," + (messageSendTime + timeDelay);
+        Send(targetMessage);
     }
 
     public void SendPlayerStateToServer(int playerNum,int playerStateNum, float messageSendTime)
     {
-        targetMessage = ("Shepherd/" + playerNum + "," + playerStateNum + "," + messageSendTime);
-        SendAndPush(targetMessage);
+        targetMessage = ("Shepherd/" + playerNum + "," + playerStateNum + "," + (messageSendTime + timeDelay));
+        PushLogToDatabase(targetMessage);
     }
 
 }

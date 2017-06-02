@@ -19,6 +19,5 @@ public class ApllicationManage : MonoBehaviour {
     private void OnApplicationQuit()
     {
         //auth.SignOut();
-        Debug.Log("Yes");
     }
 }

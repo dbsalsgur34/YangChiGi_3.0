@@ -18,8 +18,11 @@ public class SkillBase : MonoBehaviour {
     public float PreCoolTime;
     public float waitTime = 5f;
     public float duration = 5f;
-    public SkillState SS;
     public bool IsSkillNeedGuideLine;
+    public int requiredLevel;
+
+    protected SkillState SS;
+    
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject != this.Owner)
@@ -69,4 +72,14 @@ public class SkillBase : MonoBehaviour {
     {
         return (target.Equals(this.Owner)) ? true : false;
     }
+
+    public int GetRequiredLevel() {
+        return this.requiredLevel;
+    }
+
+    public SkillState GetSkillState()
+    {
+        return this.SS;
+    }
 }
+

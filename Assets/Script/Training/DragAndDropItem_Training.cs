@@ -16,28 +16,18 @@ public class DragAndDropItem_Training : MonoBehaviour, IBeginDragHandler, IDragH
     static public event DragEvent OnItemDragEndEvent;                               // Drag end event
     public bool IsItemCanDrag;
 
-    public int indexnum;
-    public int RequiredLevel;
+    public int indexNum;
 
-    private void Start()
-    {
-        if (PlayManage.Instance.GetPlayerLevel() < RequiredLevel)
-        {
-            IsItemCanDrag = false;
-            this.gameObject.GetComponent<Image>().sprite = PlayManage.Instance.GetSkillDataBase().SetSkillIcon(indexnum,true);
-            ShowRequiredLevel();
-        }
-        else
-        {
-            IsItemCanDrag = true;
-            this.gameObject.GetComponent<Image>().sprite = PlayManage.Instance.GetSkillDataBase().SetSkillIcon(indexnum,false);
-        }
-    }
-
-    void ShowRequiredLevel()
+    public void ShowRequiredLevel(int requiredLevel)
     {
         Text text = (Instantiate(Resources.Load("Prefab/LevelText"), this.gameObject.transform) as GameObject).GetComponent<Text>();
-        text.text = "Lv." + RequiredLevel.ToString();
+        text.text = "Lv." + requiredLevel.ToString();
+    }
+
+    public int IndexNum
+    {
+        get{ return this.indexNum; }
+        set { if (value < 0) { indexNum = 0; } else { indexNum = value; } }
     }
 
     public void OnBeginDrag(PointerEventData eventData)
@@ -111,9 +101,13 @@ public class DragAndDropItem_Training : MonoBehaviour, IBeginDragHandler, IDragH
         }
     }
 
+    public void SetItemCanDrag(bool isCanDrag)
+    {
+        this.IsItemCanDrag = isCanDrag;
+    }
+
     public void MakeVisible(bool condition)
     {
         GetComponent<Image>().enabled = condition;
     }
 }
-

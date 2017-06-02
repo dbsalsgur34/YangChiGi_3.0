@@ -7,16 +7,14 @@ public class SkillManager : MonoBehaviour
 {
     SkillDataBase SkillDB;
 
-
     public List<DragAndDropItem> SkillPanelQueue;
-    int[] SkillindexArray;
+    int[] skillindexArray;
     int index;
 
     private void Start()
     {
         //스킬 관련 초기화.
         SkillDB = PlayManage.Instance.gameObject.GetComponent<SkillDataBase>();
-        SkillindexArray = new int[SkillDB.SkillPrefab.Count - 1];
         index = 0;
     }
 

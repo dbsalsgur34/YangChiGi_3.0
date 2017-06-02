@@ -49,16 +49,15 @@ public class SkillDataBase : MonoBehaviour {
         }
     }
 
-    public Sprite SetSkillIcon(int num, bool ShowPadLock)
+    public List<GameObject> GetSkillPrefab()
     {
-        if (!ShowPadLock && num >= 0)
-        {
-            return SkillIcon[num];
-        }
-        else
-        {
-            return Resources.Load<Sprite>("Image/Resource/Button/Black/padlock");
-        }
+        return this.SkillPrefab;
     }
+
+    public Sprite GetSkillIcon(int index)
+    {
+        return this.SkillIcon[index];
+    }
+
 
 }

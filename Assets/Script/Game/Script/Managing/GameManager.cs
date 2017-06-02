@@ -36,9 +36,11 @@ public class GameManager : ManagerBase {
     private bool IsSkillonthePlanet;
     private int RazorPoint;
 
+    private Queue<string> messageQueue;
+
     public Vector3 hitVector
     {
-        get;set;
+        get; set;
     }
 
     private SpriteRenderer hitMarker;
@@ -84,6 +86,7 @@ public class GameManager : ManagerBase {
         }
 
         GUIM = GameObject.FindGameObjectWithTag("UIManager").GetComponent<GameUIManager>();
+        messageQueue = new Queue<string>();
 
         //오브젝트 생성.
         Random.InitState(KingGodClient.Instance.Seed);
@@ -101,7 +104,7 @@ public class GameManager : ManagerBase {
         midTime = 0;
     }
 
-    private void SheepSpawn(GameObject sheepprefab,float scale, int number)   //양을 임의의 위치에 소환하는 메서드.
+    private void SheepSpawn(GameObject sheepprefab, float scale, int number)   //양을 임의의 위치에 소환하는 메서드.
     {
         for (int i = 0; i < number; i++)
         {
@@ -121,14 +124,14 @@ public class GameManager : ManagerBase {
 
     private void GrassSpawn(List<GameObject> grasslist, float scale, int number)        //나중에 간단하게 바꿔야 할 함수.
     {
-        int listcount = grasslist.Count-1;
+        int listcount = grasslist.Count - 1;
         for (int i = 0; i < number; i++)
         {
             int index = Random.Range(0, listcount);
             Vector3 newposition = Random.onUnitSphere * scale;
             GameObject tempgrass = Instantiate(grasslist[index], newposition, Quaternion.Euler(0, 0, 0), BackGround.transform);
             tempgrass.transform.rotation = Quaternion.FromToRotation(tempgrass.transform.up, newposition) * tempgrass.transform.rotation;
-        }    
+        }
     }
 
     public void FindAndRemoveAtSheepList(GameObject target)
@@ -273,25 +276,30 @@ public class GameManager : ManagerBase {
 
         if (IsSkillCanUse())
         {
-            RC.DrawCircle(this.Planet.transform.position, this.HQ.transform.position, hitVector,RazorPoint);
+            RC.DrawCircle(this.Planet.transform.position, this.HQ.transform.position, hitVector, RazorPoint);
             CenterRC.DrawCenterCircle(this.Planet.transform.position, 25.5f);
-            ShowhitMarker(hitVector);
+            ShowHitMarker(hitVector);
+        }
+
+        if (messageQueue.Count != 0)
+        {
+            StartCoroutine(MessageActor(messageQueue.Dequeue()));
         }
 
         if (GUIM.GetTimePass() - midTime > 5)
         {
             midTime = GUIM.GetTimePass();
-            KingGodClient.Instance.GetNetworkMessageSender().SendPlayerEnemyPositionToServer(this.Player.transform.position,this.PlayerNumber, this.Enemy.transform.position,GUIM.GetTimePass());
+            KingGodClient.Instance.GetNetworkMessageSender().SendPlayerEnemyPositionToServer(this.Player.transform.position, this.PlayerNumber, this.Enemy.transform.position, GUIM.GetTimePass());
             SheepSpawn(bronzesheepprefab, PlanetScale, 1);
         }
     }
 
-    private IEnumerator SendMessageToSkillUse(int num, GameObject Player, GameObject Enemy, GameObject HQ, Vector3 HV,float useTime)
+    private IEnumerator SendMessageToSkillUse(int num, GameObject Player, GameObject Enemy, GameObject HQ, Vector3 HV, float useTime)
     {
         Vector3 targetVector = HQ.transform.position - HV;
         float angle = Mathf.Atan2(targetVector.x, targetVector.z) * Mathf.Rad2Deg;
         yield return new WaitUntil(() => GUIM.GetTimePass() >= (useTime + delayTime));
-        SM.UsingSkill(num,Player,Enemy,this.Planet.transform, HQ.gameObject.transform,angle, HV);
+        SM.UsingSkill(num, Player, Enemy, this.Planet.transform, HQ.gameObject.transform, angle, HV);
     }
 
     public bool IsGameStart()
@@ -315,7 +323,7 @@ public class GameManager : ManagerBase {
         hitMarkerParent.SetActive(false);
     }
 
-    private void ShowhitMarker(Vector3 target)
+    private void ShowHitMarker(Vector3 target)
     {
         if (IsSkillCanUse())
         {
@@ -350,30 +358,42 @@ public class GameManager : ManagerBase {
         return this.mainCamera;
     }
 
-    public void GetMessage(string MessageType , string Message)
+    public void SetMessageQueue(string Message)
     {
-        string[] MessageArray = Message.Split(',');
+        messageQueue.Enqueue(Message);
+    }
+
+    private IEnumerator MessageActor(string Message)
+    {
+        string[] messageSplit = Message.Split('/');
+        string messageType = messageSplit[0];
+        string[] MessageArray = messageSplit[1].Split(',');
+        float targetTime = float.Parse(MessageArray[MessageArray.Length - 1]);
         PlayerControlThree target;
         PlayerControlThree Opposite;
         if (int.Parse(MessageArray[0]) == this.PlayerNumber)
         {
             target = Player.GetComponent<PlayerControlThree>();
-            Opposite = Enemy.GetComponent < PlayerControlThree>();
+            Opposite = Enemy.GetComponent<PlayerControlThree>();
+            Debug.Log(targetTime + "," + GUIM.GetTimePass());
         }
         else
         {
             target = Enemy.GetComponent<PlayerControlThree>();
             Opposite = Player.GetComponent<PlayerControlThree>();
         }
-        Debug.Log(MessageArray[0]);
-        switch (MessageType)
+       
+        WaitUntil messageWait = new WaitUntil(() => targetTime <= GUIM.GetTimePass());
+        yield return messageWait;
+        
+        switch (messageType)
         {
-            case "Shepherd" :
+            case "Shepherd":
                 target.SendMessage("SearchPhaseShift");
                 break;
             case "Skill":
                 Vector3 skillVector = new Vector3(float.Parse(MessageArray[2]), float.Parse(MessageArray[3]), float.Parse(MessageArray[4]));
-                StartCoroutine(SendMessageToSkillUse(int.Parse(MessageArray[1]),target.gameObject,Opposite.gameObject,target.HQ, skillVector, float.Parse(MessageArray[5])));
+                StartCoroutine(SendMessageToSkillUse(int.Parse(MessageArray[1]), target.gameObject, Opposite.gameObject, target.HQ, skillVector, float.Parse(MessageArray[5])));
                 break;
             case "Out":
                 target.SetPlayerState(PlayerSearchState.BACKTOHOME);
