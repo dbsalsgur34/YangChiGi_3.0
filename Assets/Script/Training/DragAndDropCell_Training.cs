@@ -18,19 +18,8 @@ public class DragAndDropCell_Training : MonoBehaviour, IDropHandler
     }
     public CellType cellType = CellType.Swap;                               // Special type of this cell
 
-    public struct DropDescriptor                                            // Struct with info about item's drop event
-    {
-        public DragAndDropCell_Training sourceCell;                                  // From this cell item was dragged
-        public DragAndDropCell_Training destinationCell;                             // Into this cell item was dropped
-        public DragAndDropItem_Training item;                                        // dropped item
-        public bool IsItemDropSucess;
-    }
-
     public Color empty = new Color();                                       // Sprite color for empty cell
     public Color full = new Color();                                        // Sprite color for filled cell
-
-    private bool IsSkillSetPanel = false;
-    public int cellNumber;
 
     void OnEnable()
     {
@@ -47,12 +36,6 @@ public class DragAndDropCell_Training : MonoBehaviour, IDropHandler
     void Start()
     {
         SetBackgroundState(GetComponentInChildren<DragAndDropItem_Training>() == null ? false : true);
-    }
-
-    public void SetCelltoSkillSetPanel(int cellNumber)
-    {
-        this.IsSkillSetPanel = true;
-        this.cellNumber = cellNumber;
     }
 
     private void OnAnyItemDragStart(DragAndDropItem_Training item)
@@ -107,17 +90,17 @@ public class DragAndDropCell_Training : MonoBehaviour, IDropHandler
             {
                 DragAndDropItem_Training item = DragAndDropItem_Training.draggedItem;
                 DragAndDropCell_Training sourceCell = DragAndDropItem_Training.sourceCell;
-                DropDescriptor desc = new DropDescriptor();
+                
                 if ((item != null) && (sourceCell != this))
                 {
                     switch (sourceCell.cellType)                            // Check source cell's type
                     {
                         case CellType.UnlimitedSource:
                             string itemName = item.name;
-                            int itemnum = item.indexNum;
+                            int itemnum = item.IndexNum;
                             item = Instantiate(item);                       // Clone item from source cell
                             item.name = itemName;
-                            item.indexNum = itemnum;
+                            item.IndexNum = itemnum;
                             break;
                         default:
                             // Nothing to do
@@ -131,44 +114,17 @@ public class DragAndDropCell_Training : MonoBehaviour, IDropHandler
                             {
                                 case CellType.Swap:
                                     SwapItems(sourceCell, this);            // Swap items between cells
-                                    // Fill event descriptor
-                                    desc.item = item;
-                                    desc.sourceCell = sourceCell;
-                                    desc.destinationCell = this;
-                                    // Send message with DragAndDrop info to parents GameObjects
-                                    StartCoroutine(NotifyOnDragEnd(desc));
-                                    if (currentItem != null)
-                                    {
-                                        // Fill event descriptor
-                                        desc.item = currentItem;
-                                        desc.sourceCell = this;
-                                        desc.destinationCell = sourceCell;
-                                        // Send message with DragAndDrop info to parents GameObjects
-                                        StartCoroutine(NotifyOnDragEnd(desc));
-                                    }
                                     break;
                                 default:
                                     PlaceItem(item.gameObject);             // Place dropped item in this cell
-                                    // Fill event descriptor
-                                    desc.item = item;
-                                    desc.sourceCell = sourceCell;
-                                    desc.destinationCell = this;
-                                    // Send message with DragAndDrop info to parents GameObjects
-                                    StartCoroutine(NotifyOnDragEnd(desc));
                                     break;
                             }
                             break;
                         case CellType.DropOnly:
                             PlaceItem(item.gameObject);                     // Place dropped item in this cell
-                            // Fill event descriptor
-                            desc.item = item;
-                            desc.sourceCell = sourceCell;
-                            desc.destinationCell = this;
-                            // Send message with DragAndDrop info to parents GameObjects
-                            StartCoroutine(NotifyOnDragEnd(desc));
                             break;
                         default:
-                            // Nothing to do
+                            //nothing to do.
                             break;
                     }
                 }
@@ -177,11 +133,11 @@ public class DragAndDropCell_Training : MonoBehaviour, IDropHandler
                 {
                     Destroy(item.gameObject);                               // Destroy it
                 }
+
+                TrainingManager.TMInstance.DragEndAction(sourceCell.GetCellNumber(),this.GetCellNumber(),item.IndexNum);
             }
         }     
     }
-
-
 
     private void SetBackgroundState(bool condition)
     {
@@ -194,6 +150,8 @@ public class DragAndDropCell_Training : MonoBehaviour, IDropHandler
         {
             Destroy(item.gameObject);
         }
+        this.transform.DetachChildren();
+        
         SetBackgroundState(false);
     }
 
@@ -215,7 +173,12 @@ public class DragAndDropCell_Training : MonoBehaviour, IDropHandler
 
     public DragAndDropItem_Training GetItem()
     {
-        return GetComponentInChildren<DragAndDropItem_Training>();
+        if (this.transform.childCount.Equals(0))
+            return null;
+        else
+        {
+            return GetComponentInChildren<DragAndDropItem_Training>();
+        }
     }
 
     public void SwapItems(DragAndDropCell_Training firstCell, DragAndDropCell_Training secondCell)
@@ -241,14 +204,9 @@ public class DragAndDropCell_Training : MonoBehaviour, IDropHandler
         }
     }
 
-    private IEnumerator NotifyOnDragEnd(DropDescriptor desc)
+    public virtual int? GetCellNumber()
     {
-        // Wait end of drag operation
-        while (DragAndDropItem_Training.draggedItem != null)
-        {
-            yield return new WaitForEndOfFrame();
-        }
-        // Send message with DragAndDrop info to parents GameObjects
-        gameObject.SendMessageUpwards("OnItemPlace", desc, SendMessageOptions.DontRequireReceiver);
+        return null;
     }
+
 }

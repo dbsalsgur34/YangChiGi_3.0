@@ -16,7 +16,7 @@ public class Hornet : SkillBase {
         SS = SkillState.ACTIVATED;
 	}
 
-    void HornetAction(GameObject Target)
+    private void HornetAction(GameObject Target)
     {
         float slowSpeed = speed / 10;
         float goSpeed;
@@ -37,7 +37,7 @@ public class Hornet : SkillBase {
         }
     }
 
-    Quaternion TurnToTarget()
+    private Quaternion TurnToTarget()
     {
         float angle;
         Vector3 PO = this.gameObject.transform.position;
@@ -48,15 +48,15 @@ public class Hornet : SkillBase {
         return Quaternion.Slerp(this.SkillParent.transform.rotation, AA, maxDegree * Time.deltaTime);
     }
 
-    Quaternion GoStraight(float SP)
+    private Quaternion GoStraight(float SP)
     {
         return Quaternion.Euler(new Vector3(SP * Time.deltaTime, 0, 0));
     }
 
-    IEnumerator HornetLife()
+    private IEnumerator HornetLife()
     {
         yield return new WaitForSeconds(waitTime);
-        SS = SkillState.LAUNCHED;
+        ChangeSkillStateLaunched();
         yield return new WaitForSeconds(duration);
         SkillParent.SetActive(false);
     }
@@ -94,9 +94,9 @@ public class Hornet : SkillBase {
         return base.ShowPreCooltime();
     }
 
-    public override bool ShowIsSkillNeedGuideLine()
+    public override bool GetIsSkillNeedGuideLine()
     {
-        return base.ShowIsSkillNeedGuideLine();
+        return base.GetIsSkillNeedGuideLine();
     }
 
     private void Update()

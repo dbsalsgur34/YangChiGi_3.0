@@ -297,11 +297,11 @@ public class PlayerControltwo : MonoBehaviour
 
     public void FixedUpdate()
     {
-        if (IsgameOver == false && GM.IsGameStart())
-        {
-            LeaderSheep();
+        //if (IsgameOver == false && GM.IsGameStart())
+        //{
+            //LeaderSheep();
             //KeyboardInput();
-            SheepCount = CalSheepScore();
+            //SheepCount = CalSheepScore();
             //CheckSheepType();
             //AfterBoost(Time.fixedTime, 60f);
             //SearchClosestSheep();
@@ -313,6 +313,6 @@ public class PlayerControltwo : MonoBehaviour
             //{
             //    GoStraight();
             //}
-        }
+        
     }
 }

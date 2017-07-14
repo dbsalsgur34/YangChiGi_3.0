@@ -30,9 +30,9 @@ public class Accel : SkillBase {
         return base.ShowPreCooltime();
     }
 
-    public override bool ShowIsSkillNeedGuideLine()
+    public override bool GetIsSkillNeedGuideLine()
     {
-        return base.ShowIsSkillNeedGuideLine();
+        return base.GetIsSkillNeedGuideLine();
     }
 
     IEnumerator AccelAction()

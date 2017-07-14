@@ -8,7 +8,7 @@ using Firebase.Auth;
 using Firebase.Database;
 using Firebase.Unity.Editor;
 
-public class PlayManage : ManagerBase {
+public class PlayManage : MonoBehaviour {
 
     public static PlayManage Instance;
     private int playerLevel = 1;
@@ -16,8 +16,8 @@ public class PlayManage : ManagerBase {
     private float enemyScore;
     private float exp;
     private float sound = 50;
-    private SkillDataBase SDB;
     private UIBaseManage UIB;
+    private string skillPreSetList;
     private float maxEXP;
 
     public string PlayerID
@@ -69,15 +69,19 @@ public class PlayManage : ManagerBase {
         set { if (value < 0) { enemyScore = 0; } else { enemyScore = value; } }
     }
 
-    private bool isSoundOn;
+    public string SkillPreSet
+    {
+        get { return skillPreSetList; }
+        set { skillPreSetList = value; }
+    }
 
-    public int[] skillPreSet;
+    private bool isSoundOn;
 
     private FirebaseAuth auth;
     private FirebaseDatabase DB;
     private DatabaseReference userInfoReferrence;
 
-    public override void Awake()                //싱글톤 오브젝트를 만들자!
+    protected void Awake()                //싱글톤 오브젝트를 만들자!
     {
         PlayManageAwake();
 
@@ -97,15 +101,9 @@ public class PlayManage : ManagerBase {
     private void PlayManageAwake()
     {
         FireBaseInit();
-        skillPreSet = new int[4];
-        for (int i = 0; i < 4; i++)
-        {
-            skillPreSet[i] = 0;
-        }
         PlayerScore = 0;
         EnemyScore = 0;
         isSoundOn = true;
-        SDB = this.gameObject.GetComponent<SkillDataBase>();
     }
 
     private void FireBaseInit()
@@ -133,8 +131,7 @@ public class PlayManage : ManagerBase {
         PlayerPrefs.SetInt("PLAYERLEVEL", this.playerLevel);
         PlayerPrefs.SetFloat("SOUND", this.Sound);
         PlayerPrefs.SetFloat("EXP", this.exp);
-        string SkillPreSetString = skillPreSet[0]+","+skillPreSet[1]+","+skillPreSet[2]+","+skillPreSet[3];
-        PlayerPrefs.SetString("SKILLPRESET",SkillPreSetString);
+        PlayerPrefs.SetString("SKILLPRESET",skillPreSetList);
     }
 
     private void LoadData()
@@ -143,12 +140,7 @@ public class PlayManage : ManagerBase {
         this.playerLevel = PlayerPrefs.GetInt("PLAYERLEVEL", 1);
         this.Sound = PlayerPrefs.GetFloat("SOUND", 50);
         this.exp = PlayerPrefs.GetFloat("EXP", 0);
-        string[] SkillPreSetList = PlayerPrefs.GetString("SKILLPRESET", "1,2,3,4").Split(',');
-        for (int i = 0; i < 4; i++)
-        {
-            this.skillPreSet[i] = int.Parse(SkillPreSetList[i]);
-        }
-        SDB.SetRandomNumber(skillPreSet);
+        this.skillPreSetList = PlayerPrefs.GetString("SKILLPRESET", "1,2,3,4");
         this.maxEXP = playerLevel * 1000;
     }
 
@@ -160,23 +152,8 @@ public class PlayManage : ManagerBase {
         this.EnemyScore = 0;
         this.Sound = 50;
         this.exp = 0;
-        this.skillPreSet = new int[4] { 1,2,3,4 };
+        this.skillPreSetList = "1,2,3,4";
         SaveData();
     }
-
-    public IEnumerator SetSkillPreSet(int index, int skillNum)
-    {
-        this.skillPreSet[index] = skillNum;
-        yield return null;
-    }
-
-    public int GetSkillPreSet(int index)
-    {
-        return skillPreSet[index];
-    }
-
-    public SkillDataBase GetSkillDataBase()
-    {
-        return this.SDB;
-    }
 }
+

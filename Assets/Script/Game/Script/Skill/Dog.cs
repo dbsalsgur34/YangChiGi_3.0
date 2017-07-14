@@ -12,7 +12,7 @@ public enum DogState
 public class Dog : SkillBase {
 
     private DogState DS;
-    public List<SheepControlThree> SheepList;
+    private List<SheepControlThree> SheepList;
     public float Speed;
     public float mindistance;
 
@@ -25,6 +25,8 @@ public class Dog : SkillBase {
     {
         base.Awake();
         DS = DogState.GO;
+        ChangeSkillStateLaunched();
+        SheepList = new List<SheepControlThree>();
     }
 
     private void GoStraight()
@@ -77,7 +79,7 @@ public class Dog : SkillBase {
         for (int temp = index; temp <= SheepList.Count - 1; temp++)
         {
             SheepList[temp].Master = target.gameObject;
-            GM.FindAndRemoveAtSheepList(this.SheepList[temp].gameObject);
+            ManagerHandler.Instance.GameManager().FindAndRemoveAtSheepList(this.SheepList[temp].gameObject);
             target.SheepList.Add(this.SheepList[temp].gameObject);
             SheepList[temp].transform.parent = target.SheepArea.transform;
             SheepList[temp].GetComponent<SheepControlThree>().SetthisLocalPosition();
@@ -113,7 +115,7 @@ public class Dog : SkillBase {
         {
             for (int i = SheepList.Count - 1; i >= 0; i--)
             {
-                GM.FindAndRemoveAtSheepList(this.SheepList[i].gameObject);
+                ManagerHandler.Instance.GameManager().FindAndRemoveAtSheepList(this.SheepList[i].gameObject);
                 SheepList[i].gameObject.SetActive(false);
                 SheepList.RemoveAt(i);
                 Owner.GetComponent<PlayerControlThree>().Score++;
@@ -148,12 +150,12 @@ public class Dog : SkillBase {
         return base.ShowPreCooltime();
     }
 
-    public override bool ShowIsSkillNeedGuideLine()
+    public override bool GetIsSkillNeedGuideLine()
     {
-        return base.ShowIsSkillNeedGuideLine();
+        return base.GetIsSkillNeedGuideLine();
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         if (SS == SkillState.LAUNCHED && this.Owner != null)
         {

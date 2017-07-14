@@ -20,15 +20,12 @@ public class LobbyManager : ManagerBase {
     private float maxEXP;
     private float Iconrotation;
 
-    //private GameObject NetworkObject;
-    private bool IsGameMatching;
-
-    public override void Awake()
+    protected new void Awake()
     {
-        base.Awake();
+        return;
     }
 
-    public override void Start()
+    protected override void Start()
     {
         base.Start();
         LobbyInit();
@@ -70,7 +67,6 @@ public class LobbyManager : ManagerBase {
         MatchingCancleButton.onClick.AddListener(CancleMatching);
         LoadingScene.SetActive(false);
         StartCoroutine(TextBlink());
-        IsGameMatching = false;
     }
 
     private void TargetIconRotate()
@@ -100,9 +96,14 @@ public class LobbyManager : ManagerBase {
         }
     }
 
-    private void CancleMatching()
+    public void StartMatching()
     {
-        IsGameMatching = false;
+        LoadingScene.SetActive(true);
+        NetworkObjectAction();
+    }
+
+    public void CancleMatching()
+    {
         LoadingScene.SetActive(false);
         Network_Client.StopThread();
     }
@@ -118,9 +119,8 @@ public class LobbyManager : ManagerBase {
         }
     }
 
-    private void CreateNetworkObject()
+    private void NetworkObjectAction()
     {
-        IsGameMatching = true;
         if (KingGodClient.Instance == null)
         {
             Instantiate(Resources.Load("Prefab/ETC/NetworkObject"));
@@ -136,9 +136,9 @@ public class LobbyManager : ManagerBase {
         LoadingScene.SetActive(set);
     }
 
-    public bool RetrunIsGameMatching()
+    public bool GetIsGameMatching()
     {
-        return this.IsGameMatching;
+        return (LoadingScene.activeSelf.Equals(true)) ? true : false;
     }
 
     private void Update()

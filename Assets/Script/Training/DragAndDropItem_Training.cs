@@ -14,15 +14,9 @@ public class DragAndDropItem_Training : MonoBehaviour, IBeginDragHandler, IDragH
     public delegate void DragEvent(DragAndDropItem_Training item);
     static public event DragEvent OnItemDragStartEvent;                             // Drag start event
     static public event DragEvent OnItemDragEndEvent;                               // Drag end event
-    public bool IsItemCanDrag;
+    private bool IsItemCanDrag;
 
-    public int indexNum;
-
-    public void ShowRequiredLevel(int requiredLevel)
-    {
-        Text text = (Instantiate(Resources.Load("Prefab/LevelText"), this.gameObject.transform) as GameObject).GetComponent<Text>();
-        text.text = "Lv." + requiredLevel.ToString();
-    }
+    private int indexNum;
 
     public int IndexNum
     {
@@ -56,6 +50,7 @@ public class DragAndDropItem_Training : MonoBehaviour, IBeginDragHandler, IDragH
             {
                 OnItemDragStartEvent(this);                                             // Notify all about item drag start
             }
+            Debug.Log("BeginDragged");
         }
     }
 
@@ -81,10 +76,11 @@ public class DragAndDropItem_Training : MonoBehaviour, IBeginDragHandler, IDragH
         {
             OnItemDragEndEvent(this);                                               // Notify all cells about item drag end
         }
-
+        //빈 공간에 드래그 앤 드롭 했을시
         if (eventData.pointerCurrentRaycast.gameObject.tag != "SkillPanel" && sourceCell.cellType == DragAndDropCell_Training.CellType.Swap)
         {
             sourceCell.RemoveItem();
+            TrainingManager.TMInstance.DragEndAction(sourceCell.GetCellNumber(),null, this.IndexNum);
         }
 
         draggedItem = null;

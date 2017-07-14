@@ -1,0 +1,153 @@
+Initialize engine version: 5.6.1f1 (2860b30f0b54)
+GfxDevice: creating device client; threaded=1
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.1]
+    Renderer: NVIDIA GeForce GTX 1050 Ti (ID=0x1c8c)
+    Vendor:   NVIDIA
+    VRAM:     4053 MB
+    Driver:   22.21.13.8205
+Begin MonoManager ReloadAssembly
+Platform assembly: C:\Users\ak569\Documents\YangChiGi_3.0\Client2_Data\Managed\UnityEngine.dll (this message is harmless)
+Loading C:\Users\ak569\Documents\YangChiGi_3.0\Client2_Data\Managed\UnityEngine.dll into Unity Child Domain
+Platform assembly: C:\Users\ak569\Documents\YangChiGi_3.0\Client2_Data\Managed\Assembly-CSharp.dll (this message is harmless)
+Loading C:\Users\ak569\Documents\YangChiGi_3.0\Client2_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
+Platform assembly: C:\Users\ak569\Documents\YangChiGi_3.0\Client2_Data\Managed\UnityEngine.UI.dll (this message is harmless)
+Loading C:\Users\ak569\Documents\YangChiGi_3.0\Client2_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
+Platform assembly: C:\Users\ak569\Documents\YangChiGi_3.0\Client2_Data\Managed\UnityEngine.Networking.dll (this message is harmless)
+Loading C:\Users\ak569\Documents\YangChiGi_3.0\Client2_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
+Platform assembly: C:\Users\ak569\Documents\YangChiGi_3.0\Client2_Data\Managed\Firebase.App.dll (this message is harmless)
+Loading C:\Users\ak569\Documents\YangChiGi_3.0\Client2_Data\Managed\Firebase.App.dll into Unity Child Domain
+Platform assembly: C:\Users\ak569\Documents\YangChiGi_3.0\Client2_Data\Managed\Firebase.Auth.dll (this message is harmless)
+Loading C:\Users\ak569\Documents\YangChiGi_3.0\Client2_Data\Managed\Firebase.Auth.dll into Unity Child Domain
+Platform assembly: C:\Users\ak569\Documents\YangChiGi_3.0\Client2_Data\Managed\Firebase.Database.dll (this message is harmless)
+Loading C:\Users\ak569\Documents\YangChiGi_3.0\Client2_Data\Managed\Firebase.Database.dll into Unity Child Domain
+Platform assembly: C:\Users\ak569\Documents\YangChiGi_3.0\Client2_Data\Managed\Google.MiniJson.dll (this message is harmless)
+Loading C:\Users\ak569\Documents\YangChiGi_3.0\Client2_Data\Managed\Google.MiniJson.dll into Unity Child Domain
+Platform assembly: C:\Users\ak569\Documents\YangChiGi_3.0\Client2_Data\Managed\Google.Sharpen.dll (this message is harmless)
+Loading C:\Users\ak569\Documents\YangChiGi_3.0\Client2_Data\Managed\Google.Sharpen.dll into Unity Child Domain
+Platform assembly: C:\Users\ak569\Documents\YangChiGi_3.0\Client2_Data\Managed\Unity.Compat.dll (this message is harmless)
+Loading C:\Users\ak569\Documents\YangChiGi_3.0\Client2_Data\Managed\Unity.Compat.dll into Unity Child Domain
+Platform assembly: C:\Users\ak569\Documents\YangChiGi_3.0\Client2_Data\Managed\Unity.Tasks.dll (this message is harmless)
+Loading C:\Users\ak569\Documents\YangChiGi_3.0\Client2_Data\Managed\Unity.Tasks.dll into Unity Child Domain
+- Completed reload, in  0.859 seconds
+Platform assembly: C:\Users\ak569\Documents\YangChiGi_3.0\Client2_Data\Managed\System.Core.dll (this message is harmless)
+Platform assembly: C:\Users\ak569\Documents\YangChiGi_3.0\Client2_Data\Managed\System.dll (this message is harmless)
+desktop: 1920x1080 60Hz; virtual: 1920x1080 at 0,0
+<RI> Initializing input.
+<RI> Input initialized.
+<RI> Initialized touch support.
+UnloadTime: 14.597849 ms
+Setting up 2 worker threads for Enlighten.
+  Thread -> id: 1724 -> priority: 1 
+  Thread -> id: 3628 -> priority: 1 
+Platform assembly: C:\Users\ak569\Documents\YangChiGi_3.0\Client2_Data\Managed\Mono.Security.dll (this message is harmless)
+NMR created
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Platform assembly: C:\Users\ak569\Documents\YangChiGi_3.0\Client2_Data\Managed\System.Configuration.dll (this message is harmless)
+Platform assembly: C:\Users\ak569\Documents\YangChiGi_3.0\Client2_Data\Managed\System.Xml.dll (this message is harmless)
+StartConnect
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Connecting to...127.0.0.1:11900
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Connected.
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Received: Seed/1597013232
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Received: PlayerNum/1
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+SetLogReference
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Unloading 7 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 5.413115 ms
+
+Unloading 20 unused Assets to reduce memory usage. Loaded Objects now: 763.
+Total: 15.355913 ms (FindLiveObjects: 0.082410 ms CreateObjectMapping: 0.034191 ms MarkObjects: 15.198689 ms  DeleteObjects: 0.039159 ms)
+
+Search Complete
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+gameManagerInit
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+gameTimeInit
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+gameUIManagerInit
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Send: Ready/1
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Received: Start
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+InvalidOperationException: Operation is not valid due to the current state of the object
+  at System.Collections.Generic.Queue`1[DragAndDropItem].Peek () [0x00000] in <filename unknown>:0 
+  at System.Collections.Generic.Queue`1[DragAndDropItem].Dequeue () [0x00000] in <filename unknown>:0 
+  at SkillManager.SetSkillPanelSkillDelay () [0x00000] in <filename unknown>:0 
+  at SkillManager.UsingSkill (Int32 SkillNumber, UnityEngine.GameObject Owner, UnityEngine.GameObject Target, UnityEngine.Transform Pivot, UnityEngine.Transform Pivotrotation, Single angle, Vector3 skillVector) [0x00000] in <filename unknown>:0 
+  at NetworkManager+<SendMessageToSkillUse>c__Iterator1.MoveNext () [0x00000] in <filename unknown>:0 
+  at UnityEngine.SetupCoroutine.InvokeMoveNext (IEnumerator enumerator, IntPtr returnValueAddress) [0x00000] in <filename unknown>:0 
+ 
+(Filename:  Line: -1)
+
+InvalidOperationException: Operation is not valid due to the current state of the object
+  at System.Collections.Generic.Queue`1[DragAndDropItem].Peek () [0x00000] in <filename unknown>:0 
+  at System.Collections.Generic.Queue`1[DragAndDropItem].Dequeue () [0x00000] in <filename unknown>:0 
+  at SkillManager.SetSkillPanelSkillDelay () [0x00000] in <filename unknown>:0 
+  at SkillManager.UsingSkill (Int32 SkillNumber, UnityEngine.GameObject Owner, UnityEngine.GameObject Target, UnityEngine.Transform Pivot, UnityEngine.Transform Pivotrotation, Single angle, Vector3 skillVector) [0x00000] in <filename unknown>:0 
+  at NetworkManager+<SendMessageToSkillUse>c__Iterator1.MoveNext () [0x00000] in <filename unknown>:0 
+  at UnityEngine.SetupCoroutine.InvokeMoveNext (IEnumerator enumerator, IntPtr returnValueAddress) [0x00000] in <filename unknown>:0 
+ 
+(Filename:  Line: -1)
+
+InvalidOperationException: Operation is not valid due to the current state of the object
+  at System.Collections.Generic.Queue`1[DragAndDropItem].Peek () [0x00000] in <filename unknown>:0 
+  at System.Collections.Generic.Queue`1[DragAndDropItem].Dequeue () [0x00000] in <filename unknown>:0 
+  at SkillManager.SetSkillPanelSkillDelay () [0x00000] in <filename unknown>:0 
+  at SkillManager.UsingSkill (Int32 SkillNumber, UnityEngine.GameObject Owner, UnityEngine.GameObject Target, UnityEngine.Transform Pivot, UnityEngine.Transform Pivotrotation, Single angle, Vector3 skillVector) [0x00000] in <filename unknown>:0 
+  at NetworkManager+<SendMessageToSkillUse>c__Iterator1.MoveNext () [0x00000] in <filename unknown>:0 
+  at UnityEngine.SetupCoroutine.InvokeMoveNext (IEnumerator enumerator, IntPtr returnValueAddress) [0x00000] in <filename unknown>:0 
+ 
+(Filename:  Line: -1)
+
+Send: GameOver/1,180.5016
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Send: Network Disconnected.
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+SHUT DOWN
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+ReceivingOperation: Read failure
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Disconnected.
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+

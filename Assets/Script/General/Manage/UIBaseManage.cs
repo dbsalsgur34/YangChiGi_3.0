@@ -45,6 +45,8 @@ public class UIBaseManage : FadeInOut {
 		{
 			StartCoroutine(FadeImageSet());
 		}
+        yield return new WaitForFixedUpdate();
+        fadeImageObject.transform.SetAsLastSibling();
     }
 
     public IEnumerator LoadSceneAndFadeInOut(string name)

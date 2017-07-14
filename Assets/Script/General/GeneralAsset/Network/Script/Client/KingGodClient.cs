@@ -63,7 +63,6 @@ namespace ClientSide
         }
 		public void SetSeed(string Seed)
 		{
-			Debug.Log("SetSeed");
 			this.Seed = int.Parse(Seed);
 			NMS.SetMatchReference(Seed);
 			NMR.SetLogReference(Seed);

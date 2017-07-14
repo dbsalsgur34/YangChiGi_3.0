@@ -1,74 +1,57 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
-
-public class ButtonEvent : MonoBehaviour {
+public class ButtonEvent : ButtonBase {
 
     public enum ButtonEventType
     {
-        LOBBYSCENEMOVE,
-        LOBBYPLAY,
-        MENUEXIT
+        TRAININGSCENEMOVE,
+        SETTINGSCENEMOVE,
+        PLAY,
+        CANCLE
     }
 
-    public string targetSceneName = null;
-    public bool IsSave = false;
     public ButtonEventType BET;
 
-    private Button B;
     private LobbyManager LM;
-    private void Start()
+
+    protected override void Start()
     {
+        base.Start();
         LM = GameObject.FindGameObjectWithTag("Manager").GetComponent<LobbyManager>();
-        B = this.gameObject.GetComponent<Button>();
-        if (BET == ButtonEventType.LOBBYSCENEMOVE)
+        switch (BET)
         {
-            B.onClick.AddListener(LobbyLoadScene);
-            B.onClick.AddListener(SavePref);
-        }
-        else if (BET == ButtonEventType.LOBBYPLAY)
-        {
-            B.onClick.AddListener(Matching);
-        }
-        else if (BET == ButtonEventType.MENUEXIT)
-        {
-            B.onClick.AddListener(MenuLoadScene);
-            B.onClick.AddListener(SavePref);
-        }
-    }
-    private void Matching()
-    {
-        LM.SetLoadingScene(true);
-        SendLMToCreateNetworkObject();
-    }
-
-    private void LobbyLoadScene()
-    {
-        if (!LM.RetrunIsGameMatching())
-        {
-            StartCoroutine(PlayManage.Instance.LoadScene(targetSceneName));
+            case ButtonEventType.TRAININGSCENEMOVE:
+                AddButtonClickEvent(() => LobbyLoadScene("Training"));
+                AddButtonClickEvent(SavePref);
+                break;
+            case ButtonEventType.SETTINGSCENEMOVE:
+                AddButtonClickEvent(() => LobbyLoadScene("Setting"));
+                AddButtonClickEvent(SavePref);
+                break;
+            case ButtonEventType.PLAY:
+                AddButtonClickEvent(() => LM.StartMatching());
+                AddButtonClickEvent(SavePref);
+                break;
+            case ButtonEventType.CANCLE:
+                AddButtonClickEvent(() => LM.CancleMatching());
+                AddButtonClickEvent(SavePref);
+                break;
         }
     }
 
-    private void MenuLoadScene()
+    private void LobbyLoadScene(string targetScene)
     {
-        StartCoroutine(PlayManage.Instance.LoadScene(targetSceneName));
+        if (!LM.GetIsGameMatching())
+        {
+            StartCoroutine(PlayManage.Instance.LoadScene(targetScene));
+        }
     }
 
     private void SavePref()
     {
-        if (IsSave)
-        {
-            PlayManage.Instance.SaveData();
-            PlayerPrefs.Save();
-        }
-    }
-
-    void SendLMToCreateNetworkObject()
-    {
-        LM.SendMessage("CreateNetworkObject");
+        PlayManage.Instance.SaveData();
+        PlayerPrefs.Save();
     }
 }

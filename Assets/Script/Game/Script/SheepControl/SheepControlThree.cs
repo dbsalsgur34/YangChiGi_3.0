@@ -43,7 +43,7 @@ public class SheepControlThree : MonoBehaviour {
             Master.GetComponent<PlayerControlThree>().AddSheepList(this.gameObject);
             this.transform.parent = Master.GetComponent<PlayerControlThree>().SheepArea.transform;
             SetthisLocalPosition();
-            GameManager.GMInstance.FindAndRemoveAtSheepList(this.gameObject);
+            ManagerHandler.Instance.GameManager().FindAndRemoveAtSheepList(this.gameObject);
         }
         else
         {

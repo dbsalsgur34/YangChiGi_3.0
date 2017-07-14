@@ -1,0 +1,255 @@
+Initialize engine version: 5.6.1f1 (2860b30f0b54)
+GfxDevice: creating device client; threaded=1
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.1]
+    Renderer: NVIDIA GeForce GTX 1050 Ti (ID=0x1c8c)
+    Vendor:   NVIDIA
+    VRAM:     4053 MB
+    Driver:   22.21.13.8205
+Begin MonoManager ReloadAssembly
+Platform assembly: C:\Users\ak569\Documents\YangChiGi_3.0\Client_Data\Managed\UnityEngine.dll (this message is harmless)
+Loading C:\Users\ak569\Documents\YangChiGi_3.0\Client_Data\Managed\UnityEngine.dll into Unity Child Domain
+Platform assembly: C:\Users\ak569\Documents\YangChiGi_3.0\Client_Data\Managed\Assembly-CSharp.dll (this message is harmless)
+Loading C:\Users\ak569\Documents\YangChiGi_3.0\Client_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
+Platform assembly: C:\Users\ak569\Documents\YangChiGi_3.0\Client_Data\Managed\UnityEngine.UI.dll (this message is harmless)
+Loading C:\Users\ak569\Documents\YangChiGi_3.0\Client_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
+Platform assembly: C:\Users\ak569\Documents\YangChiGi_3.0\Client_Data\Managed\UnityEngine.Networking.dll (this message is harmless)
+Loading C:\Users\ak569\Documents\YangChiGi_3.0\Client_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
+Platform assembly: C:\Users\ak569\Documents\YangChiGi_3.0\Client_Data\Managed\Firebase.App.dll (this message is harmless)
+Loading C:\Users\ak569\Documents\YangChiGi_3.0\Client_Data\Managed\Firebase.App.dll into Unity Child Domain
+Platform assembly: C:\Users\ak569\Documents\YangChiGi_3.0\Client_Data\Managed\Firebase.Auth.dll (this message is harmless)
+Loading C:\Users\ak569\Documents\YangChiGi_3.0\Client_Data\Managed\Firebase.Auth.dll into Unity Child Domain
+Platform assembly: C:\Users\ak569\Documents\YangChiGi_3.0\Client_Data\Managed\Firebase.Database.dll (this message is harmless)
+Loading C:\Users\ak569\Documents\YangChiGi_3.0\Client_Data\Managed\Firebase.Database.dll into Unity Child Domain
+Platform assembly: C:\Users\ak569\Documents\YangChiGi_3.0\Client_Data\Managed\Google.MiniJson.dll (this message is harmless)
+Loading C:\Users\ak569\Documents\YangChiGi_3.0\Client_Data\Managed\Google.MiniJson.dll into Unity Child Domain
+Platform assembly: C:\Users\ak569\Documents\YangChiGi_3.0\Client_Data\Managed\Google.Sharpen.dll (this message is harmless)
+Loading C:\Users\ak569\Documents\YangChiGi_3.0\Client_Data\Managed\Google.Sharpen.dll into Unity Child Domain
+Platform assembly: C:\Users\ak569\Documents\YangChiGi_3.0\Client_Data\Managed\Unity.Compat.dll (this message is harmless)
+Loading C:\Users\ak569\Documents\YangChiGi_3.0\Client_Data\Managed\Unity.Compat.dll into Unity Child Domain
+Platform assembly: C:\Users\ak569\Documents\YangChiGi_3.0\Client_Data\Managed\Unity.Tasks.dll (this message is harmless)
+Loading C:\Users\ak569\Documents\YangChiGi_3.0\Client_Data\Managed\Unity.Tasks.dll into Unity Child Domain
+- Completed reload, in  0.033 seconds
+Platform assembly: C:\Users\ak569\Documents\YangChiGi_3.0\Client_Data\Managed\System.Core.dll (this message is harmless)
+Platform assembly: C:\Users\ak569\Documents\YangChiGi_3.0\Client_Data\Managed\System.dll (this message is harmless)
+desktop: 1920x1080 60Hz; virtual: 1920x1080 at 0,0
+<RI> Initializing input.
+<RI> Input initialized.
+<RI> Initialized touch support.
+UnloadTime: 1.811288 ms
+Setting up 2 worker threads for Enlighten.
+  Thread -> id: 42dc -> priority: 1 
+  Thread -> id: 29e0 -> priority: 1 
+Platform assembly: C:\Users\ak569\Documents\YangChiGi_3.0\Client_Data\Managed\Mono.Security.dll (this message is harmless)
+NMR created
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Platform assembly: C:\Users\ak569\Documents\YangChiGi_3.0\Client_Data\Managed\System.Configuration.dll (this message is harmless)
+Platform assembly: C:\Users\ak569\Documents\YangChiGi_3.0\Client_Data\Managed\System.Xml.dll (this message is harmless)
+StartConnect
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Connecting to...127.0.0.1:11900
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Connection Msg: ConnectionRefused
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Connecting to...127.0.0.1:11900
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Connection Msg: ConnectionRefused
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Connecting to...127.0.0.1:11900
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Connection Msg: ConnectionRefused
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Connecting to...127.0.0.1:11900
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Connection Msg: ConnectionRefused
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Connecting to...127.0.0.1:11900
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Connected.
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Received: Seed/1339032671
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Received: PlayerNum/2
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+SetSeed
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+SetLogReference
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Unloading 7 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 3.056804 ms
+
+Unloading 23 unused Assets to reduce memory usage. Loaded Objects now: 1605.
+Total: 7.536513 ms (FindLiveObjects: 0.325552 ms CreateObjectMapping: 0.271488 ms MarkObjects: 6.802997 ms  DeleteObjects: 0.134721 ms)
+
+Send: Ready/2
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Received: Start
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+5.519996,5.059996
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+10.52004,10.04004
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+15.52015,15.04015
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+20.52027,20.04027
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+25.52038,25.04038
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+30.5205,30.0405
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+35.52061,35.06061
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+40.52073,40.06073
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+45.52084,45.04084
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+50.52095,50.04095
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+55.52107,55.04107
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+60.52118,60.04118
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+65.5411,65.0611
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+70.56026,70.08025
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+75.57941,75.09941
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+80.59857,80.11857
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+85.61773,85.13773
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+90.63689,90.15688
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+95.65604,95.17604
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+100.6752,100.1952
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+105.6944,105.2344
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+110.7135,110.2335
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+115.7327,115.2527
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+120.7518,120.2918
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+125.771,125.311
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+130.771,130.291
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+135.7721,135.2921
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+140.7731,140.2932
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+145.7742,145.3142
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+150.7753,150.3153
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+155.7764,155.3164
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+160.7774,160.3174
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+165.7785,165.3185
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+

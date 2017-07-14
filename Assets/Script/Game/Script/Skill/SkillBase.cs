@@ -11,7 +11,6 @@ public enum SkillState
 
 public class SkillBase : MonoBehaviour {
 
-    protected GameManager GM;
     protected GameObject Owner;
     protected GameObject TG;       //Skill의 Target.
     protected GameObject SkillParent;
@@ -35,7 +34,6 @@ public class SkillBase : MonoBehaviour {
 
     public virtual void Awake()
     {
-        GM = GameObject.FindGameObjectWithTag("Manager").GetComponent<GameManager>();
         Transform originalParent = transform.parent;            //check if this camera already has a parent
         SkillParent = new GameObject("SkillParent");                //create a new gameObject
         this.transform.parent = SkillParent.transform;                    //make this camera a child of the new gameObject
@@ -63,9 +61,14 @@ public class SkillBase : MonoBehaviour {
         return PreCoolTime;
     }
 
-    public virtual bool ShowIsSkillNeedGuideLine()
+    public virtual bool GetIsSkillNeedGuideLine()
     {
         return this.IsSkillNeedGuideLine;
+    }
+
+    public virtual float GetSkillCoolTime()
+    {
+        return this.PreCoolTime;
     }
 
     public bool AreYouMyMaster(GameObject target)
@@ -76,6 +79,12 @@ public class SkillBase : MonoBehaviour {
     public int GetRequiredLevel() {
         return this.requiredLevel;
     }
+
+    protected void ChangeSkillStateLaunched()
+    {
+        this.SS = SkillState.LAUNCHED;
+    }
+
 
     public SkillState GetSkillState()
     {

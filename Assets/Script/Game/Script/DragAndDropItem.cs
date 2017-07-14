@@ -9,38 +9,51 @@ public class DragAndDropItem : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     static public DragAndDropItem draggedItem;                                      // Item that is dragged now
     static public GameObject icon;                                                  // Icon of dragged item
     static public DragAndDropCell sourceCell;                                       // From this cell dragged item is
-    
+
     public delegate void DragEvent(DragAndDropItem item);
     static public event DragEvent OnItemDragStartEvent;                             // Drag start event
     static public event DragEvent OnItemDragEndEvent;                               // Drag end event
-    public bool IsItemCanDrag;
 
-    public LayerMask LM;
+    public struct ItemInstance
+    {
+        public bool IsItemCanDrag;
+        public float coolTime;
+        public int skillIndexNum;
+        public Sprite waitIcon;
+        public Sprite skillIcon;
 
-    public float time;
-    public Text timetext;
+        public ItemInstance(int skillIndexNum, float coolTime, Sprite skillIcon)
+        {
+            this.skillIndexNum = skillIndexNum;
+            this.coolTime = coolTime;
+            this.skillIcon = skillIcon;
+            IsItemCanDrag = false;
+            waitIcon = Resources.Load<Sprite>("Image/Resource/Button/Black/SkillIcon/stopwatch");
+        }
+    }
 
-    private int num;
-    private bool IsSkillNeedGuideLine;
-    private GameManager GM;
+    private float time;
+    private Text timetext;
+    private Image itemImage;
+    private ItemInstance itemInstance;
 
     private void Start()
     {
-        GM = GameManager.GMInstance;
-        GM.GetSkillManager().SetSkillPanelQueue(this.gameObject.GetComponent<DragAndDropItem>());
         timetext = GetComponentInChildren<Text>();
         timetext.gameObject.SetActive(false);
+        //ManagerHandler.Instance.SkillManager().SetSkillPanelList(transform.parent.GetSiblingIndex(),this);
+        itemImage = GetComponent<Image>();
     }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        if (IsItemCanDrag)
+        if (itemInstance.IsItemCanDrag)
         {
             sourceCell = GetComponentInParent<DragAndDropCell>();                       // Remember source cell
             draggedItem = this;                                                         // Set as dragged item
             icon = new GameObject("Icon");                                              // Create object for item's icon
             Image image = icon.AddComponent<Image>();
-            image.sprite = GetComponent<Image>().sprite;
+            image.sprite = itemImage.sprite;
             image.raycastTarget = false;                                                // Disable icon's raycast for correct drop handling
             RectTransform iconRect = icon.GetComponent<RectTransform>();
             // Set icon's dimensions
@@ -54,8 +67,6 @@ public class DragAndDropItem : MonoBehaviour, IBeginDragHandler, IDragHandler, I
                 icon.transform.SetAsLastSibling();                                      // Set as last child in canvas transform
             }
 
-            GM.GetMainCamera().SetIsSkillCutScene(true);
-
             if (OnItemDragStartEvent != null)
             {
                 OnItemDragStartEvent(this);                                             // Notify all about item drag start
@@ -63,55 +74,24 @@ public class DragAndDropItem : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         }
     }
 
-    public void SetInstance(int number, bool GuideLineNeed)
+    public void SetInstance(int indexNumber,float coolTime, Sprite skillImage)
     {
-        this.num = number;
-        this.IsSkillNeedGuideLine = GuideLineNeed;
+        this.itemInstance = new ItemInstance(indexNumber,coolTime,skillImage);
+    }
+
+    public int GetSkillNumber()
+    {
+        return this.itemInstance.skillIndexNum; 
     }
 
     public void OnDrag(PointerEventData data)
     {
-        if (IsItemCanDrag)
+        if (itemInstance.IsItemCanDrag)
         {
             if (icon != null)
             {
                 icon.transform.position = Input.mousePosition;                          // Item's icon follows to cursor
             }
-            CheckIsIcononthePlanet();
-        }
-    }
-
-    private void CheckIsIcononthePlanet()
-    {
-        RaycastHit hit = new RaycastHit();
-
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        Physics.Raycast(ray.origin, ray.direction,out hit,Mathf.Infinity,LM);
-
-        if (hit.transform != null)
-        {
-            RazorActiveOption(true,true);
-            GM.SetIsSkillOnthePlanaet(true);
-            GM.hitVector = hit.point;
-            GM.SetHitMarkerParentActive(true);
-        }
-        else
-        {
-            GM.SetHitMarkerParentActive(false);
-            GM.SetIsSkillOnthePlanaet(false);
-            RazorActiveOption(false,false);
-        }
-    }
-
-    void RazorActiveOption(bool RCactive,bool CenterRCactive)
-    {
-        if (this.IsSkillNeedGuideLine)
-        {
-            GM.SetRazorActive(RCactive, CenterRCactive);
-        }
-        else
-        {
-            GM.SetRazorActive(false, CenterRCactive);
         }
     }
 
@@ -129,18 +109,6 @@ public class DragAndDropItem : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         draggedItem = null;
         icon = null;
         sourceCell = null;
-
-        GM.GetMainCamera().SetIsSkillCutScene(false);
-        RazorActiveOption(false,false);
-        GM.SetHitMarkerParentActive(false);
-        if (GM.IsSkillCanUse())
-        {
-            KingGodClient.Instance.GetNetworkMessageSender().SendSkillVectorToServer(KingGodClient.Instance.playerNum,num,GM.hitVector,GameUIManager.GUIMInstance.GetTimePass());
-            GM.SetIsSkillOnthePlanaet(false);
-            IsItemCanDrag = false;
-            GM.GetSkillManager().SetSkillPanelQueue(this.gameObject.GetComponent<DragAndDropItem>());
-        }
-        else { return; }
     }
 
     public void MakeRaycast(bool condition)
@@ -157,20 +125,25 @@ public class DragAndDropItem : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         GetComponent<Image>().enabled = condition;
     }
 
-    public IEnumerator SkillDelay(float delay, Sprite WaitIcon, Sprite SkillIcon)
+    public IEnumerator SkillDelay()
     {
-        time = delay;
-        this.gameObject.GetComponent<Image>().sprite = WaitIcon;
+        time = itemInstance.coolTime;
+        itemImage.sprite = itemInstance.waitIcon;
         timetext.gameObject.SetActive(true);
         yield return new WaitUntil(() => (time < 0));
-        IsItemCanDrag = true;
-        this.gameObject.GetComponent<Image>().sprite = SkillIcon;
+        itemInstance.IsItemCanDrag = true;
+        itemImage.sprite = itemInstance.skillIcon;
         timetext.gameObject.SetActive(false);
+    }
+
+    public void SetItemDragDisable()
+    {
+        this.itemInstance.IsItemCanDrag = false;
     }
 
     private void Update()
     {
-        if (time > 0)
+        if (time > 0 && GameTime.IsTimerStart())
         {
             time -= Time.deltaTime;
             timetext.text = time.ToString("N0");

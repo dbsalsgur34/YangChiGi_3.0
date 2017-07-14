@@ -27,7 +27,6 @@ public class PlayerControlThree : MonoBehaviour {
     private float initialScore;
     //public float angle;
     
-    private GameManager GM;
     public List<GameObject> SheepList;
     public GameObject HQ;
     public GameObject targetObject;
@@ -143,7 +142,6 @@ public class PlayerControlThree : MonoBehaviour {
         SheepArea = new GameObject("SheepArea");
         SheepArea.transform.position = this.transform.position;
         PlayerInstnaceInit();
-        GM = GameManager.GMInstance;
     }
 
     public void SetPlayerState(PlayerSearchState newPSS)
@@ -336,25 +334,25 @@ public class PlayerControlThree : MonoBehaviour {
         float distance2;
         if (PSS == PlayerSearchState.SHEEPSEARCH)
         {
-            if (GM.GetSheepListCount() != 0)
+            if (ManagerHandler.Instance.GameManager().GetSheepListCount() != 0)
             {
-                for (int i = 1; i <= GM.GetSheepListCount() - 1; i++)
+                for (int i = 1; i <= ManagerHandler.Instance.GameManager().GetSheepListCount() - 1; i++)
                 {
-                    distance1 = Vector3.Distance(this.transform.position, GM.GetSheepFromSheepList(Mincount).transform.position);
-                    distance2 = Vector3.Distance(this.transform.position, GM.GetSheepFromSheepList(i).transform.position);
+                    distance1 = Vector3.Distance(this.transform.position, ManagerHandler.Instance.GameManager().GetSheepFromSheepList(Mincount).transform.position);
+                    distance2 = Vector3.Distance(this.transform.position, ManagerHandler.Instance.GameManager().GetSheepFromSheepList(i).transform.position);
                     if (distance1 <= distance2)
                     {
                         continue;
                     }
                     else if (distance2 < distance1)
                     {
-                        if (GM.GetSheepFromSheepList(i).Master != null && GM.GetSheepFromSheepList(i).Master.tag == "Dog" && GM.GetSheepFromSheepList(i).Master.GetComponent<Dog>().AreYouMyMaster(this.gameObject))
+                        if (ManagerHandler.Instance.GameManager().GetSheepFromSheepList(i).Master != null && ManagerHandler.Instance.GameManager().GetSheepFromSheepList(i).Master.tag == "Dog" && ManagerHandler.Instance.GameManager().GetSheepFromSheepList(i).Master.GetComponent<Dog>().AreYouMyMaster(this.gameObject))
                             continue;
                         else
                             Mincount = i;
                     }
                 }
-                targetObject = GM.GetSheepFromSheepList(Mincount).gameObject;
+                targetObject = ManagerHandler.Instance.GameManager().GetSheepFromSheepList(Mincount).gameObject;
             }
             else
             {
@@ -368,13 +366,13 @@ public class PlayerControlThree : MonoBehaviour {
         else if (PSS == PlayerSearchState.ENEMYSEARCH)
         {
             GameObject Target;
-            if (GM.GetEnemy().gameObject.Equals(this.gameObject))
+            if (ManagerHandler.Instance.GameManager().GetEnemy().gameObject.Equals(this.gameObject))
             {
-                Target = GM.GetPlayer().gameObject;
+                Target = ManagerHandler.Instance.GameManager().GetPlayer().gameObject;
             }
             else
             {
-                Target = GM.GetEnemy().gameObject;
+                Target = ManagerHandler.Instance.GameManager().GetEnemy().gameObject;
             }
 
             int tempcount = Target.GetComponent<PlayerControlThree>().SheepList.Count;
@@ -464,7 +462,7 @@ public class PlayerControlThree : MonoBehaviour {
 
     public void FixedUpdate()
     {
-        if (!PS.IsStop && GM.IsGameStart())
+        if (!PS.IsStop && GameTime.IsTimerStart())
         {
             LeaderSheep();
             //KeyboardInput();
@@ -472,7 +470,7 @@ public class PlayerControlThree : MonoBehaviour {
             //CheckSheepType();
             SearchClosestSheep();
 
-            if ((PSS == PlayerSearchState.BACKTOHOME || GM.GetSheepListCount() == 0) && Vector3.Distance(this.gameObject.transform.position, this.HQ.transform.position) < 0.4)
+            if ((PSS == PlayerSearchState.BACKTOHOME || ManagerHandler.Instance.GameManager().GetSheepListCount() == 0) && Vector3.Distance(this.gameObject.transform.position, this.HQ.transform.position) < 0.4)
             {
                 return;
             }

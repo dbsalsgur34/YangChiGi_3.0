@@ -27,8 +27,8 @@ public class NetworkMessageReceiver
 			return;
 		}
 
-		// Do something with the data in args.Snapshot
-		GameManager.GMInstance.SetMessageQueue(args.Snapshot.Value.ToString());
+        // Do something with the data in args.Snapshot
+        ManagerHandler.Instance.NetworkManager().SetMessageQueue(args.Snapshot.Value.ToString());
 	}
 
 	public void SetLogReference(string matchID)

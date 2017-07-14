@@ -12,13 +12,8 @@ public class SettingManager : ManagerBase {
     private GameObject Warning;
     private int quality;
 
-    public override void Awake()
-    {
-        base.Awake();
-    }
-
     // Use this for initialization
-    public override void Start () {
+    protected override void Start () {
         base.Start();
         sound = GameObject.Find("Slider").GetComponent<Slider>();
         soundamount = GameObject.Find("ShowSound").GetComponent<Text>();

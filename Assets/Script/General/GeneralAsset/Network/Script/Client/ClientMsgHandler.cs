@@ -17,17 +17,17 @@ namespace ClientSide
 					break;
                 case "Seed":
 					KingGodClient.Instance.SetSeed(splitMsg[1]);
-                    StartCoroutine(PlayManage.Instance.LoadScene("YangChigi3.0"));
+                    StartCoroutine(PlayManage.Instance.LoadScene("YangChigi4.0"));
                     break;
                 case "Start":
-                    StartCoroutine(GameUIManager.GUIMInstance.ReadyScreen());
+                    StartCoroutine(ManagerHandler.Instance.GameUIManager().ReadyScreen());
                     break;
                 case "DequeComplete":
                     Destroy(KingGodClient.Instance.gameObject);
                     break;
                 case "GameEnd":
                     Debug.Log("Get");
-                    StartCoroutine(GameUIManager.GUIMInstance.GoToResultScene());
+                    StartCoroutine(ManagerHandler.Instance.GameUIManager().GoToResultScene());
                     break;
 					/*
                 case "Shepherd":
