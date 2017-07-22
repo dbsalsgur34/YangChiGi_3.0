@@ -28,7 +28,7 @@ public class CameraControl : MonoBehaviour
     private GameObject camParent;                //this will be the rotating parent to which the camera is attached. Rotating this object will have the effect of making the camera a specified location.
     private Vector2 oldInputPosition;            //records the position of the finger last update
     private GameObject Player;
-
+    private Quaternion cameraAdjustQuaternion;
     public float dragSensitivity;
     public float smoothDegree;
 
@@ -47,7 +47,8 @@ public class CameraControl : MonoBehaviour
         {
             Player = GameObject.Find("PlayerTwo");
         }
-        camParent.transform.rotation = Player.transform.rotation;
+        cameraAdjustQuaternion = Quaternion.Euler(new Vector3(90, 0, 0));
+        camParent.transform.rotation = Player.transform.rotation * cameraAdjustQuaternion;
         IsSkillCutScene = false;
         CS = CameraState.FREE;
     }
@@ -80,7 +81,6 @@ public class CameraControl : MonoBehaviour
         {
             foreach (Touch touch in Input.touches)
             {
-
                     if (touch.phase == TouchPhase.Began && touch.fingerId == 0)
                     {
                         oldInputPosition = touch.position;
@@ -91,8 +91,8 @@ public class CameraControl : MonoBehaviour
                         {
                             float xDif = touch.position.x - oldInputPosition.x;    //this calculates the horizontal distance between the current finger location and the location last frame.
                             float yDif = touch.position.y - oldInputPosition.y;
-                            if (!naturalMotion) { xDif *= -1; yDif *= 1; }
-                            if (xDif != 0) { camParent.transform.Rotate(Vector3.up * xDif * tumbleSensitivity); }
+                            if (!naturalMotion) { xDif *= -1; yDif *= -1; }
+                            if (xDif != 0) { camParent.transform.Rotate(Vector3.up * xDif * -tumbleSensitivity); }
                             if (yDif != 0) { camParent.transform.Rotate(Vector3.right * yDif * tumbleSensitivity); }
                             oldInputPosition = touch.position;
                         }
@@ -107,16 +107,16 @@ public class CameraControl : MonoBehaviour
 #endif
     }
 
- 
+
 
     private void CameraLockOnHQ()
     {
-        camParent.transform.rotation = Quaternion.Slerp(camParent.transform.rotation,Player.GetComponent<PlayerControlThree>().HQ.transform.rotation,Time.deltaTime * LockOnSensitivity);
+        camParent.transform.rotation = Quaternion.Slerp(camParent.transform.rotation,Player.GetComponent<PlayerControlThree>().HQ.transform.rotation * cameraAdjustQuaternion,Time.deltaTime * LockOnSensitivity);
     }
 
     void CameraLockOnPlayer()
     {
-        camParent.transform.rotation = Quaternion.Slerp(camParent.transform.rotation, Player.transform.rotation, LockOnSensitivity * Time.deltaTime);
+        camParent.transform.rotation = Quaternion.Slerp(camParent.transform.rotation, Player.transform.rotation * cameraAdjustQuaternion, LockOnSensitivity * Time.deltaTime);
     }
 
     // Update is called once per frame

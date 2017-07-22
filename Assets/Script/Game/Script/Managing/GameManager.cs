@@ -13,7 +13,7 @@ public class GameManager : GameManagerBase {
     private int playerNumber;
     public GameObject Player;
     private GameObject Sheephorde;
-    private GameObject bronzesheepprefab;
+    private GameObject sheepPrefab;
     /*public GameObject silversheepprefab;
     public GameObject goldensheepprefab;*/
     private GameObject BackGround;
@@ -56,7 +56,10 @@ public class GameManager : GameManagerBase {
         Planet = GameObject.Find("Planet");
         Sheephorde = GameObject.FindGameObjectWithTag("SheepHorde");
         BackGround = GameObject.Find("BackGround");
-        bronzesheepprefab = Resources.Load<GameObject>("Prefab/Sheeps/CartoonSheep");
+        sheepPrefab = Resources.Load<GameObject>("Prefab/Sheeps/CartoonSheep");
+        GameObject GrassPrefab = Resources.Load<GameObject>("Prefab/BackgroundObject/Grass");
+        GameObject FlowerPrefab = Resources.Load<GameObject>("Prefab/BackgroundObject/Flower");
+        GameObject GravelPrefab = Resources.Load<GameObject>("Prefab/BackgroundObject/Gravel");
 
         //오브젝트 생성.
         Random.InitState(KingGodClient.Instance.Seed);
@@ -67,8 +70,10 @@ public class GameManager : GameManagerBase {
         string HQname = "HQ" + playerNumber;
         HQ = GameObject.Find(HQname).GetComponent<HQControl>();
         InitPlayer();
-        SheepSpawn(bronzesheepprefab, PlanetScale, initialSheep);
-        
+        SheepSpawn(sheepPrefab, PlanetScale, initialSheep);
+        ObjectSpawn(GrassPrefab, PlanetScale + 0.5f, 50);
+        ObjectSpawn(FlowerPrefab, PlanetScale + 0.5f, 10);
+        ObjectSpawn(GravelPrefab,PlanetScale + 0.5f, 10);
     }
 
     private void InitPlayer()
@@ -104,6 +109,23 @@ public class GameManager : GameManagerBase {
         }
     }
 
+    private void ObjectSpawn(GameObject Objectprefab, float scale, int number)
+    {
+        for (int i = 0; i < number; i++)
+        {
+            Vector3 newposition = Random.onUnitSphere * scale;
+            if (Vector3.Distance(newposition, Player.transform.position) > 2 && Vector3.Distance(newposition, Enemy.transform.position) > 2)
+            {
+                GameObject tempObject = Instantiate(Objectprefab, newposition, Quaternion.Euler(0, 0, 0), BackGround.transform);
+                tempObject.transform.rotation = Quaternion.FromToRotation(tempObject.transform.up, newposition) * tempObject.transform.rotation;
+            }
+            else
+            {
+                i--;
+            }
+        }
+    }
+
     public void FindAndRemoveAtSheepList(GameObject target)
     {
         int index = -1;
@@ -123,7 +145,7 @@ public class GameManager : GameManagerBase {
         {
             midTime = ManagerHandler.Instance.GameTime().GetTimePass();
             KingGodClient.Instance.GetNetworkMessageSender().SendPlayerEnemyPositionToServer(this.Player.transform.position, this.playerNumber, this.Enemy.transform.position, ManagerHandler.Instance.GameTime().GetTimePass());
-            SheepSpawn(bronzesheepprefab, PlanetScale, 1);
+            SheepSpawn(sheepPrefab, PlanetScale, 1);
         }
     }
 

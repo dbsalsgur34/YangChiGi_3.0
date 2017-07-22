@@ -30,7 +30,7 @@ public class CenterRazor : MonoBehaviour {
     {
         float theta = 0;
 
-        float deltaTheta = (2.0f * Mathf.PI) / vertexCount;
+        float deltaTheta = (1.0f * Mathf.PI) / vertexCount;
 
         for (int i = 0; i < (int)vertexCount + 1; i++)
         {

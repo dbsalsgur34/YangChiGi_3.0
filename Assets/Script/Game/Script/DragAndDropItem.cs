@@ -130,15 +130,22 @@ public class DragAndDropItem : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         time = itemInstance.coolTime;
         itemImage.sprite = itemInstance.waitIcon;
         timetext.gameObject.SetActive(true);
+        SetItemDrag(false);
         yield return new WaitUntil(() => (time < 0));
         itemInstance.IsItemCanDrag = true;
         itemImage.sprite = itemInstance.skillIcon;
         timetext.gameObject.SetActive(false);
+        SetItemDrag(true);
     }
 
-    public void SetItemDragDisable()
+    private void SetItemDrag(bool isItemCanDrag)
     {
-        this.itemInstance.IsItemCanDrag = false;
+        this.itemInstance.IsItemCanDrag = isItemCanDrag;
+    }
+
+    public bool IsItemCanDrag()
+    {
+        return this.itemInstance.IsItemCanDrag;
     }
 
     private void Update()

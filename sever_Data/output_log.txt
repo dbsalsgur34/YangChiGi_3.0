@@ -15,21 +15,21 @@ Platform assembly: C:\Users\ak569\Documents\YangChiGi_3.0\sever_Data\Managed\Uni
 Loading C:\Users\ak569\Documents\YangChiGi_3.0\sever_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
 Platform assembly: C:\Users\ak569\Documents\YangChiGi_3.0\sever_Data\Managed\UnityEngine.Networking.dll (this message is harmless)
 Loading C:\Users\ak569\Documents\YangChiGi_3.0\sever_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
-- Completed reload, in  0.061 seconds
+- Completed reload, in  0.027 seconds
 Platform assembly: C:\Users\ak569\Documents\YangChiGi_3.0\sever_Data\Managed\System.Core.dll (this message is harmless)
 Platform assembly: C:\Users\ak569\Documents\YangChiGi_3.0\sever_Data\Managed\System.dll (this message is harmless)
 desktop: 1920x1080 60Hz; virtual: 1920x1080 at 0,0
 <RI> Initializing input.
 <RI> Input initialized.
 <RI> Initialized touch support.
-UnloadTime: 2.355726 ms
+UnloadTime: 2.171032 ms
 Begin Network_Server
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
 
 Setting up 2 worker threads for Enlighten.
-  Thread -> id: 1820 -> priority: 1 
-  Thread -> id: 289c -> priority: 1 
+  Thread -> id: 67b0 -> priority: 1 
+  Thread -> id: 6084 -> priority: 1 
 Ready
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
@@ -42,7 +42,7 @@ Ready
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
 
-0: Send: Seed/1339032671
+0: Send: Seed/32866254
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
 
@@ -50,7 +50,7 @@ Ready
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
 
-1: Send: Seed/1339032671
+1: Send: Seed/32866254
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
 
@@ -79,6 +79,19 @@ Ready
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
 
 1: Send: Start
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+0: Received: GameOver/1,180.5016
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+WSACancelBlockingCall를 호출하여 차단 작업이 중단되었습니다.
+
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Welcome Dead
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
 

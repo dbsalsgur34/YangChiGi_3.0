@@ -113,7 +113,7 @@ public class GameControlManager : GameManagerBase
         hitMarkerParent.transform.rotation = targetRotation;
     }
 
-    private Vector3 SkillDragAction()
+    private RaycastHit SkillDragAction()
     {
         RaycastHit hit = new RaycastHit();
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -133,7 +133,7 @@ public class GameControlManager : GameManagerBase
             DrawRazor(Vector3.zero);
             DrawCenterRazor(0);
         }
-        return hit.point;
+        return hit;
     }
 
     private void DrawRazor(Vector3 targetPoint)
@@ -159,30 +159,36 @@ public class GameControlManager : GameManagerBase
 
     private void OnAnyItemDragStart(DragAndDropItem item)
     {
-        ChangeTouchState();
-        if (ManagerHandler.Instance.SkillManager().GetSkillDataBase().GetIsGuideLineNeed(item.GetSkillNumber()))
+        if (item.IsItemCanDrag())
         {
-            SetRazorActive(true, false);
-        }
-        else
-        {
-            SetRazorActive(false, false);
+            ChangeTouchState();
+            if (ManagerHandler.Instance.SkillManager().GetSkillDataBase().GetIsGuideLineNeed(item.GetSkillNumber()))
+            {
+                SetRazorActive(true, true);
+            }
+            else
+            {
+                SetRazorActive(false, false);
+            }
         }
     }
 
     private void OnAnyItemDragEnd(DragAndDropItem item)
     {
-        ChangeTouchState();
-        //Drag끝났을시 서버와 통신.
-        Vector3 hitPosition = SkillDragAction();
-        if (hitPosition != null)
+        if (item.IsItemCanDrag())
         {
-            ManagerHandler.Instance.NetworkManager().SendSkillToServer(item.GetSkillNumber(), hitPosition);
-            ManagerHandler.Instance.SkillManager().SetSkillPanelQueue(item);
+            ChangeTouchState();
+            //Drag끝났을시 서버와 통신.
+            RaycastHit hit = SkillDragAction();
+            if (hit.transform != null)
+            {
+                Vector3 hitPosition = hit.point;
+                ManagerHandler.Instance.NetworkManager().SendSkillToServer(item.GetSkillNumber(), hitPosition);
+                ManagerHandler.Instance.SkillManager().SetSkillPanelQueue(item);
+            }
         }
         SetHitMarkerParentActive(false);
         SetRazorActive(false, false);
-        
     }
 
     private void FixedUpdate()
