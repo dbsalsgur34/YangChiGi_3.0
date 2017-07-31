@@ -37,6 +37,7 @@ public class PhaseShiftButton : GameButtonBase {
         {
             ButtonText.text = backtohome;
         }
+        AudioManager.Instance.PlayOneShotEffectClipByName("Button_InGame_Tick");
     }
 
 }

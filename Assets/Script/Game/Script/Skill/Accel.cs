@@ -25,18 +25,16 @@ public class Accel : SkillBase {
         base.SetPivot(pivot, pivotRotation, angle,skillVector);
     }
 
-    public override float ShowPreCooltime()
-    {
-        return base.ShowPreCooltime();
-    }
-
     public override bool GetIsSkillNeedGuideLine()
     {
         return base.GetIsSkillNeedGuideLine();
     }
 
+    public void ColliderSkillAction(Collider other) { Debug.Log("충돌하는 스킬이 아니라 하는게 없음"); }
+
     IEnumerator AccelAction()
     {
+        SkillSoundEffect("SkillEffect_Run", duration);
         PlayerControlThree OwnerPCT = Owner.GetComponent<PlayerControlThree>();
         if (OwnerPCT.GetPlayerState().IsBoost)
         {

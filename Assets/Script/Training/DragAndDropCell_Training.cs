@@ -18,8 +18,8 @@ public class DragAndDropCell_Training : MonoBehaviour, IDropHandler
     }
     public CellType cellType = CellType.Swap;                               // Special type of this cell
 
-    public Color empty = new Color();                                       // Sprite color for empty cell
-    public Color full = new Color();                                        // Sprite color for filled cell
+    public Color empty = new Vector4(1, 1, 1, 0.4f);                                   // Sprite color for empty cell
+    public Color full = new Vector4(1, 1, 1, 0.4f);                                     // Sprite color for filled cell
 
     void OnEnable()
     {
@@ -31,11 +31,6 @@ public class DragAndDropCell_Training : MonoBehaviour, IDropHandler
     {
         DragAndDropItem_Training.OnItemDragStartEvent -= OnAnyItemDragStart;
         DragAndDropItem_Training.OnItemDragEndEvent -= OnAnyItemDragEnd;
-    }
-
-    void Start()
-    {
-        SetBackgroundState(GetComponentInChildren<DragAndDropItem_Training>() == null ? false : true);
     }
 
     private void OnAnyItemDragStart(DragAndDropItem_Training item)
@@ -57,7 +52,6 @@ public class DragAndDropCell_Training : MonoBehaviour, IDropHandler
                         break;
                     default:
                         item.MakeVisible(false);                            // Hide item in cell till dragging
-                        SetBackgroundState(false);
                         break;
                 }
             }
@@ -69,17 +63,9 @@ public class DragAndDropCell_Training : MonoBehaviour, IDropHandler
         DragAndDropItem_Training myItem = GetComponentInChildren<DragAndDropItem_Training>(); // Get item from current cell
         if (myItem != null)
         {
-            if (myItem == item)
-            {
-                SetBackgroundState(true);
-            }
-
             myItem.MakeRaycast(true);                                       // Enable item's raycast
         }
-        else
-        {
-            SetBackgroundState(false);
-        }
+
     }
 
     public void OnDrop(PointerEventData data)
@@ -139,11 +125,6 @@ public class DragAndDropCell_Training : MonoBehaviour, IDropHandler
         }     
     }
 
-    private void SetBackgroundState(bool condition)
-    {
-        GetComponent<Image>().color = condition ? full : empty;
-    }
-
     public void RemoveItem()
     {
         foreach (DragAndDropItem_Training item in GetComponentsInChildren<DragAndDropItem_Training>())
@@ -151,8 +132,7 @@ public class DragAndDropCell_Training : MonoBehaviour, IDropHandler
             Destroy(item.gameObject);
         }
         this.transform.DetachChildren();
-        
-        SetBackgroundState(false);
+       
     }
 
     public void PlaceItem(GameObject itemObj)
@@ -167,7 +147,6 @@ public class DragAndDropCell_Training : MonoBehaviour, IDropHandler
             {
                 item.MakeRaycast(true);
             }
-            SetBackgroundState(true);
         }
     }
 
@@ -192,14 +171,12 @@ public class DragAndDropCell_Training : MonoBehaviour, IDropHandler
                 // Place first item into second cell
                 firstItem.transform.SetParent(secondCell.transform, false);
                 firstItem.transform.localPosition = Vector3.zero;
-                secondCell.SetBackgroundState(true);
             }
             if (secondItem != null)
             {
                 // Place second item into first cell
                 secondItem.transform.SetParent(firstCell.transform, false);
                 secondItem.transform.localPosition = Vector3.zero;
-                firstCell.SetBackgroundState(true);
             }
         }
     }

@@ -187,6 +187,7 @@ public class GameControlManager : GameManagerBase
                 ManagerHandler.Instance.SkillManager().SetSkillPanelQueue(item);
             }
         }
+        AudioManager.Instance.PlayOneShotEffectClipByName("IconDrop");
         SetHitMarkerParentActive(false);
         SetRazorActive(false, false);
     }

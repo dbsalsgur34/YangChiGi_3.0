@@ -7,18 +7,19 @@ using UnityEngine.UI;
 public class TrainingManager : ManagerBase
 {
     public static TrainingManager TMInstance;
-    private DragAndDropCell_PreSet[] skillSetPanel;
-    private DragAndDropCell_Training[] skillListPanel;
+    private List<DragAndDropCell_PreSet> skillSetPanel;
+    private List<DragAndDropCell_Training> skillListPanel;
     private SkillDataBase skillDB;
     private ErrorMessageWindow errorMessageWindow;
-    private List<GameObject> selectSquare;
+    private Sprite selectSquareSprite;
+    private Color nullColor;
     public int[] preSetList;
 
     protected new void Awake()
     {
         TMInstance = this;
-        skillListPanel = GameObject.FindGameObjectWithTag("SkillListPanel").GetComponentsInChildren<DragAndDropCell_Training>();
-        skillSetPanel = GameObject.FindGameObjectWithTag("SkillSetPanel").GetComponentsInChildren<DragAndDropCell_PreSet>();
+        skillListPanel = new List<DragAndDropCell_Training>(GameObject.FindGameObjectWithTag("SkillListPanel").GetComponentsInChildren<DragAndDropCell_Training>());
+        skillSetPanel = new List<DragAndDropCell_PreSet>(GameObject.FindGameObjectWithTag("SkillSetPanel").GetComponentsInChildren<DragAndDropCell_PreSet>());
     }
 
     protected override void Start()
@@ -27,6 +28,7 @@ public class TrainingManager : ManagerBase
         skillDB = GameObject.FindGameObjectWithTag("SkillDataBase").GetComponent<SkillDataBase>();
         errorMessageWindow = GameObject.Find("ErrorMessage").GetComponent<ErrorMessageWindow>();
         errorMessageWindow.InitErrorMessageWindow();
+        nullColor = new Vector4(1, 1, 1, 0.4f);
         InitSelectSquare();
         InitSkillListPanel();
         InitSkillSetPanel();
@@ -34,7 +36,7 @@ public class TrainingManager : ManagerBase
 
     private void InitSkillListPanel()
     {
-        for (int i = 0; i < skillListPanel.Length; i++)
+        for (int i = 0; i < skillListPanel.Count; i++)
         {
             DragAndDropItem_Training myitem = skillListPanel[i].GetComponentInChildren<DragAndDropItem_Training>();
             int skillRequireLevel = skillDB.GetSkillPrefab()[i].GetComponent<SkillBase>().GetRequiredLevel();
@@ -73,30 +75,13 @@ public class TrainingManager : ManagerBase
             myitem.gameObject.GetComponent<Image>().sprite = skillDB.GetSkillIcon(skillIndex);
             myitem.IndexNum = (skillIndex);
             myitem.SetItemCanDrag(true);
-            StartCoroutine(InitMarkSelectSquare(preSetList));
         }
+        MarkSelectSquare(this.skillListPanel, this.preSetList, this.selectSquareSprite);
     }
-
-    private IEnumerator InitMarkSelectSquare(int[] preSetList)
-    {
-        yield return new WaitForEndOfFrame();
-        for (int i = 0; i < 4; i++)
-        {
-            MarkSelectSquare(i,skillListPanel[preSetList[i]].transform);
-        }
-    }
-    
 
     private void InitSelectSquare()
     {
-        GameObject temp;
-        Transform ParentUI = GameObject.FindGameObjectWithTag("UI").transform;
-        selectSquare = new List<GameObject>();
-        for (int i = 0; i < 4; i++)
-        {
-            temp = Instantiate(GetSelectSquare(),ParentUI.transform);
-            selectSquare.Add(temp);
-        }
+        this.selectSquareSprite = Resources.Load<Sprite>("Image/Resource/UI/Square");
     }
 
     private Sprite GetPadLock()
@@ -122,16 +107,15 @@ public class TrainingManager : ManagerBase
                     {
                         i.RemoveItem();
                         preSetList[index] = -1;
-                        MarkSelectSquare(index, null);
                     }
                     else
                     {
                         int targetIndex = i.GetItem().IndexNum;
                         preSetList[index] = targetIndex;
-                        MarkSelectSquare(index, skillListPanel[targetIndex].transform);
                     }
                 }
             }
+            AudioManager.Instance.PlayOneShotEffectClipByName("PanelMove");
         }
         else                                   //프리셋->프리셋
         {
@@ -141,33 +125,42 @@ public class TrainingManager : ManagerBase
                 if (i.transform.childCount.Equals(0))
                 {
                     preSetList[index] = -1;
-                    MarkSelectSquare(index, null);
                 }
                 else
                 {
                     int targetIndex = i.GetItem().IndexNum;
                     preSetList[index] = targetIndex;
-                    MarkSelectSquare(index, skillListPanel[targetIndex].transform);
                 }
             }
         }
+        MarkSelectSquare(this.skillListPanel, this.preSetList, this.selectSquareSprite);
     }
 
-    private void MarkSelectSquare(int indexnum, Transform target)
+    private void MarkSelectSquare(List<DragAndDropCell_Training> skillListPanel,int[] preSetList, Sprite selectSquareIcon)
     {
-        if (target != (null))
+        foreach(DragAndDropCell_Training i in skillListPanel)
         {
-            selectSquare[indexnum].SetActive(true);
-            selectSquare[indexnum].transform.position = target.position;
+            Image target = i.GetComponent<Image>();
+            target.color = nullColor;
+            target.sprite = null;            
         }
-        else
-            selectSquare[indexnum].SetActive(false);
+
+        for (int i = 0; i < 4; i++)
+        {
+            if (preSetList[i] != -1)
+            {
+                Image target = skillListPanel[preSetList[i]].GetComponent<Image>();
+                target.color = Color.white;
+                target.sprite = selectSquareIcon;
+            }
+        }
     }
 
     public bool CheckPreSetList()
     {
         bool check = true;
         foreach (int i in preSetList)
+
         {
             if (i < 0)
             {
@@ -198,4 +191,6 @@ public class TrainingManager : ManagerBase
         errorMessageWindow.gameObject.SetActive(true);
         StartCoroutine(errorMessageWindow.ShowMessage("ErrorMessageTest"));
     }
+
+
 }

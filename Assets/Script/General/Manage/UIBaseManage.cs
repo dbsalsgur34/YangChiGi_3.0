@@ -51,16 +51,20 @@ public class UIBaseManage : FadeInOut {
 
     public IEnumerator LoadSceneAndFadeInOut(string name)
     {
-			IEnumerator FO = FadeOut(fadeImage);
-			StartCoroutine(FO);
-			yield return new WaitUntil(() => FO.MoveNext() == false);
-			fadeImage = null;
-			fadeImageObject = null;
+        AudioManager.Instance.PlayOneShotEffectClipByName("BeforeSceneChanged");
+        IEnumerator FO = FadeOut(fadeImage);
+        StartCoroutine(FO);
+        yield return new WaitUntil(() => FO.MoveNext() == false);
+        fadeImage = null;
+        fadeImageObject = null;
 
-			IEnumerator SM = SceneManage(name);
-			StartCoroutine(SM);
-			yield return new WaitUntil(() => SM.MoveNext() == false);
-			StartCoroutine(FadeImageSet());
+        yield return new WaitForSeconds(1f);
+
+        IEnumerator SM = SceneManage(name);
+        StartCoroutine(SM);
+        yield return new WaitUntil(() => SM.MoveNext() == false);
+        AudioManager.Instance.PlayOneShotEffectClipByName("AfterSceneChanged");
+        StartCoroutine(FadeImageSet());
     }
 
     private IEnumerator SceneManage(string name)

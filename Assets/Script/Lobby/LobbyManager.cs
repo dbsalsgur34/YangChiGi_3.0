@@ -6,6 +6,12 @@ using ClientSide;
 
 public class LobbyManager : ManagerBase {
 
+    private enum LobbyState
+    {
+        IDLE,
+        WAITFORPLAYING
+    }
+
     private Text playerleveltext;
     private Text playerIDtext;
     private Text playerEXP;
@@ -14,6 +20,7 @@ public class LobbyManager : ManagerBase {
     private Image targeticon;
     private Text MatchingMessage;
     private Button MatchingCancleButton;
+    private LobbyState lobbyState;
 
     private int level;
     private float EXP;
@@ -30,6 +37,8 @@ public class LobbyManager : ManagerBase {
         base.Start();
         LobbyInit();
         CalEXP();
+        AudioManager.Instance.PlayBackGroundClipByName("Lobby",14.5f);
+
     }
 
     private void LobbyInit()
@@ -56,6 +65,7 @@ public class LobbyManager : ManagerBase {
         playerIDtext.text = PlayManage.Instance.PlayerID;
         maxEXP = PlayManage.Instance.GetMaxEXP();
         playerEXP.text = "EXP : " + EXP.ToString("N0") + " / " + maxEXP.ToString("N0");
+        this.lobbyState = LobbyState.IDLE;
     }
 
     private void LobbyObjectInit()
@@ -98,14 +108,28 @@ public class LobbyManager : ManagerBase {
 
     public void StartMatching()
     {
-        LoadingScene.SetActive(true);
-        NetworkObjectAction();
+        if (this.lobbyState.Equals(LobbyState.IDLE))
+        {
+            this.lobbyState = LobbyState.WAITFORPLAYING;
+            LoadingScene.SetActive(true);
+            AudioManager.Instance.PlayEffectClipByName("Wait", 2f);
+            AudioManager.Instance.PlayOneShotEffectClipByName("Button_Lobby");
+            AudioManager.Instance.BackGroundClipAttenuation();
+            NetworkObjectAction();
+        }
     }
 
     public void CancleMatching()
     {
-        LoadingScene.SetActive(false);
-        Network_Client.StopThread();
+        if (this.lobbyState.Equals(LobbyState.WAITFORPLAYING))
+        {
+            this.lobbyState = LobbyState.IDLE;
+            LoadingScene.SetActive(false);
+            AudioManager.Instance.InitEffectAudio();
+            AudioManager.Instance.BackGroundClipRestore();
+            AudioManager.Instance.PlayOneShotEffectClipByName("Button_Lobby");
+            Network_Client.StopThread();
+        }
     }
 
     private void CalEXP()

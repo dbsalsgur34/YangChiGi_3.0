@@ -38,5 +38,7 @@ public class CameraPhaseShiftButton : GameButtonBase {
                 ButtonText.text = Playertext;
             }
         }
+
+        AudioManager.Instance.PlayOneShotEffectClipByName("Button_InGame_Camera",0.75f);
     }
 }

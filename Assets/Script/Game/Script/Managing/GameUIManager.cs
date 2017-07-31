@@ -29,6 +29,7 @@ public class GameUIManager : GameManagerBase {
     {
         base.Start();
         ManagerHandler.Instance.SetManager(this);
+        AudioManager.Instance.InitBackGroundAudio();
     }
 
     protected override void InitManager()
@@ -126,13 +127,18 @@ public class GameUIManager : GameManagerBase {
     {
         EndText.gameObject.SetActive(true);
         EndText.text = "Ready...";
-        yield return new WaitForSeconds(3f);
+        AudioManager.Instance.PlayOneShotEffectClipByName("Sheep_Bleating");
+        yield return new WaitForSeconds(5f);
+        AudioManager.Instance.PlayEffectClipByName("Whistle", 0f, 0.1f);
         //KingGodClient.Instance.GetNetworkMessageSender().SendStartedToServer();
+        EndText.text = "GO!!!";
+        yield return new WaitForSeconds(2f);
         EndScreen.SetActive(false);
         ManagerHandler.Instance.GameTime().StartTimer();
         player = ManagerHandler.Instance.GameManager().GetPlayer();
         enemy = ManagerHandler.Instance.GameManager().GetEnemy();
-        yield return 0;
+        AudioManager.Instance.InitEffectAudio();
+        AudioManager.Instance.PlayBackGroundClipByName("Battle", 0f);
     }
 
     private IEnumerator FinishRoutine()
@@ -140,6 +146,8 @@ public class GameUIManager : GameManagerBase {
         EndScreen.SetActive(true);
         Text EndText = GameObject.Find("EndText").GetComponent<Text>();
         EndText.text = "Time Over!";
+        AudioManager.Instance.InitBackGroundAudio();
+        AudioManager.Instance.PlayEffectClipByName("Whistle", 0f, 0.1f);
         player.GetPlayerState().IsStop = true;
         enemy.GetPlayerState().IsStop = true;
         PlayManage.Instance.PlayerScore = player.Score;

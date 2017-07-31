@@ -12,9 +12,13 @@ public class Hornet : SkillBase {
     public override void Awake()
     {
         base.Awake();
-        StartCoroutine(HornetLife());
         SS = SkillState.ACTIVATED;
 	}
+
+    private void Start()
+    {
+        StartCoroutine(HornetLife());
+    }
 
     private void HornetAction(GameObject Target)
     {
@@ -55,13 +59,15 @@ public class Hornet : SkillBase {
 
     private IEnumerator HornetLife()
     {
+        SkillSoundEffect("SkillEffect_Bee", waitTime, 0.25f);
         yield return new WaitForSeconds(waitTime);
         ChangeSkillStateLaunched();
+        SkillSoundEffect("SkillEffect_Bee", duration, 1f);
         yield return new WaitForSeconds(duration);
         SkillParent.SetActive(false);
     }
 
-    public override void SkillAction(Collider other)
+    public override void CollideSkillAction(Collider other)
     {
         if (other.gameObject.tag == "Head" && other.gameObject == TG)
         {

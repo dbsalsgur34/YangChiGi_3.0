@@ -26,5 +26,6 @@ public class OptionButton : GameButtonBase {
             else
                 TempMenu.SetActive(false);
         }
+        AudioManager.Instance.PlayOneShotEffectClipByName("Button_InGame_Option");
     }
 }

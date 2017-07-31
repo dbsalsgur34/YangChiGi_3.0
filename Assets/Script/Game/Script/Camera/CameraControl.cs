@@ -29,6 +29,7 @@ public class CameraControl : MonoBehaviour
     private Vector2 oldInputPosition;            //records the position of the finger last update
     private GameObject Player;
     private Quaternion cameraAdjustQuaternion;
+
     public float dragSensitivity;
     public float smoothDegree;
 
@@ -48,6 +49,7 @@ public class CameraControl : MonoBehaviour
             Player = GameObject.Find("PlayerTwo");
         }
         cameraAdjustQuaternion = Quaternion.Euler(new Vector3(90, 0, 0));
+
         camParent.transform.rotation = Player.transform.rotation * cameraAdjustQuaternion;
         IsSkillCutScene = false;
         CS = CameraState.FREE;

@@ -8,8 +8,8 @@ public enum SkillState
     ACTIVATED,
     LAUNCHED
 }
-
-public class SkillBase : MonoBehaviour {
+[RequireComponent(typeof(AudioSource))]
+public abstract class SkillBase : MonoBehaviour {
 
     protected GameObject Owner;
     protected GameObject TG;       //Skill의 Target.
@@ -21,16 +21,18 @@ public class SkillBase : MonoBehaviour {
     public int requiredLevel;
 
     protected SkillState SS;
-    
+
+    private AudioSource skillAudio;
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject != this.Owner)
         {
-            SkillAction(other);
+            CollideSkillAction(other);
         }
     }
 
-    public virtual void SkillAction(Collider other) { }
+    public virtual void CollideSkillAction(Collider other) { }
 
     public virtual void Awake()
     {
@@ -38,6 +40,7 @@ public class SkillBase : MonoBehaviour {
         SkillParent = new GameObject("SkillParent");                //create a new gameObject
         this.transform.parent = SkillParent.transform;                    //make this camera a child of the new gameObject
         SkillParent.transform.parent = originalParent;            //make the new gameobject a child of the original camera parent if it had one
+        skillAudio = GetComponent<AudioSource>();
     }
 
     public virtual bool SetInstance(GameObject IO, GameObject ITG)
@@ -85,10 +88,19 @@ public class SkillBase : MonoBehaviour {
         this.SS = SkillState.LAUNCHED;
     }
 
-
     public SkillState GetSkillState()
     {
         return this.SS;
+    }
+
+    protected void SkillSoundEffect(string clipName,float playTime)
+    {
+        AudioManager.Instance.PlayEffectSoundByIndivisualAudioSource(skillAudio, playTime, clipName);
+    }
+
+    protected void SkillSoundEffect(string clipName, float playTime, float volume)
+    {
+        AudioManager.Instance.PlayEffectSoundByIndivisualAudioSource(skillAudio, playTime, volume, clipName);
     }
 }
 

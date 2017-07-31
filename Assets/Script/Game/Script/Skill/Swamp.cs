@@ -16,6 +16,7 @@ public class Swamp : SkillBase {
 
     IEnumerator SwampLifeTime()
     {
+        SkillSoundEffect("SkillEffect_Swamp",duration);
         yield return new WaitForSeconds(duration);
         this.gameObject.GetComponent<Collider>().enabled = false;
         if (colliderList.Count != 0)

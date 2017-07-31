@@ -17,6 +17,8 @@ namespace ClientSide
 					break;
                 case "Seed":
 					KingGodClient.Instance.SetSeed(splitMsg[1]);
+                    AudioManager.Instance.InitBackGroundAudio();
+                    AudioManager.Instance.InitEffectAudio();
                     StartCoroutine(PlayManage.Instance.LoadScene("YangChigi4.0"));
                     break;
                 case "Start":

@@ -29,6 +29,11 @@ public class Dog : SkillBase {
         SheepList = new List<SheepControlThree>();
     }
 
+    private void Start()
+    {
+        SkillSoundEffect("SkillEffect_Dog",2f);
+    }
+
     private void GoStraight()
     {
         float betangle = Vector3.Angle(Owner.GetComponent<PlayerControlThree>().HQ.transform.position, this.transform.position);
@@ -87,7 +92,7 @@ public class Dog : SkillBase {
         SheepList.RemoveRange(index, SheepList.Count - index);
     }
 
-    public override void SkillAction(Collider other)
+    public override void CollideSkillAction(Collider other)
     {
         if (other.gameObject.tag == "BronzeSheep" && other.GetComponent<SheepControlThree>().GetSheepState() != SheepState.HAVEOWNER)
         {

@@ -19,7 +19,7 @@ public class GameTime : GameManagerBase {
         base.InitManager();
         //Start에서 실행되던 것들
         timerStart = false;
-        initialtime = 180f;
+        initialtime = 10f;
         startTime = 0;
         timer = 0;
     }

@@ -47,6 +47,7 @@ public class GameManager : GameManagerBase {
     {
         base.Start();
         ManagerHandler.Instance.SetManager(this);
+
     }
 
     protected override void InitManager()

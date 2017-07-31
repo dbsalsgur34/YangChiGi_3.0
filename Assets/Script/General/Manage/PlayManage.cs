@@ -16,6 +16,7 @@ public class PlayManage : MonoBehaviour {
     private float enemyScore;
     private float exp;
     private float sound = 50;
+    private float effectSound = 50;
     private UIBaseManage UIB;
     private string skillPreSetList;
     private float maxEXP;
@@ -55,6 +56,12 @@ public class PlayManage : MonoBehaviour {
     {
         get { return sound; }
         set { if (value < 0) { sound = 0; } else { sound = value; } }
+    }
+
+    public float EffectSound
+    {
+        get { return effectSound; }
+        set { if (value < 0) { effectSound = 0; } else { effectSound = value; } }
     }
 
     public float PlayerScore
@@ -129,7 +136,8 @@ public class PlayManage : MonoBehaviour {
     {
         PlayerPrefs.SetString("PLAYERID", this.PlayerID);
         PlayerPrefs.SetInt("PLAYERLEVEL", this.playerLevel);
-        PlayerPrefs.SetFloat("SOUND", this.Sound);
+        PlayerPrefs.SetFloat("SOUND", this.sound);
+        PlayerPrefs.SetFloat("EFFECT", this.effectSound);
         PlayerPrefs.SetFloat("EXP", this.exp);
         PlayerPrefs.SetString("SKILLPRESET",skillPreSetList);
     }
@@ -138,7 +146,8 @@ public class PlayManage : MonoBehaviour {
     {
         this.PlayerID = PlayerPrefs.GetString("PLAYERID", "Beginner");
         this.playerLevel = PlayerPrefs.GetInt("PLAYERLEVEL", 1);
-        this.Sound = PlayerPrefs.GetFloat("SOUND", 50);
+        this.sound = PlayerPrefs.GetFloat("SOUND", 50);
+        this.effectSound = PlayerPrefs.GetFloat("EFFECT", 50);
         this.exp = PlayerPrefs.GetFloat("EXP", 0);
         this.skillPreSetList = PlayerPrefs.GetString("SKILLPRESET", "1,2,3,4");
         this.maxEXP = playerLevel * 1000;
@@ -151,6 +160,7 @@ public class PlayManage : MonoBehaviour {
         this.PlayerScore = 0;
         this.EnemyScore = 0;
         this.Sound = 50;
+        this.effectSound = 50;
         this.exp = 0;
         this.skillPreSetList = "1,2,3,4";
         SaveData();

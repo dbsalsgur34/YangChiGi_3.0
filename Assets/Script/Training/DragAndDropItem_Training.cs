@@ -14,9 +14,10 @@ public class DragAndDropItem_Training : MonoBehaviour, IBeginDragHandler, IDragH
     public delegate void DragEvent(DragAndDropItem_Training item);
     static public event DragEvent OnItemDragStartEvent;                             // Drag start event
     static public event DragEvent OnItemDragEndEvent;                               // Drag end event
-    private bool IsItemCanDrag;
 
-    private int indexNum;
+    public bool IsItemCanDrag;
+
+    public int indexNum;
 
     public int IndexNum
     {
@@ -33,6 +34,7 @@ public class DragAndDropItem_Training : MonoBehaviour, IBeginDragHandler, IDragH
             icon = new GameObject("Icon");                                              // Create object for item's icon
             Image image = icon.AddComponent<Image>();
             image.sprite = GetComponent<Image>().sprite;
+
             image.raycastTarget = false;                                                // Disable icon's raycast for correct drop handling
             RectTransform iconRect = icon.GetComponent<RectTransform>();
             // Set icon's dimensions
@@ -50,7 +52,6 @@ public class DragAndDropItem_Training : MonoBehaviour, IBeginDragHandler, IDragH
             {
                 OnItemDragStartEvent(this);                                             // Notify all about item drag start
             }
-            Debug.Log("BeginDragged");
         }
     }
 
@@ -67,6 +68,7 @@ public class DragAndDropItem_Training : MonoBehaviour, IBeginDragHandler, IDragH
 
     public void OnEndDrag(PointerEventData eventData)
     {
+        eventData.Reset();
         if (icon != null)
         {
             Destroy(icon);                                                          // Destroy icon on item drop
@@ -82,7 +84,6 @@ public class DragAndDropItem_Training : MonoBehaviour, IBeginDragHandler, IDragH
             sourceCell.RemoveItem();
             TrainingManager.TMInstance.DragEndAction(sourceCell.GetCellNumber(),null, this.IndexNum);
         }
-
         draggedItem = null;
         icon = null;
         sourceCell = null;
