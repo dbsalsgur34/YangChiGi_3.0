@@ -8,7 +8,9 @@ public class MatchSpriteToCamera : MonoBehaviour {
     {
         FlipEnable,
         FlipDisable,
-        NoMove
+        NoMove,
+        VerticalFilpDisable,
+        VerticalFlipEnable
     }
 
     public SpriteState spriteState;
@@ -34,7 +36,7 @@ public class MatchSpriteToCamera : MonoBehaviour {
         target = Planet;
         curRotation = 0f;
         preRotation = 0f;
-        if (spriteState == SpriteState.FlipEnable)
+        if (spriteState.Equals(SpriteState.FlipEnable) || spriteState.Equals(SpriteState.VerticalFlipEnable))
         {
             InvokeRepeating("FlipToTarget", 0f, 0.25f);
         }
@@ -81,10 +83,16 @@ public class MatchSpriteToCamera : MonoBehaviour {
     // Update is called once per frame
     private void Update ()
     {
-        if (spriteState != SpriteState.NoMove)
+        if (spriteState.Equals(SpriteState.FlipDisable) || spriteState.Equals(SpriteState.FlipEnable))
         {
             transform.rotation = cameraParent.rotation * Quaternion.Euler(0, 0, CalTowardRotationDegree(target.position, this.transform.position));
         }
+        else if (spriteState.Equals(SpriteState.VerticalFilpDisable) || spriteState.Equals(SpriteState.VerticalFlipEnable))
+        {
+            transform.rotation = Quaternion.Euler(0, cameraParent.eulerAngles.y, 0);
+        }
+             
+
         if (CheckAngleOfTwoVector(this.transform.position - Planet.position, Camera.main.transform.position - Planet.position) > 65)
         {
             spriteRenderer.sortingOrder = -sortingOrderPreSet;

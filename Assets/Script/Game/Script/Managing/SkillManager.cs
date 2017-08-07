@@ -53,7 +53,7 @@ public class SkillManager : GameManagerBase
         }
     }
 
-    public void UsingSkill(int SkillNumber, GameObject Owner, GameObject Target, Transform Pivot, Transform Pivotrotation,float angle, Vector3 skillVector)
+    public void UsingSkill(int SkillNumber, PlayerControlThree Owner, GameObject Target, Transform Pivot, Transform Pivotrotation,float angle, Vector3 skillVector)
     {
         GameObject ActivatedSkill = Instantiate(SkillDB.skillPrefab[SkillNumber]);
         SkillBase ActivatedSkillInit = ActivatedSkill.GetComponent<SkillBase>();

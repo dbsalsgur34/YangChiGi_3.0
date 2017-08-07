@@ -6,12 +6,12 @@ public class ManagerHandler : MonoBehaviour
 {
     public static ManagerHandler Instance;
 
-    public GameManager gameManager;
-    public GameUIManager gameUIManager;
-    public GameControlManager gameControlManager;
-    public GameTime gameTime;
-    public SkillManager skillManager;
-    public NetworkManager networkManager;
+    private GameManager gameManager;
+    private GameUIManager gameUIManager;
+    private GameControlManager gameControlManager;
+    private GameTime gameTime;
+    private SkillManager skillManager;
+    private NetworkManager networkManager;
 
     private void Awake()
     {

@@ -49,7 +49,8 @@ public class NetworkManager : GameManagerBase {
         float targetTime = float.Parse(MessageArray[MessageArray.Length - 1]);
         PlayerControlThree target;
         PlayerControlThree Opposite;
-        if (int.Parse(MessageArray[0]) == this.playerNumber)
+        int playernumber = int.Parse(MessageArray[0]);
+        if (playernumber.Equals(this.playerNumber))
         {
             target = ManagerHandler.Instance.GameManager().GetPlayer();
             Opposite = ManagerHandler.Instance.GameManager().GetEnemy();
@@ -66,12 +67,15 @@ public class NetworkManager : GameManagerBase {
         switch (messageType)
         {
             case "Shepherd":
-                ManagerHandler.Instance.GameUIManager().GetPhaseButton().ChangeSearchButtonText(target.GetPlayerSearchState());
+                if (playernumber.Equals(this.playerNumber))
+                {
+                    ManagerHandler.Instance.GameUIManager().GetPhaseButton().ChangeSearchButtonText(target.GetPlayerSearchState());
+                }
                 target.SendMessage("SearchPhaseShift");
                 break;
             case "Skill":
                 Vector3 skillVector = new Vector3(float.Parse(MessageArray[2]), float.Parse(MessageArray[3]), float.Parse(MessageArray[4]));
-                StartCoroutine(SendMessageToSkillUse(int.Parse(MessageArray[1]), target.gameObject, Opposite.gameObject, target.HQ, skillVector, float.Parse(MessageArray[5])));
+                StartCoroutine(SendMessageToSkillUse(int.Parse(MessageArray[1]), target, Opposite.gameObject, target.HQ.gameObject, skillVector, float.Parse(MessageArray[5])));
                 break;
             case "Out":
                 target.SetPlayerState(PlayerSearchState.BACKTOHOME);
@@ -79,7 +83,7 @@ public class NetworkManager : GameManagerBase {
         }
     }
 
-    private IEnumerator SendMessageToSkillUse(int num, GameObject Player, GameObject Enemy, GameObject HQ, Vector3 HV, float useTime)
+    private IEnumerator SendMessageToSkillUse(int num, PlayerControlThree Player, GameObject Enemy, GameObject HQ, Vector3 HV, float useTime)
     {
         Vector3 targetVector = HQ.transform.position - HV;
         float angle = Mathf.Atan2(targetVector.x, targetVector.z) * Mathf.Rad2Deg;

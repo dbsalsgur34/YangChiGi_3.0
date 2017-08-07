@@ -70,10 +70,9 @@ public class GameUIManager : GameManagerBase {
         UItext.text = timetext;
     }
 
-    private void ShowScore()
+    private void ShowScore(int PlayerScore)
     {
         string scoretext;
-        float PlayerScore = player.Score;
         if (PlayerScore >= 10)
         {
             scoretext = "My Score : " + PlayerScore;
@@ -88,7 +87,7 @@ public class GameUIManager : GameManagerBase {
     private void ShowMySheep()
     {
         string scoretext;
-        sheepCount = player.SheepCount;
+        sheepCount = player.GetHerdSheepControl().GetHerdSheepCount();
         if (sheepCount >= 10)
         {
             scoretext = "Current Sheep : " + sheepCount;
@@ -100,10 +99,9 @@ public class GameUIManager : GameManagerBase {
         UIcurrentSheep.text = scoretext;
     }
 
-    private void ShowEnemyScore()
+    private void ShowEnemyScore(int EnemyScore)
     {
         string scoretext;
-        float EnemyScore = enemy.Score;
         if (EnemyScore >= 10)
         {
             scoretext = "Enemy Score : " + EnemyScore;
@@ -115,21 +113,13 @@ public class GameUIManager : GameManagerBase {
         UIEnemyScore.text = scoretext;
     }
 
-    private void ShowUIText()
-    {
-        Showremainingtime();
-        ShowScore();
-        ShowEnemyScore();
-        ShowMySheep();
-    }
-
     public IEnumerator ReadyScreen()
     {
         EndText.gameObject.SetActive(true);
         EndText.text = "Ready...";
         AudioManager.Instance.PlayOneShotEffectClipByName("Sheep_Bleating");
         yield return new WaitForSeconds(5f);
-        AudioManager.Instance.PlayEffectClipByName("Whistle", 0f, 0.1f);
+        AudioManager.Instance.PlayEffectClipByName("Whistle", 0f, 1f);
         //KingGodClient.Instance.GetNetworkMessageSender().SendStartedToServer();
         EndText.text = "GO!!!";
         yield return new WaitForSeconds(2f);
@@ -147,14 +137,17 @@ public class GameUIManager : GameManagerBase {
         Text EndText = GameObject.Find("EndText").GetComponent<Text>();
         EndText.text = "Time Over!";
         AudioManager.Instance.InitBackGroundAudio();
-        AudioManager.Instance.PlayEffectClipByName("Whistle", 0f, 0.1f);
+        AudioManager.Instance.InitEffectAudio();
+        AudioManager.Instance.PlayEffectClipByName("Whistle2", 0f, 3f);
         player.GetPlayerState().IsStop = true;
         enemy.GetPlayerState().IsStop = true;
-        PlayManage.Instance.PlayerScore = player.Score;
-        PlayManage.Instance.EnemyScore = enemy.Score;
-        KingGodClient.Instance.GetNetworkMessageSender().SendGameOverToServer(KingGodClient.Instance.playerNum , ManagerHandler.Instance.GameTime().GetTimePass());
+        PlayManage.Instance.PlayerScore = player.HQ.GetHQHerd().GetHerdSheepCount();
+        PlayManage.Instance.EnemyScore = enemy.HQ.GetHQHerd().GetHerdSheepCount();
         ManagerHandler.Instance.GameTime().StopTimer();
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(3f);
+        Debug.Log("End");
+        AudioManager.Instance.InitEffectAudio();
+        KingGodClient.Instance.GetNetworkMessageSender().SendGameOverToServer(KingGodClient.Instance.playerNum, ManagerHandler.Instance.GameTime().GetTimePass());
     }
 
     public IEnumerator GoToResultScene()
@@ -170,7 +163,10 @@ public class GameUIManager : GameManagerBase {
     {
         if (GameTime.IsTimerStart())
         {
-            ShowUIText();
+            Showremainingtime();
+            ShowMySheep();
+            ShowScore(player.HQ.GetHQHerd().GetHerdSheepCount());
+            ShowEnemyScore(enemy.HQ.GetHQHerd().GetHerdSheepCount());
         }
     }
 

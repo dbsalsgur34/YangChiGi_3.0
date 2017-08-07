@@ -4,29 +4,32 @@ using UnityEngine;
 
 public class Swamp : SkillBase {
 
-    public float slow = 3.3f;
+    public float slowPercentage = 3.3f;
     float Iconrotation = 0;
     public List<PlayerControlThree> colliderList;
 
     public override void Awake()
     {
         base.Awake();
-        StartCoroutine(SwampLifeTime());
     }
 
-    IEnumerator SwampLifeTime()
+    protected override void Start()
     {
-        SkillSoundEffect("SkillEffect_Swamp",duration);
-        yield return new WaitForSeconds(duration);
+        base.Start();
+    }
+
+    protected override IEnumerator ActivityDuringDurationTime()
+    {
+        SkillSoundEffect("SkillEffect_Swamp", durationTime);
+        yield return base.ActivityDuringDurationTime();
         this.gameObject.GetComponent<Collider>().enabled = false;
         if (colliderList.Count != 0)
         {
             foreach (PlayerControlThree i in colliderList)
             {
-                i.GetPMI().Speed *= slow;
+                i.GetPMI().Speed *= slowPercentage;
             }
         }
-        SkillParent.gameObject.SetActive(false);
     }
 
     void TargetIconRotate()
@@ -47,7 +50,7 @@ public class Swamp : SkillBase {
         if (other.gameObject.tag == "Head")
         {
             colliderList.Add(other.GetComponent<PlayerControlThree>());
-            other.gameObject.GetComponent<PlayerControlThree>().GetPMI().Speed /= slow;
+            other.gameObject.GetComponent<PlayerControlThree>().GetPMI().Speed /= slowPercentage;
         }
     }
 
@@ -55,14 +58,9 @@ public class Swamp : SkillBase {
     {
         if (other.gameObject.tag == "Head")
         {
-            other.gameObject.GetComponent<PlayerControlThree>().GetPMI().Speed *= slow;
+            other.gameObject.GetComponent<PlayerControlThree>().GetPMI().Speed *= slowPercentage;
             colliderList.Remove(other.GetComponent<PlayerControlThree>());
         }
-    }
-
-    public override bool SetInstance(GameObject IO, GameObject ITG)
-    {
-        return base.SetInstance(IO, ITG);
     }
 
     public override void SetPivot(Transform pivot, Transform pivotRotation, float angle, Vector3 skillVector)

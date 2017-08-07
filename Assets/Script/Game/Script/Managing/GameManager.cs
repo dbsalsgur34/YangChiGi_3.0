@@ -89,6 +89,8 @@ public class GameManager : GameManagerBase {
             Player = GameObject.Find("PlayerTwo");
             Enemy = GameObject.Find("PlayerOne");
         }
+        Player.GetComponent<PlayerControlThree>().SetSymbolColor(new Color(50/255f,75/255f,200/255f,1));
+        Enemy.GetComponent<PlayerControlThree>().SetSymbolColor(new Color(200/255f, 50/255f, 75/255f, 1));
         Debug.Log("Search Complete");
     }
 

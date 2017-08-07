@@ -10,43 +10,27 @@ public class Accel : SkillBase {
         base.Awake();
 	}
 
-    private void Start()
+    protected override void Start()
     {
-        StartCoroutine(AccelAction());
+        base.Start();
     }
 
-    public override bool SetInstance(GameObject IO, GameObject ITG)
+    protected override IEnumerator ActivityDuringDurationTime()
     {
-        return base.SetInstance(IO, ITG);
-    }
+        SkillSoundEffect("SkillEffect_Run", durationTime);
 
-    public override void SetPivot(Transform pivot, Transform pivotRotation, float angle,Vector3 skillVector)
-    {
-        base.SetPivot(pivot, pivotRotation, angle,skillVector);
-    }
-
-    public override bool GetIsSkillNeedGuideLine()
-    {
-        return base.GetIsSkillNeedGuideLine();
-    }
-
-    public void ColliderSkillAction(Collider other) { Debug.Log("충돌하는 스킬이 아니라 하는게 없음"); }
-
-    IEnumerator AccelAction()
-    {
-        SkillSoundEffect("SkillEffect_Run", duration);
-        PlayerControlThree OwnerPCT = Owner.GetComponent<PlayerControlThree>();
-        if (OwnerPCT.GetPlayerState().IsBoost)
+        if (Owner.GetPlayerState().IsBoost)
         {
-            yield return new WaitUntil(() => OwnerPCT.GetPlayerState().IsBoost == false);
+            yield return new WaitUntil(() => Owner.GetPlayerState().IsBoost == false);
         }
-        OwnerPCT.GetPlayerState().IsBoost = true;
-        OwnerPCT.GetPMI().Speed *= 1.5f;
-        OwnerPCT.GetPMI().TurnSpeed *= 1.5f;
-        yield return new WaitForSeconds(duration);
-        OwnerPCT.GetPMI().Speed /= 1.5f;
-        OwnerPCT.GetPMI().TurnSpeed /= 1.5f;
-        OwnerPCT.GetPlayerState().IsBoost = false;
-        this.gameObject.SetActive(false);
+        Owner.GetPlayerState().IsBoost = true;
+        Owner.GetPMI().Speed *= 1.5f;
+        Owner.GetPMI().TurnSpeed *= 1.5f;
+
+        yield return base.ActivityDuringDurationTime();
+
+        Owner.GetPMI().Speed /= 1.5f;
+        Owner.GetPMI().TurnSpeed /= 1.5f;
+        Owner.GetPlayerState().IsBoost = false;
     }
 }

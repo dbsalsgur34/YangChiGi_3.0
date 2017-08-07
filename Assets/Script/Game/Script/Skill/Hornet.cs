@@ -15,9 +15,9 @@ public class Hornet : SkillBase {
         SS = SkillState.ACTIVATED;
 	}
 
-    private void Start()
+    protected override void Start()
     {
-        StartCoroutine(HornetLife());
+        base.Start();
     }
 
     private void HornetAction(GameObject Target)
@@ -57,14 +57,17 @@ public class Hornet : SkillBase {
         return Quaternion.Euler(new Vector3(SP * Time.deltaTime, 0, 0));
     }
 
-    private IEnumerator HornetLife()
+    protected override IEnumerator ActivityDuringWaitTime()
     {
         SkillSoundEffect("SkillEffect_Bee", waitTime, 0.25f);
-        yield return new WaitForSeconds(waitTime);
+        return base.ActivityDuringWaitTime();
+    }
+
+    protected override IEnumerator ActivityDuringDurationTime()
+    {
         ChangeSkillStateLaunched();
-        SkillSoundEffect("SkillEffect_Bee", duration, 1f);
-        yield return new WaitForSeconds(duration);
-        SkillParent.SetActive(false);
+        SkillSoundEffect("SkillEffect_Bee", durationTime, 1f);
+        return base.ActivityDuringDurationTime();
     }
 
     public override void CollideSkillAction(Collider other)
@@ -83,11 +86,6 @@ public class Hornet : SkillBase {
             }
             SkillParent.SetActive(false);
         }
-    }
-
-    public override bool SetInstance(GameObject IO, GameObject ITG)
-    {
-        return base.SetInstance(IO, ITG);
     }
 
     public override void SetPivot(Transform pivot, Transform pivotRotation, float angle, Vector3 skillVector)

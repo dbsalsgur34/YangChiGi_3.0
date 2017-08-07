@@ -11,12 +11,12 @@ public enum SkillState
 [RequireComponent(typeof(AudioSource))]
 public abstract class SkillBase : MonoBehaviour {
 
-    protected GameObject Owner;
+    protected PlayerControlThree Owner;
     protected GameObject TG;       //Skill의 Target.
     protected GameObject SkillParent;
     public float PreCoolTime;
     public float waitTime = 5f;
-    public float duration = 5f;
+    public float durationTime = 5f;
     public bool IsSkillNeedGuideLine;
     public int requiredLevel;
 
@@ -26,7 +26,7 @@ public abstract class SkillBase : MonoBehaviour {
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject != this.Owner)
+        if (other.gameObject != this.Owner.gameObject)
         {
             CollideSkillAction(other);
         }
@@ -43,7 +43,12 @@ public abstract class SkillBase : MonoBehaviour {
         skillAudio = GetComponent<AudioSource>();
     }
 
-    public virtual bool SetInstance(GameObject IO, GameObject ITG)
+    protected virtual void Start()
+    {
+        StartSkillLifeCycle();
+    }
+
+    public virtual bool SetInstance(PlayerControlThree IO, GameObject ITG)
     {
         this.Owner = IO;
         this.TG = ITG;
@@ -74,7 +79,7 @@ public abstract class SkillBase : MonoBehaviour {
         return this.PreCoolTime;
     }
 
-    public bool AreYouMyMaster(GameObject target)
+    public bool AreYouMyMaster(PlayerControlThree target)
     {
         return (target.Equals(this.Owner)) ? true : false;
     }
@@ -101,6 +106,29 @@ public abstract class SkillBase : MonoBehaviour {
     protected void SkillSoundEffect(string clipName, float playTime, float volume)
     {
         AudioManager.Instance.PlayEffectSoundByIndivisualAudioSource(skillAudio, playTime, volume, clipName);
+    }
+
+    protected void StartSkillLifeCycle()
+    {
+        StartCoroutine(SkillLifeCycle());
+    }
+
+    private IEnumerator SkillLifeCycle()
+    {
+        yield return StartCoroutine(ActivityDuringWaitTime());
+        yield return StartCoroutine(ActivityDuringDurationTime());
+        SkillParent.SetActive(false);
+    }
+
+    protected virtual IEnumerator ActivityDuringWaitTime()
+    {
+        yield return new WaitForSeconds(waitTime);
+    }
+
+    protected virtual IEnumerator ActivityDuringDurationTime()
+    {
+        ChangeSkillStateLaunched();
+        yield return new WaitForSeconds(durationTime);
     }
 }
 

@@ -74,7 +74,7 @@ public class CameraCubeControl : MonoBehaviour
         }
 
 #elif UNITY_ANDROID
-
+        /*
         if (Input.touchCount > 0)
         {
             foreach (Touch touch in Input.touches)
@@ -102,7 +102,7 @@ public class CameraCubeControl : MonoBehaviour
                     }
                 
             }
-        }
+        }*/
 #endif
     }
 

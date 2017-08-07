@@ -3,79 +3,56 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
+[RequireComponent(typeof(PlayerHerdSheepControl))]
+
 public class HQControl : MonoBehaviour {
 
-/*    void CameraAction()
+    private PlayerHerdSheepControl HQHerdControl;
+    private PlayerControlThree owner;
+
+    private void Awake()
     {
+        HQHerdControl = GetComponent<PlayerHerdSheepControl>();
+    }
 
-#if UNITY_EDITOR
+    public PlayerHerdSheepControl GetHQHerd()
+    {
+        return this.HQHerdControl;
+    }
 
-        if (Input.GetMouseButton(0) && EventSystem.current.IsPointerOverGameObject() == false)
-        {
-
-            float xDif = Input.mousePosition.x - Screen.width / 2;
-            float yDif = Input.mousePosition.y - Screen.height / 2;
-            float angle = Mathf.Atan2(xDif, yDif) * Mathf.Rad2Deg;
-            ArrowPivot.rotation = Quaternion.AngleAxis(angle, this.transform.up);
-
-        }
-
-#elif UNITY_ANDROID
-
-        if (Input.touchCount > 0)
-        {
-            foreach (Touch touch in Input.touches)
-            {
-                if (touch.phase == TouchPhase.Moved && EventSystem.current.IsPointerOverGameObject() == false)
-                {
-                    if (touch.fingerId == 0)
-                    {
-                        float xDif = touch.position.x - Screen.width / 2;    //this calculates the horizontal distance between the current finger location and the location last frame.
-                        float yDif = touch.position.y - Screen.height / 2;
-                        float angle = Mathf.Atan2(xDif, yDif) * Mathf.Rad2Deg;
-                        ArrowPivot.rotation = Quaternion.AngleAxis(angle, this.transform.up);
-                    }
-                }
-            }
-        }
-#endif
-
-    }*/
+    public void SetOwner(PlayerControlThree owner)
+    {
+        this.owner = owner;
+        HQHerdControl.InitHerdSheepBase(owner, 0, false);
+    }
 
     private void OnTriggerEnter(Collider col)
     {
-        if (col.gameObject.tag == "Head" && col.gameObject.GetComponent<PlayerControlThree>().HQ == this.gameObject)
+        if (GameTime.IsTimerStart())
         {
-            StartCoroutine(col.gameObject.GetComponent<PlayerControlThree>().EnterHQ());
-            col.gameObject.GetComponent<PlayerControlThree>().GetPlayerState().InHQ = true;
-        }
-        else if (col.gameObject.tag == "Dog")
-        {
-            Dog dangDang = col.gameObject.GetComponent<Dog>();
-
-            if (dangDang.GetDogSheepCount() == 0)
+            var target = col.gameObject.GetComponent<PlayerControlThree>();
+            if (target != null && target == this.owner)
             {
-                if (dangDang.GetDogState() == DogState.GO)
-                {
-                    return;
-                }
-                else
-                {
-                    col.gameObject.SetActive(false);
-                }
+                target.GetPlayerState().InHQ = true;
             }
-            else
+
+            var targetHerd = col.gameObject.GetComponent<HerdSheepBase>();
+            if (targetHerd != null && targetHerd.GetOwner() == this.owner)
             {
-                StartCoroutine(dangDang.EnterHQ());
+                StartCoroutine(targetHerd.MoveAllSheepToTarget(this.HQHerdControl));
             }
         }
     }
-
+    
     private void OnTriggerExit(Collider col)
     {
-        if (col.gameObject.tag == "Head" && col.gameObject.GetComponent<PlayerControlThree>().HQ == this.gameObject)
+        if (GameTime.IsTimerStart())
         {
-            col.gameObject.GetComponent<PlayerControlThree>().GetPlayerState().InHQ = false;
+            var target = col.gameObject.GetComponent<PlayerControlThree>();
+            if (target != null)
+            {
+                target.GetPlayerState().InHQ = false;
+            }
         }
     }
 

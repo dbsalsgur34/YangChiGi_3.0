@@ -7,113 +7,31 @@ Direct3D:
     VRAM:     4053 MB
     Driver:   22.21.13.8205
 Begin MonoManager ReloadAssembly
-Platform assembly: C:\Users\ak569\Documents\YangChiGi_3.0\YangChiGi_3.0\Client2_Data\Managed\UnityEngine.dll (this message is harmless)
-Loading C:\Users\ak569\Documents\YangChiGi_3.0\YangChiGi_3.0\Client2_Data\Managed\UnityEngine.dll into Unity Child Domain
-Platform assembly: C:\Users\ak569\Documents\YangChiGi_3.0\YangChiGi_3.0\Client2_Data\Managed\Assembly-CSharp.dll (this message is harmless)
-Loading C:\Users\ak569\Documents\YangChiGi_3.0\YangChiGi_3.0\Client2_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
-Platform assembly: C:\Users\ak569\Documents\YangChiGi_3.0\YangChiGi_3.0\Client2_Data\Managed\UnityEngine.UI.dll (this message is harmless)
-Loading C:\Users\ak569\Documents\YangChiGi_3.0\YangChiGi_3.0\Client2_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
-Platform assembly: C:\Users\ak569\Documents\YangChiGi_3.0\YangChiGi_3.0\Client2_Data\Managed\UnityEngine.Networking.dll (this message is harmless)
-Loading C:\Users\ak569\Documents\YangChiGi_3.0\YangChiGi_3.0\Client2_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
-Platform assembly: C:\Users\ak569\Documents\YangChiGi_3.0\YangChiGi_3.0\Client2_Data\Managed\Firebase.App.dll (this message is harmless)
-Loading C:\Users\ak569\Documents\YangChiGi_3.0\YangChiGi_3.0\Client2_Data\Managed\Firebase.App.dll into Unity Child Domain
-Platform assembly: C:\Users\ak569\Documents\YangChiGi_3.0\YangChiGi_3.0\Client2_Data\Managed\Firebase.Auth.dll (this message is harmless)
-Loading C:\Users\ak569\Documents\YangChiGi_3.0\YangChiGi_3.0\Client2_Data\Managed\Firebase.Auth.dll into Unity Child Domain
-Platform assembly: C:\Users\ak569\Documents\YangChiGi_3.0\YangChiGi_3.0\Client2_Data\Managed\Firebase.Database.dll (this message is harmless)
-Loading C:\Users\ak569\Documents\YangChiGi_3.0\YangChiGi_3.0\Client2_Data\Managed\Firebase.Database.dll into Unity Child Domain
-Platform assembly: C:\Users\ak569\Documents\YangChiGi_3.0\YangChiGi_3.0\Client2_Data\Managed\Google.MiniJson.dll (this message is harmless)
-Loading C:\Users\ak569\Documents\YangChiGi_3.0\YangChiGi_3.0\Client2_Data\Managed\Google.MiniJson.dll into Unity Child Domain
-Platform assembly: C:\Users\ak569\Documents\YangChiGi_3.0\YangChiGi_3.0\Client2_Data\Managed\Google.Sharpen.dll (this message is harmless)
-Loading C:\Users\ak569\Documents\YangChiGi_3.0\YangChiGi_3.0\Client2_Data\Managed\Google.Sharpen.dll into Unity Child Domain
-Platform assembly: C:\Users\ak569\Documents\YangChiGi_3.0\YangChiGi_3.0\Client2_Data\Managed\Unity.Compat.dll (this message is harmless)
-Loading C:\Users\ak569\Documents\YangChiGi_3.0\YangChiGi_3.0\Client2_Data\Managed\Unity.Compat.dll into Unity Child Domain
-Platform assembly: C:\Users\ak569\Documents\YangChiGi_3.0\YangChiGi_3.0\Client2_Data\Managed\Unity.Tasks.dll (this message is harmless)
-Loading C:\Users\ak569\Documents\YangChiGi_3.0\YangChiGi_3.0\Client2_Data\Managed\Unity.Tasks.dll into Unity Child Domain
-- Completed reload, in  0.756 seconds
-Platform assembly: C:\Users\ak569\Documents\YangChiGi_3.0\YangChiGi_3.0\Client2_Data\Managed\System.Core.dll (this message is harmless)
-Platform assembly: C:\Users\ak569\Documents\YangChiGi_3.0\YangChiGi_3.0\Client2_Data\Managed\System.dll (this message is harmless)
+Platform assembly: C:\Users\ak569\Desktop\작업\YangChiGi_3.0\Client2_Data\Managed\UnityEngine.dll (this message is harmless)
+Loading C:\Users\ak569\Desktop\작업\YangChiGi_3.0\Client2_Data\Managed\UnityEngine.dll into Unity Child Domain
+Platform assembly: C:\Users\ak569\Desktop\작업\YangChiGi_3.0\Client2_Data\Managed\Assembly-CSharp.dll (this message is harmless)
+Loading C:\Users\ak569\Desktop\작업\YangChiGi_3.0\Client2_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
+Platform assembly: C:\Users\ak569\Desktop\작업\YangChiGi_3.0\Client2_Data\Managed\UnityEngine.UI.dll (this message is harmless)
+Loading C:\Users\ak569\Desktop\작업\YangChiGi_3.0\Client2_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
+Platform assembly: C:\Users\ak569\Desktop\작업\YangChiGi_3.0\Client2_Data\Managed\UnityEngine.Networking.dll (this message is harmless)
+Loading C:\Users\ak569\Desktop\작업\YangChiGi_3.0\Client2_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
+Platform assembly: C:\Users\ak569\Desktop\작업\YangChiGi_3.0\Client2_Data\Managed\Firebase.App.dll (this message is harmless)
+Loading C:\Users\ak569\Desktop\작업\YangChiGi_3.0\Client2_Data\Managed\Firebase.App.dll into Unity Child Domain
+Platform assembly: C:\Users\ak569\Desktop\작업\YangChiGi_3.0\Client2_Data\Managed\Firebase.Auth.dll (this message is harmless)
+Loading C:\Users\ak569\Desktop\작업\YangChiGi_3.0\Client2_Data\Managed\Firebase.Auth.dll into Unity Child Domain
+Platform assembly: C:\Users\ak569\Desktop\작업\YangChiGi_3.0\Client2_Data\Managed\Firebase.Database.dll (this message is harmless)
+Loading C:\Users\ak569\Desktop\작업\YangChiGi_3.0\Client2_Data\Managed\Firebase.Database.dll into Unity Child Domain
+Platform assembly: C:\Users\ak569\Desktop\작업\YangChiGi_3.0\Client2_Data\Managed\Google.MiniJson.dll (this message is harmless)
+Loading C:\Users\ak569\Desktop\작업\YangChiGi_3.0\Client2_Data\Managed\Google.MiniJson.dll into Unity Child Domain
+Platform assembly: C:\Users\ak569\Desktop\작업\YangChiGi_3.0\Client2_Data\Managed\Google.Sharpen.dll (this message is harmless)
+Loading C:\Users\ak569\Desktop\작업\YangChiGi_3.0\Client2_Data\Managed\Google.Sharpen.dll into Unity Child Domain
+Platform assembly: C:\Users\ak569\Desktop\작업\YangChiGi_3.0\Client2_Data\Managed\Unity.Compat.dll (this message is harmless)
+Loading C:\Users\ak569\Desktop\작업\YangChiGi_3.0\Client2_Data\Managed\Unity.Compat.dll into Unity Child Domain
+Platform assembly: C:\Users\ak569\Desktop\작업\YangChiGi_3.0\Client2_Data\Managed\Unity.Tasks.dll (this message is harmless)
+Loading C:\Users\ak569\Desktop\작업\YangChiGi_3.0\Client2_Data\Managed\Unity.Tasks.dll into Unity Child Domain
+- Completed reload, in  0.257 seconds
+Platform assembly: C:\Users\ak569\Desktop\작업\YangChiGi_3.0\Client2_Data\Managed\System.Core.dll (this message is harmless)
+Platform assembly: C:\Users\ak569\Desktop\작업\YangChiGi_3.0\Client2_Data\Managed\System.dll (this message is harmless)
 desktop: 1920x1080 60Hz; virtual: 1920x1080 at 0,0
 <RI> Initializing input.
 <RI> Input initialized.
-<RI> Initialized touch support.
-UnloadTime: 2.307799 ms
-Setting up 2 worker threads for Enlighten.
-  Thread -> id: 75dc -> priority: 1 
-  Thread -> id: 5bc0 -> priority: 1 
-Platform assembly: C:\Users\ak569\Documents\YangChiGi_3.0\YangChiGi_3.0\Client2_Data\Managed\Mono.Security.dll (this message is harmless)
-NMR created
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-Platform assembly: C:\Users\ak569\Documents\YangChiGi_3.0\YangChiGi_3.0\Client2_Data\Managed\System.Configuration.dll (this message is harmless)
-Platform assembly: C:\Users\ak569\Documents\YangChiGi_3.0\YangChiGi_3.0\Client2_Data\Managed\System.Xml.dll (this message is harmless)
-StartConnect
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-Connecting to...127.0.0.1:11900
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-Connected.
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-Received: Seed/11100731
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-Received: PlayerNum/1
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-SetLogReference
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-Unloading 7 Unused Serialized files (Serialized files now loaded: 0)
-UnloadTime: 3.177790 ms
-
-Unloading 20 unused Assets to reduce memory usage. Loaded Objects now: 763.
-Total: 8.385171 ms (FindLiveObjects: 0.071890 ms CreateObjectMapping: 0.023379 ms MarkObjects: 8.238175 ms  DeleteObjects: 0.050557 ms)
-
-Search Complete
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-gameManagerInit
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-gameTimeInit
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-gameUIManagerInit
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-Send: Ready/1
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-Received: Start
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-Send: Network Disconnected.
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-SHUT DOWN
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-ReceivingOperation: Read failure
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-Disconnected.
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
