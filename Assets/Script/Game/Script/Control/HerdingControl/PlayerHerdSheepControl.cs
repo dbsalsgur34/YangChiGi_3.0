@@ -50,4 +50,9 @@ public class PlayerHerdSheepControl : HerdSheepBase {
         target.transform.localRotation = Quaternion.Euler(Vector3.zero);
     }
 
+    public bool IsSheepAlreadyInList(SheepControlThree target)
+    {
+        return herdSheepList.Contains(target);
+    }
+
 }

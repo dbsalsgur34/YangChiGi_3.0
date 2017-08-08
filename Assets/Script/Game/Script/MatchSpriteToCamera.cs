@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(SpriteRenderer))]
+
 public class MatchSpriteToCamera : MonoBehaviour {
 
     public enum SpriteState
@@ -10,7 +12,7 @@ public class MatchSpriteToCamera : MonoBehaviour {
         FlipDisable,
         NoMove,
         VerticalFilpDisable,
-        VerticalFlipEnable
+        VerticalFlipEnable,
     }
 
     public SpriteState spriteState;

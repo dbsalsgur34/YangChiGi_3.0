@@ -9,6 +9,7 @@ public class HQControl : MonoBehaviour {
 
     private PlayerHerdSheepControl HQHerdControl;
     private PlayerControlThree owner;
+    public SpriteRenderer HQMarker;
 
     private void Awake()
     {
@@ -24,6 +25,11 @@ public class HQControl : MonoBehaviour {
     {
         this.owner = owner;
         HQHerdControl.InitHerdSheepBase(owner, 0, false);
+    }
+
+    public void SetHQMarkerColor(Color targetColor)
+    {
+        HQMarker.color = targetColor;
     }
 
     private void OnTriggerEnter(Collider col)

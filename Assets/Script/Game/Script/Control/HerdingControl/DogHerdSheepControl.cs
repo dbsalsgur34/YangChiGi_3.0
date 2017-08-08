@@ -17,7 +17,7 @@ public class DogHerdSheepControl : HerdSheepBase {
         for (int temp = index; temp <= herdSheepList.Count - 1; temp++)
         {
             herdSheepList[temp].Follower = target;
-            ManagerHandler.Instance.GameManager().FindAndRemoveAtSheepList(this.herdSheepList[temp].gameObject);
+            //ManagerHandler.Instance.GameManager().FindAndRemoveAtSheepList(this.herdSheepList[temp].gameObject);
             target.AddSheepList(this.herdSheepList[temp]);
         }
         herdSheepList.RemoveRange(index, herdSheepList.Count - index);

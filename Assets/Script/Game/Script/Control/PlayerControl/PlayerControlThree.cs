@@ -14,6 +14,12 @@ public enum PlayerSearchState
 
 public class PlayerControlThree : MonoBehaviour {
 
+    private enum PlayerSearchProcessState
+    {
+        Searching,
+        Ready
+    }
+
     private float initialScore;
     //public float angle;
 
@@ -40,6 +46,8 @@ public class PlayerControlThree : MonoBehaviour {
             IsKnockBack = false;
         }
     }
+
+    private PlayerSearchProcessState playerSearchProcessState;
 
     private PlayerState PS;
 
@@ -146,7 +154,7 @@ public class PlayerControlThree : MonoBehaviour {
         HQ.SetOwner(this);
 
         PSS = PlayerSearchState.BACKTOHOME;
-
+        playerSearchProcessState = PlayerSearchProcessState.Ready;
         PS = new PlayerState();
 
 
@@ -156,6 +164,7 @@ public class PlayerControlThree : MonoBehaviour {
     public void SetSymbolColor(Color color)
     {
         this.symbolColor = color;
+        this.HQ.SetHQMarkerColor(color);
     }
 
     public Color GetSymbolColor()
@@ -190,30 +199,43 @@ public class PlayerControlThree : MonoBehaviour {
 
     private void SearchTarget()
     {
-        int Mincount = 0;
-        float distance1;
-        float distance2;
+        if (playerSearchProcessState.Equals(PlayerSearchProcessState.Searching))
+        {
+            return;
+        }
+        else
+        {
+            StartCoroutine(SearchTargetProcess());
+        }
+    }
+
+    private IEnumerator SearchTargetProcess()
+    {
+        float Angle1;
+        float Angle2;
+        playerSearchProcessState = PlayerSearchProcessState.Searching;
+
         if (PSS == PlayerSearchState.SHEEPSEARCH)
         {
-            if (ManagerHandler.Instance.GameManager().GetSheepListCount() != 0)
+            int Mincount = 0;
+            //양 추적 매커니즘. 주인 없는 양 중 가까운 양의 획득을 제일 우선시한다.
+            if (ManagerHandler.Instance.GameManager().GetHordeSheepListCount() != 0)
             {
-                for (int i = 1; i <= ManagerHandler.Instance.GameManager().GetSheepListCount() - 1; i++)
+                for (int i = 1; i <= ManagerHandler.Instance.GameManager().GetHordeSheepListCount() - 1; i++)
                 {
-                    distance1 = Vector3.Distance(this.transform.position, ManagerHandler.Instance.GameManager().GetSheepFromSheepList(Mincount).transform.position);
-                    distance2 = Vector3.Distance(this.transform.position, ManagerHandler.Instance.GameManager().GetSheepFromSheepList(i).transform.position);
-                    if (distance1 <= distance2)
+                    SheepControlThree checkingSheep = ManagerHandler.Instance.GameManager().GetSheepFromHordeSheepList(i);
+                    Angle1 = Vector3.Angle(this.transform.position, ManagerHandler.Instance.GameManager().GetSheepFromHordeSheepList(Mincount).transform.position);
+                    Angle2 = Vector3.Angle(this.transform.position,checkingSheep.transform.position);
+                    if (Angle1 <= Angle2)
                     {
                         continue;
                     }
-                    else if (distance2 < distance1)
+                    else if (Angle2 < Angle1)
                     {
-                        /*if (ManagerHandler.Instance.GameManager().GetSheepFromSheepList(i).Master != null && ManagerHandler.Instance.GameManager().GetSheepFromSheepList(i).Master.tag == "Dog" && ManagerHandler.Instance.GameManager().GetSheepFromSheepList(i).Master.GetComponent<Dog>().AreYouMyMaster(this))
-                            continue;
-                        else
-                            Mincount = i;*/
+                        Mincount = i;
                     }
                 }
-                targetObject = ManagerHandler.Instance.GameManager().GetSheepFromSheepList(Mincount).gameObject;
+                targetObject = ManagerHandler.Instance.GameManager().GetSheepFromHordeSheepList(Mincount).gameObject;
             }
             else
             {
@@ -222,10 +244,12 @@ public class PlayerControlThree : MonoBehaviour {
         }
         else if (PSS == PlayerSearchState.BACKTOHOME)
         {
+            //귀환 매커니즘. 쉽다.
             targetObject = HQ.gameObject;
         }
         else if (PSS == PlayerSearchState.ENEMYSEARCH)
         {
+            // 적 추적시 매커니즘.
             GameObject Target;
             if (ManagerHandler.Instance.GameManager().GetEnemy().gameObject.Equals(this.gameObject))
             {
@@ -235,18 +259,11 @@ public class PlayerControlThree : MonoBehaviour {
             {
                 Target = ManagerHandler.Instance.GameManager().GetEnemy().gameObject;
             }
-
-            //int tempcount = Target.GetComponent<PlayerControlThree>().SheepList.Count;
-            int tempcount = 0;  //일단 임시로
-            if (tempcount == 0)
-            {
-                targetObject = Target;
-            }
-            else
-            {
-                //targetObject = Target.GetComponent<PlayerControlThree>().GetPlayerSheepList()[tempcount - 1].gameObject;
-            }
+            targetObject = Target;
         }
+
+        yield return null;
+        playerSearchProcessState = PlayerSearchProcessState.Ready;
     }
 
     private void SearchPhaseShift()
@@ -314,7 +331,7 @@ public class PlayerControlThree : MonoBehaviour {
         {
             SearchTarget();
 
-            if ((PSS == PlayerSearchState.BACKTOHOME || ManagerHandler.Instance.GameManager().GetSheepListCount() == 0) && Vector3.Distance(this.gameObject.transform.position, this.HQ.transform.position) < 0.4)
+            if ((PSS == PlayerSearchState.BACKTOHOME || ManagerHandler.Instance.GameManager().GetHordeSheepListCount() == 0) && Vector3.Distance(this.gameObject.transform.position, this.HQ.transform.position) < 0.4)
             {
                 return;
             }

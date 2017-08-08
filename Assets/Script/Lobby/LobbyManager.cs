@@ -17,15 +17,13 @@ public class LobbyManager : ManagerBase {
     private Text playerEXP;
     //private GameObject clientObject;
     private GameObject LoadingScene;
-    private Image targeticon;
-    private Text MatchingMessage;
     private Button MatchingCancleButton;
     private LobbyState lobbyState;
 
     private int level;
     private float EXP;
     private float maxEXP;
-    private float Iconrotation;
+
 
     protected new void Awake()
     {
@@ -71,40 +69,14 @@ public class LobbyManager : ManagerBase {
     private void LobbyObjectInit()
     {
         LoadingScene = GameObject.Find("Loading");
-        targeticon = LoadingScene.GetComponentsInChildren<Image>()[1];
-        MatchingMessage = LoadingScene.GetComponentsInChildren<Text>()[0];
+
         MatchingCancleButton = LoadingScene.GetComponentInChildren<Button>();
         MatchingCancleButton.onClick.AddListener(CancleMatching);
         LoadingScene.SetActive(false);
-        StartCoroutine(TextBlink());
     }
 
-    private void TargetIconRotate()
-    {
-        Iconrotation += 75f * Time.deltaTime;
-        targeticon.rectTransform.rotation = Quaternion.AngleAxis(Iconrotation, targeticon.rectTransform.forward);
-    }
 
-    private IEnumerator TextBlink()
-    {
-        float i;
-        while (true)
-        {
-            for (i = 1f; i >= 0; i -= 0.01f)
-            {
-                Color color = new Vector4(255, 255, 255, i);
-                MatchingMessage.color = color;
-                yield return null;
-            }
-
-            for (i = 0f; i <= 1; i += 0.01f)
-            {
-                Color color = new Vector4(255, 255, 255, i);
-                MatchingMessage.color = color;
-                yield return null;
-            }
-        }
-    }
+    
 
     public void StartMatching()
     {
@@ -163,13 +135,5 @@ public class LobbyManager : ManagerBase {
     public bool GetIsGameMatching()
     {
         return (LoadingScene.activeSelf.Equals(true)) ? true : false;
-    }
-
-    private void Update()
-    {
-        if (LoadingScene.activeSelf)
-        {
-            TargetIconRotate();
-        }
     }
 }

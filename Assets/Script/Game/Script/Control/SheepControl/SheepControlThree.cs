@@ -47,7 +47,7 @@ public class SheepControlThree : MonoBehaviour {
             this.follower = target;
             SS = SheepState.HAVEOWNER;
             target.AddSheepList(this);
-            ManagerHandler.Instance.GameManager().FindAndRemoveAtSheepList(this.gameObject);
+            ManagerHandler.Instance.GameManager().FromHordeSheepToOwneredSheep(this);
         }
         //양에게 주인이 있을경우 능동성 및 마스터 여부를 따져서 행동한다.
         else if(SS.Equals(SheepState.HAVEOWNER))

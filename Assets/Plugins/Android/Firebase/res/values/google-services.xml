@@ -3,6 +3,7 @@
   <string name="firebase_database_url" translatable="false">https://yang-chigi.firebaseio.com</string>
   <string name="gcm_defaultSenderId" translatable="false">380685054111</string>
   <string name="google_storage_bucket" translatable="false">yang-chigi.appspot.com</string>
+  <string name="project_id" translatable="false">yang-chigi</string>
   <string name="google_api_key" translatable="false">AIzaSyABbB7pLXkZsAciP3FH2crmExrcTJUvRts</string>
   <string name="google_crash_reporting_api_key" translatable="false">AIzaSyABbB7pLXkZsAciP3FH2crmExrcTJUvRts</string>
   <string name="google_app_id" translatable="false">1:380685054111:android:536e02a05e649b8b</string>

@@ -34,7 +34,7 @@ public class ButtonEvent : ButtonBase {
                 AddButtonClickEvent(() => LM.StartMatching());
                 AddButtonClickEvent(SavePref);
                 break;
-            case ButtonEventType.CANCLE:
+             case ButtonEventType.CANCLE:
                 AddButtonClickEvent(() => LM.CancleMatching());
                 AddButtonClickEvent(SavePref);
                 break;

@@ -20,7 +20,8 @@ public class GameManager : GameManagerBase {
 
     private HQControl HQ;
 
-    public List<SheepControlThree> SheepList;
+    private List<SheepControlThree> hordeSheepList;
+    private List<SheepControlThree> owneredSheepList;
 
     //Object 생성 관련된 변수들.
     public float PlanetScale;
@@ -47,7 +48,6 @@ public class GameManager : GameManagerBase {
     {
         base.Start();
         ManagerHandler.Instance.SetManager(this);
-
     }
 
     protected override void InitManager()
@@ -62,7 +62,11 @@ public class GameManager : GameManagerBase {
         GameObject FlowerPrefab = Resources.Load<GameObject>("Prefab/BackgroundObject/Flower");
         GameObject GravelPrefab = Resources.Load<GameObject>("Prefab/BackgroundObject/Gravel");
 
+        hordeSheepList = new List<SheepControlThree>();
+        owneredSheepList = new List<SheepControlThree>();
+
         //오브젝트 생성.
+        //랜덤 시드를 정해줌. 
         Random.InitState(KingGodClient.Instance.Seed);
 
         //Start에서 실행하던 함수
@@ -89,8 +93,10 @@ public class GameManager : GameManagerBase {
             Player = GameObject.Find("PlayerTwo");
             Enemy = GameObject.Find("PlayerOne");
         }
-        Player.GetComponent<PlayerControlThree>().SetSymbolColor(new Color(50/255f,75/255f,200/255f,1));
-        Enemy.GetComponent<PlayerControlThree>().SetSymbolColor(new Color(200/255f, 50/255f, 75/255f, 1));
+        Color playerColor = new Color(50 / 255f, 75 / 255f, 200 / 255f, 1);
+        Color EnemyColor = new Color(200 / 255f, 50 / 255f, 75 / 255f, 1);
+        Player.GetComponent<PlayerControlThree>().SetSymbolColor(playerColor);
+        Enemy.GetComponent<PlayerControlThree>().SetSymbolColor(EnemyColor);
         Debug.Log("Search Complete");
     }
 
@@ -99,11 +105,11 @@ public class GameManager : GameManagerBase {
         for (int i = 0; i < number; i++)
         {
             Vector3 newposition = Random.onUnitSphere * scale;
-            if (Vector3.Distance(newposition, Player.transform.position) > 2 && Vector3.Distance(newposition, Enemy.transform.position) > 2)
+            if (Vector3.Distance(newposition, Player.transform.position) > 4 && Vector3.Distance(newposition, Enemy.transform.position) > 4)
             {
                 GameObject tempSheep = Instantiate(sheepprefab, newposition, Quaternion.Euler(0, 0, 0), Sheephorde.transform);
                 tempSheep.transform.rotation = Quaternion.FromToRotation(tempSheep.transform.up, newposition) * tempSheep.transform.rotation;
-                SheepList.Add(tempSheep.GetComponent<SheepControlThree>());
+                hordeSheepList.Add(tempSheep.GetComponent<SheepControlThree>());
             }
             else
             {
@@ -117,7 +123,7 @@ public class GameManager : GameManagerBase {
         for (int i = 0; i < number; i++)
         {
             Vector3 newposition = Random.onUnitSphere * scale;
-            if (Vector3.Distance(newposition, Player.transform.position) > 2 && Vector3.Distance(newposition, Enemy.transform.position) > 2)
+            if (Vector3.Distance(newposition, Player.transform.position) > 4 && Vector3.Distance(newposition, Enemy.transform.position) > 4)
             {
                 GameObject tempObject = Instantiate(Objectprefab, newposition, Quaternion.Euler(0, 0, 0), BackGround.transform);
                 tempObject.transform.rotation = Quaternion.FromToRotation(tempObject.transform.up, newposition) * tempObject.transform.rotation;
@@ -129,14 +135,10 @@ public class GameManager : GameManagerBase {
         }
     }
 
-    public void FindAndRemoveAtSheepList(GameObject target)
+    public void FromHordeSheepToOwneredSheep(SheepControlThree target)
     {
-        int index = -1;
-        index = SheepList.FindIndex(x => x.gameObject == target);
-        if (index > -1)
-        {
-            SheepList.RemoveAt(index);
-        }
+        hordeSheepList.Remove(target);
+        owneredSheepList.Add(target);
     }
 
     // Update is called once per frame
@@ -152,14 +154,24 @@ public class GameManager : GameManagerBase {
         }
     }
 
-    public SheepControlThree GetSheepFromSheepList(int index)
+    public SheepControlThree GetSheepFromHordeSheepList(int index)
     {
-        return this.SheepList[index];
+        return this.hordeSheepList[index];
     }
 
-    public int GetSheepListCount()
+    public SheepControlThree GetSheepFromOwneredSheepList(int index)
     {
-        return this.SheepList.Count;
+        return this.owneredSheepList[index];
+    }
+
+    public int GetHordeSheepListCount()
+    {
+        return this.hordeSheepList.Count;
+    }
+
+    public int GetOwneredSheepListCount()
+    {
+        return this.owneredSheepList.Count;
     }
 
     public Transform GetPlanetTransform()
