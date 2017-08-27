@@ -149,7 +149,7 @@ public class GameManager : GameManagerBase {
         if (ManagerHandler.Instance.GameTime().GetTimePass() - midTime > 5)
         {
             midTime = ManagerHandler.Instance.GameTime().GetTimePass();
-            KingGodClient.Instance.GetNetworkMessageSender().SendPlayerEnemyPositionToServer(this.Player.transform.position, this.playerNumber, this.Enemy.transform.position, ManagerHandler.Instance.GameTime().GetTimePass());
+            ManagerHandler.Instance.NetworkManager().GetNetworkMessageSender().SendPlayerEnemyPosition(this.Player.transform.position, this.playerNumber, this.Enemy.transform.position, ManagerHandler.Instance.GameTime().GetTimePass());
             SheepSpawn(sheepPrefab, PlanetScale, 1);
         }
     }
@@ -182,5 +182,10 @@ public class GameManager : GameManagerBase {
     public Transform GetHQTransform()
     {
         return this.HQ.transform;
+    }
+
+    public int GetPlayerNumber()
+    {
+        return this.playerNumber;
     }
 }

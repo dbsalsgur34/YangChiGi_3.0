@@ -139,15 +139,13 @@ public class GameUIManager : GameManagerBase {
         AudioManager.Instance.InitBackGroundAudio();
         AudioManager.Instance.InitEffectAudio();
         AudioManager.Instance.PlayEffectClipByName("Whistle2", 0f, 3f);
-        player.GetPlayerState().IsStop = true;
-        enemy.GetPlayerState().IsStop = true;
         PlayManage.Instance.PlayerScore = player.HQ.GetHQHerd().GetHerdSheepCount();
         PlayManage.Instance.EnemyScore = enemy.HQ.GetHQHerd().GetHerdSheepCount();
         ManagerHandler.Instance.GameTime().StopTimer();
         yield return new WaitForSeconds(3f);
         Debug.Log("End");
         AudioManager.Instance.InitEffectAudio();
-        KingGodClient.Instance.GetNetworkMessageSender().SendGameOverToServer(KingGodClient.Instance.playerNum, ManagerHandler.Instance.GameTime().GetTimePass());
+        ManagerHandler.Instance.NetworkManager().GetNetworkMessageSender().SendGameOver(KingGodClient.Instance.playerNum, ManagerHandler.Instance.GameTime().GetTimePass());
     }
 
     public IEnumerator GoToResultScene()

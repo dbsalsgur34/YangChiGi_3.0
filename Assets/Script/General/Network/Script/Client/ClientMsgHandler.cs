@@ -19,7 +19,6 @@ namespace ClientSide
 					KingGodClient.Instance.SetSeed(splitMsg[1]);
                     AudioManager.Instance.InitBackGroundAudio();
                     AudioManager.Instance.InitEffectAudio();
-                    StartCoroutine(PlayManage.Instance.LoadScene("YangChigi4.0"));
                     break;
                 case "Start":
                     StartCoroutine(ManagerHandler.Instance.GameUIManager().ReadyScreen());

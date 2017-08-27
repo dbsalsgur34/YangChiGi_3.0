@@ -87,7 +87,8 @@ public class LobbyManager : ManagerBase {
             AudioManager.Instance.PlayEffectClipByName("Wait", 2f);
             AudioManager.Instance.PlayOneShotEffectClipByName("Button_Lobby");
             AudioManager.Instance.BackGroundClipAttenuation();
-            NetworkObjectAction();
+            //NetworkObjectAction();
+            MatchingManager
         }
     }
 
@@ -121,10 +122,9 @@ public class LobbyManager : ManagerBase {
         {
             Instantiate(Resources.Load("Prefab/ETC/NetworkObject"));
         }
-        else
-        {
-            Network_Client.Begin(KingGodClient.Instance.serverIP);
-        }
+
+        //Network_Client.Begin(KingGodClient.Instance.serverIP);
+        
     }
 
     public void SetLoadingScene(bool set)

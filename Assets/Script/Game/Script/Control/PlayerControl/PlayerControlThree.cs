@@ -29,24 +29,6 @@ public class PlayerControlThree : MonoBehaviour {
     public GameObject targetObject;
     private Color symbolColor;
 
-    public class PlayerState
-    {
-        public bool InHQ { get; set; }
-        public bool IsStop { get; set; }
-        public bool IsBoost { get; set; }
-        public bool IsFreeze { get; set; }
-        public bool IsKnockBack { get; set; }
-
-        public PlayerState()
-        {
-            InHQ = true;
-            IsStop = false;
-            IsBoost = false;
-            IsFreeze = false;
-            IsKnockBack = false;
-        }
-    }
-
     private PlayerSearchProcessState playerSearchProcessState;
 
     private PlayerState PS;
@@ -127,6 +109,7 @@ public class PlayerControlThree : MonoBehaviour {
 
     private void Awake()
     {
+        PS = GetComponent<PlayerState>();
         playerHerdSheepControl = GetComponent<PlayerHerdSheepControl>();
     }
 
@@ -177,7 +160,7 @@ public class PlayerControlThree : MonoBehaviour {
         if (targetObject != null)
         {
             PMI.GetPlayerParent().transform.rotation = TurnToTarget();
-            PMI.GetPlayerParent().transform.rotation *= GoStraight(PMI.Speed);
+            PMI.GetPlayerParent().transform.rotation *= GoStraight(PMI.Speed * PS.MultiplyValue);
         }
     }
 
@@ -189,7 +172,7 @@ public class PlayerControlThree : MonoBehaviour {
         Vector3 PTVector = TO - PO;
         angle = Vector3.Dot(this.gameObject.transform.right, PTVector);
         Quaternion AA = Quaternion.AngleAxis(angle, PMI.GetPlayerParent().up) * PMI.GetPlayerParent().rotation;
-        return Quaternion.RotateTowards(PMI.GetPlayerParent().rotation, AA, PMI.TurnSpeed * Time.deltaTime);
+        return Quaternion.RotateTowards(PMI.GetPlayerParent().rotation, AA, PMI.TurnSpeed * PS.MultiplyValue *Time.deltaTime);
     }
 
     private Quaternion GoStraight(float SP)
@@ -287,12 +270,12 @@ public class PlayerControlThree : MonoBehaviour {
 
     public IEnumerator PlayerFreeze(float freezeTime, float freezeSpeed)
     {
-        this.PS.IsFreeze = true;
+        //this.PS.IsFreeze = true;
         float tempspeed = PMI.Speed;
         PMI.Speed /= freezeSpeed;
         yield return new WaitForSeconds(freezeTime);
         PMI.Speed *= freezeSpeed;
-        this.PS.IsFreeze = false;
+        //this.PS.IsFreeze = false;
     }
 
     private void OnCollisionEnter(Collision col)
@@ -318,16 +301,16 @@ public class PlayerControlThree : MonoBehaviour {
     private IEnumerator SwitchKnockBack()
     {
         PMI.Time = Time.fixedTime;
-        this.PS.IsKnockBack = true;
-        this.PS.IsStop = true;
+        //this.PS.IsKnockBack = true;
+
         yield return new WaitForSeconds(1f);
-        this.PS.IsKnockBack = false;
-        this.PS.IsStop = false;
+        //this.PS.IsKnockBack = false;
+
     }
 
     public void FixedUpdate()
     {
-        if (!PS.IsStop && GameTime.IsTimerStart())
+        if (GameTime.IsTimerStart())
         {
             SearchTarget();
 

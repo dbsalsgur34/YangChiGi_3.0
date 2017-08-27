@@ -1,16 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 using ClientSide;
 
-public class NetworkManager : GameManagerBase {
-
+public class NetworkManager : GameManagerBase
+{
     //Network에서 받은 메세지를 저장하는 Queue.
     private Queue<string> messageQueue;
     private int playerNumber;
     public float delayTime = 0.1f;
+
+    private NetworkMessageReceiver NMR;
+    private NetworkMessageSender NMS;
 
     protected override void Start()
     {
@@ -24,21 +25,27 @@ public class NetworkManager : GameManagerBase {
         base.InitManager();
         playerNumber = KingGodClient.Instance.playerNum;
         delayTime = 0.1f;
-        SendReadyToServer();
+        NMR = new NetworkMessageReceiver();
+        NMS = new NetworkMessageSender();
+        NMR.SetLogReference(KingGodClient.Instance.Seed);
+        NMS.SetMatchReference(KingGodClient.Instance.Seed);
+        NMS.SendReady(playerNumber);
     }
 
-    public void SendMessageFromPhaseShiftButton()
+    public NetworkMessageReceiver GetNetworkMessageReceiver()
     {
-        if (GameTime.IsTimerStart())
-        {
-            KingGodClient.Instance.GetNetworkMessageSender().SendPlayerStateToServer(playerNumber, (int)ManagerHandler.Instance.GameManager().GetPlayer().GetPlayerSearchState(), ManagerHandler.Instance.GameTime().GetTimePass());
-        }
+        return this.NMR;
+    }
+
+    public NetworkMessageSender GetNetworkMessageSender()
+    {
+        return this.NMS;
     }
 
     public void SetMessageQueue(string Message)
     {
-        if(GameTime.IsTimerStart())
-        messageQueue.Enqueue(Message);
+        if (GameTime.IsTimerStart())
+            messageQueue.Enqueue(Message);
     }
 
     private IEnumerator MessageActor(string Message)
@@ -66,6 +73,21 @@ public class NetworkManager : GameManagerBase {
 
         switch (messageType)
         {
+            case "Seed":
+                KingGodClient.Instance.SetSeed(messageSplit[1]);
+                AudioManager.Instance.InitBackGroundAudio();
+                AudioManager.Instance.InitEffectAudio();
+                StartCoroutine(PlayManage.Instance.LoadScene("YangChigi4.0"));
+                break;
+            case "Ready":
+
+                break;
+            case "Start":
+                StartCoroutine(ManagerHandler.Instance.GameUIManager().ReadyScreen());
+                break;
+            case "GameEnd":
+                StartCoroutine(ManagerHandler.Instance.GameUIManager().GoToResultScene());
+                break;
             case "Shepherd":
                 if (playernumber.Equals(this.playerNumber))
                 {
@@ -80,6 +102,7 @@ public class NetworkManager : GameManagerBase {
             case "Out":
                 target.SetPlayerState(PlayerSearchState.BACKTOHOME);
                 break;
+                
         }
     }
 
@@ -91,16 +114,6 @@ public class NetworkManager : GameManagerBase {
         ManagerHandler.Instance.SkillManager().UsingSkill(num, Player, Enemy, ManagerHandler.Instance.GameManager().GetPlanetTransform(), HQ.gameObject.transform, angle, HV);
     }
 
-    public void SendReadyToServer()
-    {
-        KingGodClient.Instance.GetNetworkMessageSender().SendReadyToServer(playerNumber);
-    }
-
-    public void SendSkillToServer(int skillIndex, Vector3 skillVector)
-    {
-        KingGodClient.Instance.GetNetworkMessageSender().SendSkillVectorToServer(playerNumber, skillIndex, skillVector, ManagerHandler.Instance.GameTime().GetTimePass());
-    }
-
     private void FixedUpdate()
     {
         if (messageQueue.Count > 0)
@@ -108,4 +121,5 @@ public class NetworkManager : GameManagerBase {
             StartCoroutine(MessageActor(messageQueue.Dequeue()));
         }
     }
+    
 }

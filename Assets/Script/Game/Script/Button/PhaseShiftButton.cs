@@ -29,7 +29,7 @@ public class PhaseShiftButton : GameButtonBase {
 
     private void SwitchPhase()
     {
-        ManagerHandler.Instance.NetworkManager().SendMessageFromPhaseShiftButton();
+        ManagerHandler.Instance.NetworkManager().GetNetworkMessageSender().SendPlayerState(ManagerHandler.Instance.GameManager().GetPlayerNumber(), (int)ManagerHandler.Instance.GameManager().GetPlayer().GetPlayerSearchState(), ManagerHandler.Instance.GameTime().GetTimePass());
     }
 
     public void ChangeSearchButtonText(PlayerSearchState currentState)

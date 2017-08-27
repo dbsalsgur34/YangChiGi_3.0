@@ -183,7 +183,7 @@ public class GameControlManager : GameManagerBase
             if (hit.transform != null)
             {
                 Vector3 hitPosition = hit.point;
-                ManagerHandler.Instance.NetworkManager().SendSkillToServer(item.GetSkillNumber(), hitPosition);
+                ManagerHandler.Instance.NetworkManager().GetNetworkMessageSender().SendSkillVector(ManagerHandler.Instance.GameManager().GetPlayerNumber(),item.GetSkillNumber(), hitPosition, ManagerHandler.Instance.GameTime().GetTimePass());
                 ManagerHandler.Instance.SkillManager().SetSkillPanelQueue(item);
             }
         }
